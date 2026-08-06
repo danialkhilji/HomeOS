@@ -1,0 +1,39 @@
+[project]
+name = "homeos-backend"
+version = "0.1.0"
+description = "HomeOS — self-hosted family operating system backend"
+requires-python = ">=3.12,<4"
+dependencies = [
+    "fastapi>=0.115,<1",
+    "uvicorn[standard]>=0.34,<1",
+    "sqlalchemy[asyncio]>=2.0,<3",
+    "aiosqlite>=0.20,<1",
+    "alembic>=1.14,<2",
+    "pydantic>=2.10,<3",
+    "pydantic-settings>=2.7,<3",
+    "apscheduler>=3.10,<4",
+    "httpx>=0.28,<1",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.3,<9",
+    "pytest-asyncio>=0.24,<1",
+    "pytest-cov>=6.0,<7",
+    "ruff>=0.8,<1",
+]
+
+[build-system]
+requires = ["setuptools>=75"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["app*"]
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
