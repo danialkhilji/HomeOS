@@ -157,7 +157,7 @@ A beautiful touchscreen interface ready for real functionality.
 
 ---
 
-# Phase 3 — Household Members (IN PROGRESS)
+# Phase 3 — Household Members (COMPLETED)
 
 ## Goal
 
@@ -165,30 +165,31 @@ Create a lightweight household members list for assigning tasks and notes.
 
 No user accounts, no login, no authentication. Members are simply names used as labels throughout the app.
 
-## Tasks
+## Completed Tasks
 
 ### Task 1 — Backend: Member Model & Migration
 
-- Create Member SQLAlchemy model (id, name, colour, created_at).
-- Generate Alembic migration to create the members table.
+- Created Member SQLAlchemy model (id, name, colour, created_at).
+- Updated migrations/env.py to import models for Alembic discovery.
+- Generated and applied Alembic migration to create the members table.
 
 ### Task 2 — Backend: Member API
 
-- Create Pydantic schemas for request/response validation.
-- Create service layer (create, list, delete).
-- Create REST endpoints (GET, POST, DELETE under /api/v1/members).
-- Add API tests.
+- Created Pydantic schemas for request/response validation (MemberCreate, MemberResponse).
+- Created service layer with business logic (get_all_members, create_member, delete_member).
+- Created REST endpoints (GET, POST, DELETE under /api/v1/members).
+- Added 6 API tests (list, create, duplicate rejection, delete, not-found).
 
 ### Task 3 — Frontend: Member API Client & State
 
-- Create axios API functions for members.
-- Create TanStack Query hooks (useMembers, useCreateMember, useDeleteMember).
+- Created axios API functions for members (fetchMembers, createMember, deleteMember).
+- Created TanStack Query hooks (useMembers, useCreateMember, useDeleteMember).
 
 ### Task 4 — Frontend: Settings Page UI
 
-- Add Member modal with name input and colour picker.
-- Display member list in Settings card with name, colour, and delete button.
-- Wire Add/Delete actions to the API via TanStack Query hooks.
+- Created AddMemberModal with name input and 8 preset colour swatches.
+- Created MemberList displaying colour dot, name, and delete button per member.
+- Rewrote SettingsPage to wire hooks, modal state, and member list together.
 
 ## Deliverable
 
