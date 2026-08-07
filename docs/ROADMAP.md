@@ -205,77 +205,39 @@ Build the core household responsibility system.
 
 ## Tasks
 
-## Task Management
+### Task 1 — Backend: Task Model & Migration
 
-Allow creating and managing tasks:
+- Create Task SQLAlchemy model (id, title, assigned_to, is_completed, completed_at, created_at).
+- Add foreign key relationship to Member.
+- Generate and apply Alembic migration.
 
-Examples:
+### Task 2 — Backend: Task API
 
-- Wash dishes.
-- Clean bathroom.
-- Vacuum.
-- Take bins out.
-- Clean kitchen.
+- Create Pydantic schemas for request/response validation.
+- Create service layer (create, list, update, delete, toggle completion).
+- Create REST endpoints (GET, POST, PUT, DELETE, PATCH under /api/v1/tasks).
+- Add API tests.
 
-Functions:
+### Task 3 — Frontend: Task API Client & State
 
-- Add task.
-- Edit task.
-- Delete task.
+- Create axios API functions for tasks.
+- Create TanStack Query hooks (useTasks, useCreateTask, useUpdateTask, useDeleteTask, useToggleTask).
 
----
+### Task 4 — Frontend: Tasks Page UI
 
-## Task Assignment
+- Create AddTaskModal with title input and member assignment dropdown.
+- Create TaskList displaying tasks grouped by member with completion toggle.
+- Rewrite TasksPage to wire hooks, modal, and task list together.
 
-Allow assigning tasks to household members.
+### Task 5 — Frontend: Dashboard Tasks Card
 
-Example:
+- Update TasksCard on the dashboard to show today's tasks with member names and completion status.
 
+### Task 6 — Backend: Task Rotation System
 
-Monday
-
-Danial:
-Wash dishes
-
-Ali:
-Vacuum
-
-
----
-
-## Task Completion
-
-Anyone can:
-
-- View assigned tasks.
-- Mark tasks completed.
-- See completion status.
-
----
-
-## Rotation System
-
-Automatically rotate tasks.
-
-Example:
-
-Week 1:
-
-
-Danial → Dishes
-
-Ali → Vacuum
-
-
-Week 2:
-
-
-Danial → Vacuum
-
-Ali → Dishes
-
-
----
+- Create rotation service that automatically reassigns tasks on a weekly schedule.
+- Configure APScheduler to run the rotation.
+- Add rotation tests.
 
 ## Deliverable
 
@@ -486,6 +448,14 @@ Example:
 - Thermostat.
 - Cameras.
 - Sensors.
+
+---
+
+## Prayer Times
+
+- Scrape prayer times from local mosque website.
+- Display daily prayer schedule on the dashboard.
+- Highlight the next upcoming prayer.
 
 ---
 

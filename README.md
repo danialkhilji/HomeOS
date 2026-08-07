@@ -37,8 +37,12 @@ Frontend runs at `http://localhost:5173`
 ```bash
 conda activate homeos
 cd backend
-pytest tests/ -v
+pytest tests/ -v              # run all tests
+pytest tests/test_health.py   # run a specific test file
+pytest tests/ -v --cov=app    # run with coverage report
 ```
+
+Tests use an in-memory SQLite database — each test gets a fresh database so tests don't interfere with each other.
 
 ## Project Structure
 
