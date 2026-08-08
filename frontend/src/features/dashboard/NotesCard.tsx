@@ -1,13 +1,15 @@
-import { Card, EmptyState } from "../../components";
+import { Card, EmptyState, LoadingSpinner } from "../../components";
 import { useNotes } from "../../hooks/useNotes";
 
 export default function NotesCard() {
-  const { data: notes = [] } = useNotes();
+  const { data: notes = [], isLoading } = useNotes();
   const recent = notes.slice(0, 3);
 
   return (
     <Card title="Family Notes">
-      {recent.length === 0 ? (
+      {isLoading ? (
+        <LoadingSpinner />
+      ) : recent.length === 0 ? (
         <EmptyState message="No notes yet." />
       ) : (
         <div className="space-y-3">

@@ -1,8 +1,8 @@
-import { Card, EmptyState } from "../../components";
+import { Card, EmptyState, LoadingSpinner } from "../../components";
 import { useShoppingItems } from "../../hooks/useShopping";
 
 export default function ShoppingCard() {
-  const { data: items = [] } = useShoppingItems();
+  const { data: items = [], isLoading } = useShoppingItems();
   const unpurchased = items.filter((item) => !item.is_purchased);
 
   return (
@@ -13,7 +13,9 @@ export default function ShoppingCard() {
           : "Shopping List"
       }
     >
-      {unpurchased.length === 0 ? (
+      {isLoading ? (
+        <LoadingSpinner />
+      ) : unpurchased.length === 0 ? (
         <EmptyState message="No items yet." />
       ) : (
         <div className="space-y-2">

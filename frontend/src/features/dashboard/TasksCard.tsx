@@ -1,4 +1,4 @@
-import { Card, EmptyState } from "../../components";
+import { Card, EmptyState, LoadingSpinner } from "../../components";
 import { useTasks } from "../../hooks/useTasks";
 
 function CheckIcon() {
@@ -10,11 +10,13 @@ function CheckIcon() {
 }
 
 export default function TasksCard() {
-  const { data: tasks = [] } = useTasks();
+  const { data: tasks = [], isLoading } = useTasks();
 
   return (
     <Card title="Today's Tasks">
-      {tasks.length === 0 ? (
+      {isLoading ? (
+        <LoadingSpinner />
+      ) : tasks.length === 0 ? (
         <EmptyState message="No tasks yet." />
       ) : (
         <div className="space-y-2">
