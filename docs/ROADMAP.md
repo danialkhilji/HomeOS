@@ -335,33 +335,33 @@ A shared digital notice board.
 
 ---
 
-# Phase 7 — Main Dashboard Integration
+# Phase 7 — Main Dashboard Integration (COMPLETED)
 
 ## Goal
 
 Combine all features into the main HomeOS experience. The dashboard already shows live data from tasks, shopping, and notes. This phase polishes the remaining pieces: real weather data and overall UI refinements.
 
-## Tasks
+## Completed Tasks
 
 ### Task 1 — Backend: Weather API Integration
 
-- Create a weather service that fetches current weather from a free API (e.g. Open-Meteo).
-- Create a weather endpoint (GET /api/v1/weather) that returns temperature and condition.
-- Cache weather data to avoid excessive API calls (refresh every 30 minutes).
-- Add config for location coordinates.
+- Created weather module with Open-Meteo integration (free, no API key).
+- Created GET /api/v1/weather endpoint returning temperature, condition, and icon code.
+- Added 30-minute in-memory cache with stale-data fallback on API failure.
+- Added configurable latitude/longitude/cache duration in Settings.
+- Mapped all Open-Meteo weather codes to human-readable conditions and icon identifiers.
 
 ### Task 2 — Frontend: Live Weather Card
 
-- Create axios function and TanStack Query hook for weather.
-- Rewrite WeatherCard to display real temperature and weather condition.
-- Add weather icons for different conditions (sunny, cloudy, rainy, etc.).
+- Added Weather TypeScript interface, axios function, and TanStack Query hook with 30-minute stale time.
+- Rewrote WeatherCard to display real temperature and condition with weather emoji icons.
+- Added loading and error states.
 
 ### Task 3 — Dashboard Polish & Refinements
 
-- Review dashboard layout and spacing for touchscreen readability.
-- Ensure all cards handle loading and error states gracefully.
-- Add pull-to-refresh or auto-refresh for dashboard data.
-- Final visual pass across all pages for consistency.
+- Created LoadingSpinner component.
+- Added loading states to TasksCard, ShoppingCard, and NotesCard.
+- Added 5-minute auto-refresh for all dashboard data.
 
 ## Deliverable
 
@@ -377,41 +377,32 @@ Deploy HomeOS as a real kitchen appliance.
 
 ## Tasks
 
-Setup Mini PC:
+### Task 1 — Dockerfiles
 
-- Install Ubuntu.
-- Install Docker.
-- Deploy application.
+- Create backend Dockerfile (Python 3.12, install deps, run uvicorn).
+- Create frontend Dockerfile (Node build step, serve with nginx).
+- Update docker-compose.yml with build contexts, volumes, and env config.
+- Verify `docker compose up` starts the full application.
 
-Configure:
+### Task 2 — Production Configuration
 
-- Automatic startup.
-- Browser kiosk mode.
-- Fullscreen dashboard.
-- Automatic recovery after restart.
-- Database backups.
+- Configure backend for production mode (debug off, optimised logging).
+- Configure frontend nginx to serve static files and proxy API requests.
+- Set up SQLite database volume for data persistence across container restarts.
 
-### Final architecture:
+### Task 3 — Mini PC Setup & Kiosk Mode
 
+- Install Ubuntu on Mini PC.
+- Install Docker and Docker Compose.
+- Deploy HomeOS containers.
+- Configure Chromium in kiosk mode (fullscreen, no address bar, no cursor).
+- Set up auto-start on boot.
+- Configure automatic recovery after restart or crash.
 
-Touchscreen Display
+### Task 4 — Database Backups
 
-   |
-
-Mini PC
-
-  |
-
-Ubuntu Linux
-
-   |
-
-Docker
-
-   |
-
-HomeOS
-
+- Create a backup script that copies the SQLite database to a safe location.
+- Schedule daily backups with cron.
 
 ## Deliverable
 
