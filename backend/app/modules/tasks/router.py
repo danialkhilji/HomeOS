@@ -4,6 +4,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.core.database import get_db
 from app.modules.tasks.schemas import TaskCreate, TaskUpdate, TaskResponse
 from app.modules.tasks import service
+from app.modules.tasks.rotation import rotate_tasks
 
 router = APIRouter(prefix="/tasks", tags=["tasks"])
 
@@ -35,3 +36,9 @@ async def toggle_task(task_id: int, db: AsyncSession = Depends(get_db)):
 async def delete_task(task_id: int, db: AsyncSession = Depends(get_db)):
     await service.delete_task(db, task_id)
     return {"message": "Task deleted"}
+
+
+@router.post("/rotate")
+async def rotate(db: AsyncSession = Depends(get_db)):
+    await rotate_tasks(db)
+    return {"message": "Task rotation complete"}
