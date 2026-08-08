@@ -472,6 +472,14 @@ Example:
 
 ---
 
+## Integration & End-to-End Tests
+
+- Add cross-module integration tests (e.g. full user flows across tasks, shopping, notes).
+- Add frontend component tests for critical UI interactions.
+- Add CI/CD pipeline to run tests on push.
+
+---
+
 # Completion Criteria
 
 The first version of HomeOS is complete when:

@@ -1,9 +1,11 @@
-from sqlalchemy import select
+from sqlalchemy import select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.exceptions import NotFoundError, ValidationError
 from app.modules.members.models import Member
 from app.modules.members.schemas import MemberCreate
+from app.modules.tasks.models import Task
+from app.modules.notes.models import Note
 
 
 async def get_all_members(db: AsyncSession) -> list[Member]:
@@ -28,4 +30,8 @@ async def delete_member(db: AsyncSession, member_id: int) -> None:
     member = result.scalar_one_or_none()
     if not member:
         raise NotFoundError("Member", member_id)
+
+    await db.execute(update(Task).where(Task.assigned_to == member_id).values(assigned_to=None))
+    await db.execute(update(Note).where(Note.author_id == member_id).values(author_id=None))
+
     await db.delete(member)
