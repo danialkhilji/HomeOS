@@ -28,6 +28,14 @@ export interface ShoppingItem {
   created_at: string;
 }
 
+export interface Note {
+  id: number;
+  content: string;
+  author_id: number | null;
+  created_at: string;
+  author: MemberSummary | null;
+}
+
 export interface HealthResponse {
   app: string;
   version: string;
