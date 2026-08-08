@@ -21,6 +21,13 @@ export interface Task {
   member: MemberSummary | null;
 }
 
+export interface ShoppingItem {
+  id: number;
+  name: string;
+  is_purchased: boolean;
+  created_at: string;
+}
+
 export interface HealthResponse {
   app: string;
   version: string;
