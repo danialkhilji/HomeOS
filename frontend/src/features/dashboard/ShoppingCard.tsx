@@ -1,9 +1,30 @@
 import { Card, EmptyState } from "../../components";
+import { useShoppingItems } from "../../hooks/useShopping";
 
 export default function ShoppingCard() {
+  const { data: items = [] } = useShoppingItems();
+  const unpurchased = items.filter((item) => !item.is_purchased);
+
   return (
-    <Card title="Shopping List">
-      <EmptyState message="No items yet." />
+    <Card
+      title={
+        unpurchased.length > 0
+          ? `Shopping List — ${unpurchased.length} item${unpurchased.length === 1 ? "" : "s"}`
+          : "Shopping List"
+      }
+    >
+      {unpurchased.length === 0 ? (
+        <EmptyState message="No items yet." />
+      ) : (
+        <div className="space-y-2">
+          {unpurchased.map((item) => (
+            <div key={item.id} className="flex items-center gap-3 py-1.5">
+              <div className="w-5 h-5 rounded border-2 border-border dark:border-border-dark shrink-0" />
+              <span className="text-base text-text dark:text-text-dark">{item.name}</span>
+            </div>
+          ))}
+        </div>
+      )}
     </Card>
   );
 }
