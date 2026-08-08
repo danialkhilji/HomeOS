@@ -1,0 +1,56 @@
+from sqlalchemy import select, case
+from sqlalchemy.ext.asyncio import AsyncSession
+
+from app.core.exceptions import NotFoundError
+from app.modules.shopping.models import ShoppingItem
+from app.modules.shopping.schemas import ShoppingItemCreate, ShoppingItemUpdate
+
+
+async def get_all_items(db: AsyncSession) -> list[ShoppingItem]:
+    result = await db.execute(
+        select(ShoppingItem).order_by(
+            case((ShoppingItem.is_purchased == False, 0), else_=1),  # noqa: E712
+            ShoppingItem.created_at,
+        )
+    )
+    return list(result.scalars().all())
+
+
+async def create_item(db: AsyncSession, data: ShoppingItemCreate) -> ShoppingItem:
+    item = ShoppingItem(name=data.name)
+    db.add(item)
+    await db.flush()
+    await db.refresh(item)
+    return item
+
+
+async def update_item(db: AsyncSession, item_id: int, data: ShoppingItemUpdate) -> ShoppingItem:
+    result = await db.execute(select(ShoppingItem).where(ShoppingItem.id == item_id))
+    item = result.scalar_one_or_none()
+    if not item:
+        raise NotFoundError("Shopping item", item_id)
+
+    item.name = data.name
+    await db.flush()
+    await db.refresh(item)
+    return item
+
+
+async def toggle_item(db: AsyncSession, item_id: int) -> ShoppingItem:
+    result = await db.execute(select(ShoppingItem).where(ShoppingItem.id == item_id))
+    item = result.scalar_one_or_none()
+    if not item:
+        raise NotFoundError("Shopping item", item_id)
+
+    item.is_purchased = not item.is_purchased
+    await db.flush()
+    await db.refresh(item)
+    return item
+
+
+async def delete_item(db: AsyncSession, item_id: int) -> None:
+    result = await db.execute(select(ShoppingItem).where(ShoppingItem.id == item_id))
+    item = result.scalar_one_or_none()
+    if not item:
+        raise NotFoundError("Shopping item", item_id)
+    await db.delete(item)
