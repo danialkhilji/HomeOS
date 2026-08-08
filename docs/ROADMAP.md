@@ -459,6 +459,14 @@ Example:
 
 ---
 
+## CCTV Live Feed
+
+- Display live CCTV camera feeds on the dashboard.
+- Switch between multiple camera views.
+- Fullscreen mode for individual cameras.
+
+---
+
 ## Mobile Application
 
 - View tasks remotely.
