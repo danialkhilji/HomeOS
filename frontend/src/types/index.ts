@@ -36,6 +36,12 @@ export interface Note {
   author: MemberSummary | null;
 }
 
+export interface Weather {
+  temperature: number;
+  condition: string;
+  icon: string;
+}
+
 export interface HealthResponse {
   app: string;
   version: string;
