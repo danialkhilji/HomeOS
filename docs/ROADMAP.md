@@ -197,47 +197,49 @@ Household member names can be managed in Settings and used for task assignment a
 
 ---
 
-# Phase 4 — Task Management System
+# Phase 4 — Task Management System (COMPLETED)
 
 ## Goal
 
 Build the core household responsibility system.
 
-## Tasks
+## Completed Tasks
 
 ### Task 1 — Backend: Task Model & Migration
 
-- Create Task SQLAlchemy model (id, title, assigned_to, is_completed, completed_at, created_at).
-- Add foreign key relationship to Member.
-- Generate and apply Alembic migration.
+- Created Task SQLAlchemy model (id, title, assigned_to, is_completed, completed_at, created_at).
+- Added foreign key relationship to Member with joined loading.
+- Generated and applied Alembic migration.
 
 ### Task 2 — Backend: Task API
 
-- Create Pydantic schemas for request/response validation.
-- Create service layer (create, list, update, delete, toggle completion).
-- Create REST endpoints (GET, POST, PUT, DELETE, PATCH under /api/v1/tasks).
-- Add API tests.
+- Created Pydantic schemas (TaskCreate, TaskUpdate, TaskResponse with MemberSummary).
+- Created service layer (get_all_tasks with member filter, create_task, update_task, toggle_task, delete_task).
+- Created REST endpoints (GET, POST, PUT, DELETE, PATCH /toggle under /api/v1/tasks).
+- Added 12 API tests covering all endpoints and edge cases.
 
 ### Task 3 — Frontend: Task API Client & State
 
-- Create axios API functions for tasks.
-- Create TanStack Query hooks (useTasks, useCreateTask, useUpdateTask, useDeleteTask, useToggleTask).
+- Added Task and MemberSummary TypeScript interfaces.
+- Created axios API functions (fetchTasks, createTask, updateTask, toggleTask, deleteTask).
+- Created TanStack Query hooks (useTasks, useCreateTask, useUpdateTask, useToggleTask, useDeleteTask).
 
 ### Task 4 — Frontend: Tasks Page UI
 
-- Create AddTaskModal with title input and member assignment dropdown.
-- Create TaskList displaying tasks grouped by member with completion toggle.
-- Rewrite TasksPage to wire hooks, modal, and task list together.
+- Created AddTaskModal with title input and member picker (tappable buttons with colour dots).
+- Created TaskList with completion toggle (circle/checkmark), member info, and delete button.
+- Rewrote TasksPage to wire hooks, modal state, and task list.
 
 ### Task 5 — Frontend: Dashboard Tasks Card
 
-- Update TasksCard on the dashboard to show today's tasks with member names and completion status.
+- Rewrote TasksCard to display real tasks with member names, colour dots, and completion indicators.
 
 ### Task 6 — Backend: Task Rotation System
 
-- Create rotation service that automatically reassigns tasks on a weekly schedule.
-- Configure APScheduler to run the rotation.
-- Add rotation tests.
+- Created rotation service that shifts task assignments to the next member and resets completion.
+- Configured APScheduler to run rotation every Monday at midnight.
+- Added manual POST /api/v1/tasks/rotate endpoint.
+- Added 7 rotation tests covering all scenarios.
 
 ## Deliverable
 
@@ -255,27 +257,32 @@ Create a shared grocery management system.
 
 ## Tasks
 
-Implement:
+### Task 1 — Backend: ShoppingItem Model & Migration
 
-- Add shopping items.
-- Delete items.
-- Mark items as purchased.
-- Undo completed items.
-- Display shopping list on dashboard.
+- Create ShoppingItem SQLAlchemy model (id, name, is_purchased, created_at).
+- Generate and apply Alembic migration.
 
-Example:
+### Task 2 — Backend: Shopping API
 
+- Create Pydantic schemas for request/response validation.
+- Create service layer (create, list, delete, toggle purchased).
+- Create REST endpoints (GET, POST, DELETE, PATCH under /api/v1/shopping).
+- Add API tests.
 
-Shopping List
+### Task 3 — Frontend: Shopping API Client & State
 
-☐ Milk
+- Create axios API functions for shopping items.
+- Create TanStack Query hooks (useShoppingItems, useCreateShoppingItem, useDeleteShoppingItem, useToggleShoppingItem).
 
-☐ Eggs
+### Task 4 — Frontend: Shopping Page UI
 
-☐ Chicken
+- Create AddItemModal with name input.
+- Create ShoppingList displaying items with purchased toggle and delete button.
+- Rewrite ShoppingPage to wire hooks, modal, and item list together.
 
-☑ Bread
+### Task 5 — Frontend: Dashboard Shopping Card
 
+- Update ShoppingCard on the dashboard to show real shopping list items with purchased status.
 
 ## Deliverable
 
