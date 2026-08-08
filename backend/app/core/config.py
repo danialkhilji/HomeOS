@@ -22,5 +22,9 @@ class Settings(BaseSettings):
 
     API_V1_PREFIX: str = "/api/v1"
 
+    WEATHER_LATITUDE: float = 51.5074
+    WEATHER_LONGITUDE: float = -0.1278
+    WEATHER_CACHE_MINUTES: int = 30
+
 
 settings = Settings()

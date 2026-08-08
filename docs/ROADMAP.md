@@ -292,41 +292,42 @@ Everyone in the house can maintain a single shared shopping list.
 
 ---
 
-# Phase 6 — Family Notes
+# Phase 6 — Family Notes (COMPLETED)
 
 ## Goal
 
 Create a simple household communication board.
 
-## Tasks
+## Completed Tasks
 
 ### Task 1 — Backend: Note Model & Migration
 
-- Create Note SQLAlchemy model (id, content, author_id as foreign key to members, created_at).
-- Generate and apply Alembic migration.
+- Created Note SQLAlchemy model (id, content, author_id as foreign key to members, created_at).
+- Added author relationship with joined loading.
+- Generated and applied Alembic migration.
 
 ### Task 2 — Backend: Notes API
 
-- Create Pydantic schemas for request/response validation.
-- Create service layer (create, list, update, delete).
-- Create REST endpoints (GET, POST, PUT, DELETE under /api/v1/notes).
-- Add API tests.
+- Created Pydantic schemas (NoteCreate, NoteUpdate, NoteResponse with MemberSummary).
+- Created service layer (get_all_notes newest first, create_note with author validation, update_note, delete_note).
+- Created REST endpoints (GET, POST, PUT, DELETE under /api/v1/notes).
+- Added 9 API tests covering all endpoints and edge cases.
 
 ### Task 3 — Frontend: Notes API Client & State
 
-- Create axios API functions for notes.
-- Create TanStack Query hooks (useNotes, useCreateNote, useUpdateNote, useDeleteNote).
-- Add Note TypeScript interface.
+- Added Note TypeScript interface.
+- Created axios API functions (fetchNotes, createNote, updateNote, deleteNote).
+- Created TanStack Query hooks (useNotes, useCreateNote, useUpdateNote, useDeleteNote).
 
 ### Task 4 — Frontend: Notes Page UI
 
-- Create AddNoteModal with content input and member picker for author.
-- Create NoteList displaying notes with author name, colour, content, and delete button.
-- Rewrite NotesPage to wire hooks, modal, and note list together.
+- Created AddNoteModal with member picker for author and multi-line text area.
+- Created NoteList displaying notes as cards with author colour dot, name, content, and delete button.
+- Rewrote NotesPage to wire hooks, modal, and note list.
 
 ### Task 5 — Frontend: Dashboard Notes Card
 
-- Update NotesCard on the dashboard to show recent notes with author names.
+- Rewrote NotesCard to display 3 most recent notes with author info and content preview.
 
 ## Deliverable
 
@@ -338,46 +339,33 @@ A shared digital notice board.
 
 ## Goal
 
-Combine all features into the main HomeOS experience.
+Combine all features into the main HomeOS experience. The dashboard already shows live data from tasks, shopping, and notes. This phase polishes the remaining pieces: real weather data and overall UI refinements.
 
-The dashboard should display:
+## Tasks
 
+### Task 1 — Backend: Weather API Integration
 
-HomeOS
+- Create a weather service that fetches current weather from a free API (e.g. Open-Meteo).
+- Create a weather endpoint (GET /api/v1/weather) that returns temperature and condition.
+- Cache weather data to avoid excessive API calls (refresh every 30 minutes).
+- Add config for location coordinates.
 
-Thursday 6 August
+### Task 2 — Frontend: Live Weather Card
 
-Weather
-21°C Sunny
+- Create axios function and TanStack Query hook for weather.
+- Rewrite WeatherCard to display real temperature and weather condition.
+- Add weather icons for different conditions (sunny, cloudy, rainy, etc.).
 
-Today's Tasks
+### Task 3 — Dashboard Polish & Refinements
 
-Danial
-Wash dishes
-
-Ali
-Vacuum
-
-Shopping List
-
-Milk
-Eggs
-
-Family Notes
-
-Dentist appointment tomorrow
-
-
-## Add:
-
-- Current date.
-- Current time.
-- Weather API.
-- Real-time updates.
+- Review dashboard layout and spacing for touchscreen readability.
+- Ensure all cards handle loading and error states gracefully.
+- Add pull-to-refresh or auto-refresh for dashboard data.
+- Final visual pass across all pages for consistency.
 
 ## Deliverable
 
-A complete HomeOS dashboard.
+A complete HomeOS dashboard with live weather and polished UI.
 
 ---
 
