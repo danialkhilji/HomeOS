@@ -32,6 +32,31 @@ npm run dev
 
 Frontend runs at `http://localhost:5173`
 
+### Docker (recommended)
+
+Run the entire app with a single command:
+
+```bash
+docker compose up --build
+```
+
+App runs at `http://localhost`. Backend on port 8000, frontend on port 80 via nginx.
+
+To stop: `docker compose down`
+
+#### Docker without admin access (macOS)
+
+If you don't have admin access to install Docker Desktop, use Colima:
+
+```bash
+brew install docker colima docker-compose
+mkdir -p ~/.docker/cli-plugins
+ln -sf $(brew --prefix)/bin/docker-compose ~/.docker/cli-plugins/docker-compose
+colima start
+```
+
+Then `docker compose up --build` works as normal. To stop Colima when done: `colima stop`.
+
 ### Run Tests
 
 ```bash
