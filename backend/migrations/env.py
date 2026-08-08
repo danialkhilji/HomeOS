@@ -10,6 +10,7 @@ from app.core.database import Base
 import app.modules.members.models  # noqa: F401
 import app.modules.tasks.models  # noqa: F401
 import app.modules.shopping.models  # noqa: F401
+import app.modules.notes.models  # noqa: F401
 
 config = context.config
 config.set_main_option("sqlalchemy.url", settings.DATABASE_URL)

@@ -249,40 +249,42 @@ The family no longer needs to manually assign tasks.
 
 ---
 
-# Phase 5 — Shared Shopping List
+# Phase 5 — Shared Shopping List (COMPLETED)
 
 ## Goal
 
 Create a shared grocery management system.
 
-## Tasks
+## Completed Tasks
 
 ### Task 1 — Backend: ShoppingItem Model & Migration
 
-- Create ShoppingItem SQLAlchemy model (id, name, is_purchased, created_at).
-- Generate and apply Alembic migration.
+- Created ShoppingItem SQLAlchemy model (id, name, is_purchased, created_at).
+- Generated and applied Alembic migration.
 
 ### Task 2 — Backend: Shopping API
 
-- Create Pydantic schemas for request/response validation.
-- Create service layer (create, list, delete, toggle purchased).
-- Create REST endpoints (GET, POST, DELETE, PATCH under /api/v1/shopping).
-- Add API tests.
+- Created Pydantic schemas (ShoppingItemCreate, ShoppingItemUpdate, ShoppingItemResponse).
+- Created service layer (get_all_items with unpurchased-first sort, create_item, update_item, toggle_item, delete_item).
+- Created REST endpoints (GET, POST, PUT, PATCH /toggle, DELETE under /api/v1/shopping).
+- Added 10 API tests covering all endpoints and sort ordering.
 
 ### Task 3 — Frontend: Shopping API Client & State
 
-- Create axios API functions for shopping items.
-- Create TanStack Query hooks (useShoppingItems, useCreateShoppingItem, useDeleteShoppingItem, useToggleShoppingItem).
+- Added ShoppingItem TypeScript interface.
+- Created axios API functions (fetchShoppingItems, createShoppingItem, updateShoppingItem, toggleShoppingItem, deleteShoppingItem).
+- Created TanStack Query hooks (useShoppingItems, useCreateShoppingItem, useUpdateShoppingItem, useToggleShoppingItem, useDeleteShoppingItem).
 
 ### Task 4 — Frontend: Shopping Page UI
 
-- Create AddItemModal with name input.
-- Create ShoppingList displaying items with purchased toggle and delete button.
-- Rewrite ShoppingPage to wire hooks, modal, and item list together.
+- Created AddItemModal with name input.
+- Created EditItemModal with pre-filled name for fixing typos.
+- Created ShoppingList with checkbox toggle, edit button, and delete button.
+- Rewrote ShoppingPage to wire all hooks and both modals.
 
 ### Task 5 — Frontend: Dashboard Shopping Card
 
-- Update ShoppingCard on the dashboard to show real shopping list items with purchased status.
+- Rewrote ShoppingCard to display unpurchased items with count in the title.
 
 ## Deliverable
 
@@ -298,24 +300,33 @@ Create a simple household communication board.
 
 ## Tasks
 
-Implement:
+### Task 1 — Backend: Note Model & Migration
 
-- Create notes.
-- Edit notes.
-- Delete notes.
-- Display recent notes.
+- Create Note SQLAlchemy model (id, content, author_id as foreign key to members, created_at).
+- Generate and apply Alembic migration.
 
-Example:
+### Task 2 — Backend: Notes API
 
+- Create Pydantic schemas for request/response validation.
+- Create service layer (create, list, update, delete).
+- Create REST endpoints (GET, POST, PUT, DELETE under /api/v1/notes).
+- Add API tests.
 
-Family Notes
+### Task 3 — Frontend: Notes API Client & State
 
-Danial:
-Please buy vegetables tomorrow.
+- Create axios API functions for notes.
+- Create TanStack Query hooks (useNotes, useCreateNote, useUpdateNote, useDeleteNote).
+- Add Note TypeScript interface.
 
-Ali:
-Coming home late today.
+### Task 4 — Frontend: Notes Page UI
 
+- Create AddNoteModal with content input and member picker for author.
+- Create NoteList displaying notes with author name, colour, content, and delete button.
+- Rewrite NotesPage to wire hooks, modal, and note list together.
+
+### Task 5 — Frontend: Dashboard Notes Card
+
+- Update NotesCard on the dashboard to show recent notes with author names.
 
 ## Deliverable
 
