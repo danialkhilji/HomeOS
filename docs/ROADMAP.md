@@ -445,6 +445,14 @@ Example:
 
 ---
 
+## Rotation Duty Tracker
+
+- Check dad's rotation duty schedule from an external source.
+- Display upcoming duties for the next 7 days on the dashboard.
+- Highlight today's duty if one is scheduled.
+
+---
+
 ## Prayer Times
 
 - Scrape prayer times from local mosque website.
@@ -466,6 +474,15 @@ Example:
 - View tasks remotely.
 - Manage shopping list.
 - Receive notifications.
+
+---
+
+## Auto-Update Deployment
+
+- Create a script that checks GitHub for new changes on main branch.
+- Auto-pull and rebuild Docker containers when updates are detected.
+- Schedule with cron to check every few minutes.
+- No manual SSH or pull needed — just merge to main and the Linux laptop updates itself.
 
 ---
 
