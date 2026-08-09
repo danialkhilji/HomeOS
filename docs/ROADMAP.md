@@ -407,9 +407,23 @@ A fully working kitchen touchscreen system used by the family.
 
 ---
 
+# Post-Launch Features (COMPLETED)
+
+Features added after the initial v1 release.
+
+## Prayer Times
+
+- Integrated Aladhan API with Method 15 (Moonsighting Committee) and Hanafi school for closest UK mosque times.
+- Created backend prayer service with GET /api/v1/prayer-times endpoint.
+- Added in-memory cache with daily refresh at 1am via APScheduler.
+- Current prayer highlight recalculated on each request.
+- Added pull-to-refresh on dashboard to manually update weather and prayer times.
+
+---
+
 # Future Expansion
 
-After the first version is stable, new modules can be added.
+New modules and features to be added.
 
 Possible future features:
 
@@ -450,14 +464,6 @@ Example:
 - Check dad's rotation duty schedule from an external source.
 - Display upcoming duties for the next 7 days on the dashboard.
 - Highlight today's duty if one is scheduled.
-
----
-
-## Prayer Times
-
-- Scrape prayer times from local mosque website.
-- Display daily prayer schedule on the dashboard.
-- Highlight the next upcoming prayer.
 
 ---
 
