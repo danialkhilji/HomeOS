@@ -1,5 +1,6 @@
 import { useQueryClient } from "@tanstack/react-query";
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
+import { PullToRefresh } from "../../components";
 import WeatherCard from "./WeatherCard";
 import TasksCard from "./TasksCard";
 import ShoppingCard from "./ShoppingCard";
@@ -17,12 +18,24 @@ export default function DashboardPage() {
     return () => clearInterval(interval);
   }, [queryClient]);
 
+  const handleRefresh = useCallback(async () => {
+    await Promise.all([
+      queryClient.invalidateQueries({ queryKey: ["weather"] }),
+      queryClient.invalidateQueries({ queryKey: ["prayer-times"] }),
+      queryClient.invalidateQueries({ queryKey: ["tasks"] }),
+      queryClient.invalidateQueries({ queryKey: ["shopping"] }),
+      queryClient.invalidateQueries({ queryKey: ["notes"] }),
+    ]);
+  }, [queryClient]);
+
   return (
-    <div className="space-y-4">
-      <WeatherCard />
-      <TasksCard />
-      <ShoppingCard />
-      <NotesCard />
-    </div>
+    <PullToRefresh onRefresh={handleRefresh}>
+      <div className="space-y-4">
+        <WeatherCard />
+        <TasksCard />
+        <ShoppingCard />
+        <NotesCard />
+      </div>
+    </PullToRefresh>
   );
 }
