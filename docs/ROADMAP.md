@@ -157,7 +157,7 @@ A beautiful touchscreen interface ready for real functionality.
 
 ---
 
-# Phase 3 — Household Members (IN PROGRESS)
+# Phase 3 — Household Members (COMPLETED)
 
 ## Goal
 
@@ -165,30 +165,31 @@ Create a lightweight household members list for assigning tasks and notes.
 
 No user accounts, no login, no authentication. Members are simply names used as labels throughout the app.
 
-## Tasks
+## Completed Tasks
 
 ### Task 1 — Backend: Member Model & Migration
 
-- Create Member SQLAlchemy model (id, name, colour, created_at).
-- Generate Alembic migration to create the members table.
+- Created Member SQLAlchemy model (id, name, colour, created_at).
+- Updated migrations/env.py to import models for Alembic discovery.
+- Generated and applied Alembic migration to create the members table.
 
 ### Task 2 — Backend: Member API
 
-- Create Pydantic schemas for request/response validation.
-- Create service layer (create, list, delete).
-- Create REST endpoints (GET, POST, DELETE under /api/v1/members).
-- Add API tests.
+- Created Pydantic schemas for request/response validation (MemberCreate, MemberResponse).
+- Created service layer with business logic (get_all_members, create_member, delete_member).
+- Created REST endpoints (GET, POST, DELETE under /api/v1/members).
+- Added 6 API tests (list, create, duplicate rejection, delete, not-found).
 
 ### Task 3 — Frontend: Member API Client & State
 
-- Create axios API functions for members.
-- Create TanStack Query hooks (useMembers, useCreateMember, useDeleteMember).
+- Created axios API functions for members (fetchMembers, createMember, deleteMember).
+- Created TanStack Query hooks (useMembers, useCreateMember, useDeleteMember).
 
 ### Task 4 — Frontend: Settings Page UI
 
-- Add Member modal with name input and colour picker.
-- Display member list in Settings card with name, colour, and delete button.
-- Wire Add/Delete actions to the API via TanStack Query hooks.
+- Created AddMemberModal with name input and 8 preset colour swatches.
+- Created MemberList displaying colour dot, name, and delete button per member.
+- Rewrote SettingsPage to wire hooks, modal state, and member list together.
 
 ## Deliverable
 
@@ -196,85 +197,49 @@ Household member names can be managed in Settings and used for task assignment a
 
 ---
 
-# Phase 4 — Task Management System
+# Phase 4 — Task Management System (COMPLETED)
 
 ## Goal
 
 Build the core household responsibility system.
 
-## Tasks
+## Completed Tasks
 
-## Task Management
+### Task 1 — Backend: Task Model & Migration
 
-Allow creating and managing tasks:
+- Created Task SQLAlchemy model (id, title, assigned_to, is_completed, completed_at, created_at).
+- Added foreign key relationship to Member with joined loading.
+- Generated and applied Alembic migration.
 
-Examples:
+### Task 2 — Backend: Task API
 
-- Wash dishes.
-- Clean bathroom.
-- Vacuum.
-- Take bins out.
-- Clean kitchen.
+- Created Pydantic schemas (TaskCreate, TaskUpdate, TaskResponse with MemberSummary).
+- Created service layer (get_all_tasks with member filter, create_task, update_task, toggle_task, delete_task).
+- Created REST endpoints (GET, POST, PUT, DELETE, PATCH /toggle under /api/v1/tasks).
+- Added 12 API tests covering all endpoints and edge cases.
 
-Functions:
+### Task 3 — Frontend: Task API Client & State
 
-- Add task.
-- Edit task.
-- Delete task.
+- Added Task and MemberSummary TypeScript interfaces.
+- Created axios API functions (fetchTasks, createTask, updateTask, toggleTask, deleteTask).
+- Created TanStack Query hooks (useTasks, useCreateTask, useUpdateTask, useToggleTask, useDeleteTask).
 
----
+### Task 4 — Frontend: Tasks Page UI
 
-## Task Assignment
+- Created AddTaskModal with title input and member picker (tappable buttons with colour dots).
+- Created TaskList with completion toggle (circle/checkmark), member info, and delete button.
+- Rewrote TasksPage to wire hooks, modal state, and task list.
 
-Allow assigning tasks to household members.
+### Task 5 — Frontend: Dashboard Tasks Card
 
-Example:
+- Rewrote TasksCard to display real tasks with member names, colour dots, and completion indicators.
 
+### Task 6 — Backend: Task Rotation System
 
-Monday
-
-Danial:
-Wash dishes
-
-Ali:
-Vacuum
-
-
----
-
-## Task Completion
-
-Anyone can:
-
-- View assigned tasks.
-- Mark tasks completed.
-- See completion status.
-
----
-
-## Rotation System
-
-Automatically rotate tasks.
-
-Example:
-
-Week 1:
-
-
-Danial → Dishes
-
-Ali → Vacuum
-
-
-Week 2:
-
-
-Danial → Vacuum
-
-Ali → Dishes
-
-
----
+- Created rotation service that shifts task assignments to the next member and resets completion.
+- Configured APScheduler to run rotation every Monday at midnight.
+- Added manual POST /api/v1/tasks/rotate endpoint.
+- Added 7 rotation tests covering all scenarios.
 
 ## Deliverable
 
@@ -284,35 +249,42 @@ The family no longer needs to manually assign tasks.
 
 ---
 
-# Phase 5 — Shared Shopping List
+# Phase 5 — Shared Shopping List (COMPLETED)
 
 ## Goal
 
 Create a shared grocery management system.
 
-## Tasks
+## Completed Tasks
 
-Implement:
+### Task 1 — Backend: ShoppingItem Model & Migration
 
-- Add shopping items.
-- Delete items.
-- Mark items as purchased.
-- Undo completed items.
-- Display shopping list on dashboard.
+- Created ShoppingItem SQLAlchemy model (id, name, is_purchased, created_at).
+- Generated and applied Alembic migration.
 
-Example:
+### Task 2 — Backend: Shopping API
 
+- Created Pydantic schemas (ShoppingItemCreate, ShoppingItemUpdate, ShoppingItemResponse).
+- Created service layer (get_all_items with unpurchased-first sort, create_item, update_item, toggle_item, delete_item).
+- Created REST endpoints (GET, POST, PUT, PATCH /toggle, DELETE under /api/v1/shopping).
+- Added 10 API tests covering all endpoints and sort ordering.
 
-Shopping List
+### Task 3 — Frontend: Shopping API Client & State
 
-☐ Milk
+- Added ShoppingItem TypeScript interface.
+- Created axios API functions (fetchShoppingItems, createShoppingItem, updateShoppingItem, toggleShoppingItem, deleteShoppingItem).
+- Created TanStack Query hooks (useShoppingItems, useCreateShoppingItem, useUpdateShoppingItem, useToggleShoppingItem, useDeleteShoppingItem).
 
-☐ Eggs
+### Task 4 — Frontend: Shopping Page UI
 
-☐ Chicken
+- Created AddItemModal with name input.
+- Created EditItemModal with pre-filled name for fixing typos.
+- Created ShoppingList with checkbox toggle, edit button, and delete button.
+- Rewrote ShoppingPage to wire all hooks and both modals.
 
-☑ Bread
+### Task 5 — Frontend: Dashboard Shopping Card
 
+- Rewrote ShoppingCard to display unpurchased items with count in the title.
 
 ## Deliverable
 
@@ -320,32 +292,42 @@ Everyone in the house can maintain a single shared shopping list.
 
 ---
 
-# Phase 6 — Family Notes
+# Phase 6 — Family Notes (COMPLETED)
 
 ## Goal
 
 Create a simple household communication board.
 
-## Tasks
+## Completed Tasks
 
-Implement:
+### Task 1 — Backend: Note Model & Migration
 
-- Create notes.
-- Edit notes.
-- Delete notes.
-- Display recent notes.
+- Created Note SQLAlchemy model (id, content, author_id as foreign key to members, created_at).
+- Added author relationship with joined loading.
+- Generated and applied Alembic migration.
 
-Example:
+### Task 2 — Backend: Notes API
 
+- Created Pydantic schemas (NoteCreate, NoteUpdate, NoteResponse with MemberSummary).
+- Created service layer (get_all_notes newest first, create_note with author validation, update_note, delete_note).
+- Created REST endpoints (GET, POST, PUT, DELETE under /api/v1/notes).
+- Added 9 API tests covering all endpoints and edge cases.
 
-Family Notes
+### Task 3 — Frontend: Notes API Client & State
 
-Danial:
-Please buy vegetables tomorrow.
+- Added Note TypeScript interface.
+- Created axios API functions (fetchNotes, createNote, updateNote, deleteNote).
+- Created TanStack Query hooks (useNotes, useCreateNote, useUpdateNote, useDeleteNote).
 
-Ali:
-Coming home late today.
+### Task 4 — Frontend: Notes Page UI
 
+- Created AddNoteModal with member picker for author and multi-line text area.
+- Created NoteList displaying notes as cards with author colour dot, name, content, and delete button.
+- Rewrote NotesPage to wire hooks, modal, and note list.
+
+### Task 5 — Frontend: Dashboard Notes Card
+
+- Rewrote NotesCard to display 3 most recent notes with author info and content preview.
 
 ## Deliverable
 
@@ -353,50 +335,37 @@ A shared digital notice board.
 
 ---
 
-# Phase 7 — Main Dashboard Integration
+# Phase 7 — Main Dashboard Integration (COMPLETED)
 
 ## Goal
 
-Combine all features into the main HomeOS experience.
+Combine all features into the main HomeOS experience. The dashboard already shows live data from tasks, shopping, and notes. This phase polishes the remaining pieces: real weather data and overall UI refinements.
 
-The dashboard should display:
+## Completed Tasks
 
+### Task 1 — Backend: Weather API Integration
 
-HomeOS
+- Created weather module with Open-Meteo integration (free, no API key).
+- Created GET /api/v1/weather endpoint returning temperature, condition, and icon code.
+- Added 30-minute in-memory cache with stale-data fallback on API failure.
+- Added configurable latitude/longitude/cache duration in Settings.
+- Mapped all Open-Meteo weather codes to human-readable conditions and icon identifiers.
 
-Thursday 6 August
+### Task 2 — Frontend: Live Weather Card
 
-Weather
-21°C Sunny
+- Added Weather TypeScript interface, axios function, and TanStack Query hook with 30-minute stale time.
+- Rewrote WeatherCard to display real temperature and condition with weather emoji icons.
+- Added loading and error states.
 
-Today's Tasks
+### Task 3 — Dashboard Polish & Refinements
 
-Danial
-Wash dishes
-
-Ali
-Vacuum
-
-Shopping List
-
-Milk
-Eggs
-
-Family Notes
-
-Dentist appointment tomorrow
-
-
-## Add:
-
-- Current date.
-- Current time.
-- Weather API.
-- Real-time updates.
+- Created LoadingSpinner component.
+- Added loading states to TasksCard, ShoppingCard, and NotesCard.
+- Added 5-minute auto-refresh for all dashboard data.
 
 ## Deliverable
 
-A complete HomeOS dashboard.
+A complete HomeOS dashboard with live weather and polished UI.
 
 ---
 
@@ -408,41 +377,32 @@ Deploy HomeOS as a real kitchen appliance.
 
 ## Tasks
 
-Setup Mini PC:
+### Task 1 — Dockerfiles
 
-- Install Ubuntu.
-- Install Docker.
-- Deploy application.
+- Create backend Dockerfile (Python 3.12, install deps, run uvicorn).
+- Create frontend Dockerfile (Node build step, serve with nginx).
+- Update docker-compose.yml with build contexts, volumes, and env config.
+- Verify `docker compose up` starts the full application.
 
-Configure:
+### Task 2 — Production Configuration
 
-- Automatic startup.
-- Browser kiosk mode.
-- Fullscreen dashboard.
-- Automatic recovery after restart.
-- Database backups.
+- Configure backend for production mode (debug off, optimised logging).
+- Configure frontend nginx to serve static files and proxy API requests.
+- Set up SQLite database volume for data persistence across container restarts.
 
-### Final architecture:
+### Task 3 — Mini PC Setup & Kiosk Mode
 
+- Install Ubuntu on Mini PC.
+- Install Docker and Docker Compose.
+- Deploy HomeOS containers.
+- Configure Chromium in kiosk mode (fullscreen, no address bar, no cursor).
+- Set up auto-start on boot.
+- Configure automatic recovery after restart or crash.
 
-Touchscreen Display
+### Task 4 — Database Backups
 
-   |
-
-Mini PC
-
-  |
-
-Ubuntu Linux
-
-   |
-
-Docker
-
-   |
-
-HomeOS
-
+- Create a backup script that copies the SQLite database to a safe location.
+- Schedule daily backups with cron.
 
 ## Deliverable
 
@@ -488,11 +448,35 @@ Example:
 
 ---
 
+## Prayer Times
+
+- Scrape prayer times from local mosque website.
+- Display daily prayer schedule on the dashboard.
+- Highlight the next upcoming prayer.
+
+---
+
+## CCTV Live Feed
+
+- Display live CCTV camera feeds on the dashboard.
+- Switch between multiple camera views.
+- Fullscreen mode for individual cameras.
+
+---
+
 ## Mobile Application
 
 - View tasks remotely.
 - Manage shopping list.
 - Receive notifications.
+
+---
+
+## Integration & End-to-End Tests
+
+- Add cross-module integration tests (e.g. full user flows across tasks, shopping, notes).
+- Add frontend component tests for critical UI interactions.
+- Add CI/CD pipeline to run tests on push.
 
 ---
 

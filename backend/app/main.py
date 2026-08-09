@@ -13,6 +13,7 @@ from app.core.exceptions import (
     unhandled_exception_handler,
 )
 from app.core.logging import get_logger, setup_logging
+from app.core.scheduler import setup_scheduler, shutdown_scheduler
 
 logger = get_logger(__name__)
 
@@ -21,7 +22,9 @@ logger = get_logger(__name__)
 async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
     setup_logging()
     logger.info("Starting %s v%s", settings.APP_NAME, settings.VERSION)
+    setup_scheduler()
     yield
+    shutdown_scheduler()
     await engine.dispose()
     logger.info("%s shutdown complete", settings.APP_NAME)
 
