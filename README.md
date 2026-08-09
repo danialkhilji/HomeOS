@@ -57,6 +57,58 @@ colima start
 
 Then `docker compose up --build` works as normal. To stop Colima when done: `colima stop`.
 
+## Production Deployment
+
+Deploy HomeOS on a dedicated Linux machine (Mini PC, old laptop, etc.).
+
+### Prerequisites
+
+- Linux with Docker and Docker Compose installed
+- Git installed
+
+### First-time setup
+
+```bash
+git clone https://github.com/YOUR_USERNAME/HomeOS.git
+cd HomeOS
+cp .env.example .env
+```
+
+Edit `.env` and set your location for weather:
+
+```
+WEATHER_LATITUDE=51.5074
+WEATHER_LONGITUDE=-0.1278
+```
+
+Start the app in the background:
+
+```bash
+docker compose up --build -d
+```
+
+Open `http://localhost` in a browser. To access from other devices on the same network, use the machine's IP address.
+
+### Updating to latest version
+
+```bash
+cd HomeOS
+git pull
+docker compose down
+docker compose up --build -d
+```
+
+Your data (members, tasks, shopping, notes) is stored on a Docker volume and is preserved across updates.
+
+### Useful commands
+
+```bash
+docker compose up --build -d   # start in background
+docker compose down             # stop
+docker compose logs -f          # view live logs
+docker compose ps               # check container status
+```
+
 ### Run Tests
 
 ```bash
