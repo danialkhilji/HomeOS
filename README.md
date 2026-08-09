@@ -109,6 +109,25 @@ docker compose logs -f          # view live logs
 docker compose ps               # check container status
 ```
 
+### Database Backups
+
+Run the backup script manually:
+
+```bash
+cd HomeOS
+./scripts/backup.sh
+```
+
+Backups are saved to `~/homeos-backups/` with timestamps (e.g. `homeos-2026-08-09.db`). Backups older than 7 days are automatically deleted.
+
+To schedule daily backups at 3am on the Linux machine:
+
+```bash
+crontab -e
+# Add this line (adjust the path to your HomeOS directory):
+0 3 * * * cd /path/to/HomeOS && ./scripts/backup.sh >> ~/homeos-backups/backup.log 2>&1
+```
+
 ### Run Tests
 
 ```bash

@@ -369,40 +369,37 @@ A complete HomeOS dashboard with live weather and polished UI.
 
 ---
 
-# Phase 8 — Deployment
+# Phase 8 — Deployment (COMPLETED)
 
 ## Goal
 
 Deploy HomeOS as a real kitchen appliance.
 
-## Tasks
+## Completed Tasks
 
 ### Task 1 — Dockerfiles
 
-- Create backend Dockerfile (Python 3.12, install deps, run uvicorn).
-- Create frontend Dockerfile (Node build step, serve with nginx).
-- Update docker-compose.yml with build contexts, volumes, and env config.
-- Verify `docker compose up` starts the full application.
+- Created backend Dockerfile (Python 3.12, install deps, run Alembic migrations, start uvicorn).
+- Created frontend Dockerfile (multi-stage: Node build + nginx serve).
+- Created nginx.conf for static file serving and API proxying.
+- Updated docker-compose.yml with networking, volumes, and environment config.
 
 ### Task 2 — Production Configuration
 
-- Configure backend for production mode (debug off, optimised logging).
-- Configure frontend nginx to serve static files and proxy API requests.
-- Set up SQLite database volume for data persistence across container restarts.
+- Added health checks for both containers (auto-restart on failure).
+- Added gzip compression and static asset caching in nginx.
+- Added memory limits (512MB backend, 128MB frontend).
+- Set up SQLite database volume for data persistence.
 
-### Task 3 — Mini PC Setup & Kiosk Mode
+### Task 3 — Mini PC Setup & Kiosk Mode (SKIPPED)
 
-- Install Ubuntu on Mini PC.
-- Install Docker and Docker Compose.
-- Deploy HomeOS containers.
-- Configure Chromium in kiosk mode (fullscreen, no address bar, no cursor).
-- Set up auto-start on boot.
-- Configure automatic recovery after restart or crash.
+- Not needed — using iPad as display via Safari "Add to Home Screen" instead of a connected monitor with kiosk browser.
 
 ### Task 4 — Database Backups
 
-- Create a backup script that copies the SQLite database to a safe location.
-- Schedule daily backups with cron.
+- Created backup script (scripts/backup.sh) that copies SQLite database to ~/homeos-backups/ with timestamps.
+- Keeps last 7 days of backups, deletes older ones automatically.
+- Documented cron setup for daily scheduled backups.
 
 ## Deliverable
 
