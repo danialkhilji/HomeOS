@@ -9,6 +9,16 @@ logger = get_logger(__name__)
 scheduler = AsyncIOScheduler()
 
 
+async def run_prayer_refresh() -> None:
+    from app.modules.prayer.service import fetch_prayer_times
+
+    logger.info("Scheduled prayer times refresh triggered")
+    try:
+        await fetch_prayer_times()
+    except Exception:
+        logger.exception("Scheduled prayer times refresh failed")
+
+
 async def run_rotation() -> None:
     from app.modules.tasks.rotation import rotate_tasks
 
@@ -29,8 +39,14 @@ def setup_scheduler() -> None:
         id="weekly_task_rotation",
         replace_existing=True,
     )
+    scheduler.add_job(
+        run_prayer_refresh,
+        trigger=CronTrigger(hour=1, minute=0),
+        id="daily_prayer_refresh",
+        replace_existing=True,
+    )
     scheduler.start()
-    logger.info("Scheduler started: task rotation runs every Monday at midnight")
+    logger.info("Scheduler started: task rotation every Monday at midnight, prayer times refresh daily at 1am")
 
 
 def shutdown_scheduler() -> None:

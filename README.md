@@ -74,12 +74,23 @@ cd HomeOS
 cp .env.example .env
 ```
 
-Edit `.env` and set your location for weather:
+Edit `.env` and set your location coordinates. These are used for both weather and prayer times:
 
 ```
-WEATHER_LATITUDE=51.5074
-WEATHER_LONGITUDE=-0.1278
+WEATHER_LATITUDE=your_latitude
+WEATHER_LONGITUDE=your_longitude
 ```
+
+To find your coordinates, search your city name on Google Maps and copy the latitude/longitude from the URL.
+
+#### Prayer Times
+
+Prayer times are fetched from the [Aladhan API](https://aladhan.com/prayer-times-api) using:
+
+- **Method 15** (Moonsighting Committee Worldwide) — closest to UK mosque timetables for Fajr
+- **Hanafi school** — for later Asr times matching most UK mosques
+
+Times refresh automatically at 1am daily. The next upcoming prayer is highlighted on the dashboard. These are calculated astronomical times, so they may differ by a few minutes from your local mosque's posted times.
 
 Start the app in the background:
 
