@@ -77,6 +77,7 @@ export default function AppLayout() {
             key={item.to}
             whileTap={{ scale: 0.8 }}
             transition={{ type: "spring", stiffness: 400, damping: 20 }}
+            className="flex-1"
           >
             <NavLink
               to={item.to}
