@@ -584,12 +584,25 @@ Example:
 
 ---
 
-## Proper Versioning
+## Proper Versioning (IN PROGRESS)
 
-- Add semantic versioning (e.g. v1.0.0, v1.1.0).
-- Tag releases in Git.
-- Display version number in the app Settings page.
-- Maintain a changelog.
+Using two-number format (v1.0, v1.1, v1.2).
+
+### Task 1 — Tag Existing Releases
+
+- Tag v1.0 on the initial release commit (Phase 1-8 complete).
+- Tag v1.1 on current main (prayer times, long-press edit, CI/CD, test suite).
+
+### Task 2 — Display Version in Settings Page
+
+- Update backend config and frontend package.json with current version.
+- Show version number at the bottom of the Settings page.
+
+### Task 3 — Create CHANGELOG
+
+- Create CHANGELOG.md listing what changed in each version.
+- v1.0: initial release with tasks, shopping, notes, members, weather, deployment.
+- v1.1: prayer times, long-press edit, dashboard toggle, CI/CD, test suite.
 
 ---
 

@@ -14,7 +14,7 @@ class Settings(BaseSettings):
 
     APP_NAME: str = "HomeOS"
     DEBUG: bool = True
-    VERSION: str = "0.1.0"
+    VERSION: str = "1.1"
 
     DATABASE_URL: str = f"sqlite+aiosqlite:///{BASE_DIR / 'homeos.db'}"
 
