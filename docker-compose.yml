@@ -13,6 +13,7 @@ services:
       - CORS_ORIGINS=["*"]
       - WEATHER_LATITUDE=${WEATHER_LATITUDE:-51.5074}
       - WEATHER_LONGITUDE=${WEATHER_LONGITUDE:-0.1278}
+      - TZ=Europe/London
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8000/api/v1/health"]
