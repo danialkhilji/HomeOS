@@ -111,6 +111,22 @@ docker compose up --build -d
 
 Your data (members, tasks, shopping, notes) is stored on a Docker volume and is preserved across updates.
 
+### Auto-start after reboot
+
+To ensure HomeOS starts automatically when the machine restarts:
+
+```bash
+sudo systemctl enable docker
+```
+
+This makes Docker start on boot. The containers auto-start with Docker because they're configured with `restart: unless-stopped`. No need to run `docker compose up` again after a reboot.
+
+To verify Docker is running after a restart:
+
+```bash
+sudo systemctl status docker
+```
+
 ### Useful commands
 
 ```bash
