@@ -432,17 +432,48 @@ Features added after the initial v1 release.
 
 ### Task 3 — Frontend: Prayer Times Bar
 
-- Created PrayerTimesBar displaying all 5 prayers in a horizontal row at the top of the dashboard.
+- Created PrayerTimesBar displaying all 5 prayers in a horizontal row on the dashboard.
 - Current prayer highlighted in blue with tinted background.
-- Added to DashboardPage above WeatherCard.
+
+### Task 4 — Islamic Calendar Date
+
+- Added Hijri date to the prayer times API response from Aladhan.
+- Displayed Islamic date in the app header alongside the Gregorian date.
+- Tuned prayer time settings (Method 15, Hanafi, tune 0,0,0,5,0,5,0,9,0) to closely match Masjid-e-Salaam Preston timetable.
+
+---
+
+## Long-Press Edit (IN PROGRESS)
+
+### Task 1 — Long-Press Hook
+
+- Create reusable useLongPress hook that detects 500ms finger hold.
+
+### Task 2 — Edit Tasks
+
+- Create EditTaskModal with pre-filled title and member assignment.
+- Add backend PUT endpoint support (already exists).
+- Wire long-press on TaskList rows to open edit modal.
+
+### Task 3 — Edit Shopping Items
+
+- Add long-press on ShoppingList rows to open existing EditItemModal.
+
+### Task 4 — Edit Notes
+
+- Create EditNoteModal with pre-filled content.
+- Add long-press on NoteList cards to open edit modal.
+
+### Task 5 — Edit Members
+
+- Create EditMemberModal with pre-filled name and colour.
+- Add long-press on MemberList rows to open edit modal.
 
 ---
 
 # Future Expansion
 
 New modules and features to be added.
-
-Possible future features:
 
 ## AI Assistant
 
