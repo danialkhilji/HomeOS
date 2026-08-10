@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import { IconButton } from "../../components";
 import { useLongPress } from "../../hooks/useLongPress";
 import type { Member } from "../../types";
@@ -24,7 +25,9 @@ function MemberRow({ member, onEdit, onDelete }: { member: Member; onEdit: () =>
   const longPress = useLongPress(onEdit);
 
   return (
-    <div
+    <motion.div
+      whileTap={{ scale: 0.98 }}
+      transition={{ type: "spring", stiffness: 400, damping: 20 }}
       className="flex items-center justify-between py-2"
       {...longPress}
     >
@@ -41,7 +44,7 @@ function MemberRow({ member, onEdit, onDelete }: { member: Member; onEdit: () =>
         label={`Delete ${member.name}`}
         onClick={onDelete}
       />
-    </div>
+    </motion.div>
   );
 }
 

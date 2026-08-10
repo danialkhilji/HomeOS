@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import { IconButton } from "../../components";
 import { useLongPress } from "../../hooks/useLongPress";
 import type { Note } from "../../types";
@@ -24,7 +25,9 @@ function NoteCard({ note, onEdit, onDelete }: { note: Note; onEdit: () => void; 
   const longPress = useLongPress(onEdit);
 
   return (
-    <div
+    <motion.div
+      whileTap={{ scale: 0.98 }}
+      transition={{ type: "spring", stiffness: 400, damping: 20 }}
       className="rounded-xl p-4 bg-white border border-border dark:bg-surface-dark-dim dark:border-border-dark"
       {...longPress}
     >
@@ -53,7 +56,7 @@ function NoteCard({ note, onEdit, onDelete }: { note: Note; onEdit: () => void; 
           onClick={onDelete}
         />
       </div>
-    </div>
+    </motion.div>
   );
 }
 
