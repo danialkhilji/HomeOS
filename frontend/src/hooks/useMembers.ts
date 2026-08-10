@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { fetchMembers, createMember, deleteMember } from "../api/members";
-import type { CreateMemberPayload } from "../api/members";
+import { fetchMembers, createMember, updateMember, deleteMember } from "../api/members";
+import type { CreateMemberPayload, UpdateMemberPayload } from "../api/members";
 
 const MEMBERS_KEY = ["members"];
 
@@ -16,6 +16,17 @@ export function useCreateMember() {
 
   return useMutation({
     mutationFn: (data: CreateMemberPayload) => createMember(data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: MEMBERS_KEY });
+    },
+  });
+}
+
+export function useUpdateMember() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ id, data }: { id: number; data: UpdateMemberPayload }) => updateMember(id, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: MEMBERS_KEY });
     },

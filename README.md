@@ -74,12 +74,23 @@ cd HomeOS
 cp .env.example .env
 ```
 
-Edit `.env` and set your location for weather:
+Edit `.env` and set your location coordinates. These are used for both weather and prayer times:
 
 ```
-WEATHER_LATITUDE=51.5074
-WEATHER_LONGITUDE=-0.1278
+WEATHER_LATITUDE=your_latitude
+WEATHER_LONGITUDE=your_longitude
 ```
+
+To find your coordinates, search your city name on Google Maps and copy the latitude/longitude from the URL.
+
+#### Prayer Times
+
+Prayer times are fetched from the [Aladhan API](https://aladhan.com/prayer-times-api) using:
+
+- **Method 15** (Moonsighting Committee Worldwide) — closest to UK mosque timetables for Fajr
+- **Hanafi school** — for later Asr times matching most UK mosques
+
+Times refresh automatically at 1am daily. The next upcoming prayer is highlighted on the dashboard. These are calculated astronomical times, so they may differ by a few minutes from your local mosque's posted times.
 
 Start the app in the background:
 
@@ -100,6 +111,22 @@ docker compose up --build -d
 
 Your data (members, tasks, shopping, notes) is stored on a Docker volume and is preserved across updates.
 
+### Auto-start after reboot
+
+To ensure HomeOS starts automatically when the machine restarts:
+
+```bash
+sudo systemctl enable docker
+```
+
+This makes Docker start on boot. The containers auto-start with Docker because they're configured with `restart: unless-stopped`. No need to run `docker compose up` again after a reboot.
+
+To verify Docker is running after a restart:
+
+```bash
+sudo systemctl status docker
+```
+
 ### Useful commands
 
 ```bash
@@ -108,6 +135,36 @@ docker compose down             # stop
 docker compose logs -f          # view live logs
 docker compose ps               # check container status
 ```
+
+### Database Backups
+
+Run the backup script manually:
+
+```bash
+cd HomeOS
+./scripts/backup.sh
+```
+
+Backups are saved to `~/homeos-backups/` with timestamps (e.g. `homeos-2026-08-09.db`). Backups older than 7 days are automatically deleted.
+
+To schedule daily backups at 3am on the Linux machine:
+
+```bash
+crontab -e
+# Add this line (adjust the path to your HomeOS directory):
+0 3 * * * cd /path/to/HomeOS && ./scripts/backup.sh >> ~/homeos-backups/backup.log 2>&1
+```
+
+### Pre-Push Checks
+
+Run all checks (backend tests, frontend type check, frontend build) manually before pushing:
+
+```bash
+cd HomeOS
+.git/hooks/pre-push
+```
+
+These checks also run automatically on every `git push`. If any check fails, the push is blocked.
 
 ### Run Tests
 

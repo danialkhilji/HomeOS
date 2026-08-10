@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { NavLink, Outlet, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
+import { usePrayerTimes } from "../hooks/usePrayerTimes";
 import {
   HomeIcon,
   CheckCircleIcon,
@@ -35,6 +36,7 @@ function formatTime(date: Date) {
 export default function AppLayout() {
   const location = useLocation();
   const [now, setNow] = useState(new Date());
+  const { data: prayerData } = usePrayerTimes();
 
   useEffect(() => {
     const interval = setInterval(() => setNow(new Date()), 60_000);
@@ -46,6 +48,10 @@ export default function AppLayout() {
       <header className="flex items-center justify-between px-4 py-3 shrink-0 border-b border-border dark:border-border-dark">
         <span className="text-lg font-bold text-primary">HomeOS</span>
         <div className="flex items-center gap-3 text-sm text-text-muted dark:text-text-dark-muted">
+          {prayerData?.hijri_date && (
+            <span>{prayerData.hijri_date}</span>
+          )}
+          <span className="text-text-muted dark:text-text-dark-muted">|</span>
           <span>{formatDate(now)}</span>
           <span className="font-semibold text-text dark:text-text-dark">{formatTime(now)}</span>
         </div>

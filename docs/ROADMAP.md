@@ -369,40 +369,37 @@ A complete HomeOS dashboard with live weather and polished UI.
 
 ---
 
-# Phase 8 — Deployment
+# Phase 8 — Deployment (COMPLETED)
 
 ## Goal
 
 Deploy HomeOS as a real kitchen appliance.
 
-## Tasks
+## Completed Tasks
 
 ### Task 1 — Dockerfiles
 
-- Create backend Dockerfile (Python 3.12, install deps, run uvicorn).
-- Create frontend Dockerfile (Node build step, serve with nginx).
-- Update docker-compose.yml with build contexts, volumes, and env config.
-- Verify `docker compose up` starts the full application.
+- Created backend Dockerfile (Python 3.12, install deps, run Alembic migrations, start uvicorn).
+- Created frontend Dockerfile (multi-stage: Node build + nginx serve).
+- Created nginx.conf for static file serving and API proxying.
+- Updated docker-compose.yml with networking, volumes, and environment config.
 
 ### Task 2 — Production Configuration
 
-- Configure backend for production mode (debug off, optimised logging).
-- Configure frontend nginx to serve static files and proxy API requests.
-- Set up SQLite database volume for data persistence across container restarts.
+- Added health checks for both containers (auto-restart on failure).
+- Added gzip compression and static asset caching in nginx.
+- Added memory limits (512MB backend, 128MB frontend).
+- Set up SQLite database volume for data persistence.
 
-### Task 3 — Mini PC Setup & Kiosk Mode
+### Task 3 — Mini PC Setup & Kiosk Mode (SKIPPED)
 
-- Install Ubuntu on Mini PC.
-- Install Docker and Docker Compose.
-- Deploy HomeOS containers.
-- Configure Chromium in kiosk mode (fullscreen, no address bar, no cursor).
-- Set up auto-start on boot.
-- Configure automatic recovery after restart or crash.
+- Not needed — using iPad as display via Safari "Add to Home Screen" instead of a connected monitor with kiosk browser.
 
 ### Task 4 — Database Backups
 
-- Create a backup script that copies the SQLite database to a safe location.
-- Schedule daily backups with cron.
+- Created backup script (scripts/backup.sh) that copies SQLite database to ~/homeos-backups/ with timestamps.
+- Keeps last 7 days of backups, deletes older ones automatically.
+- Documented cron setup for daily scheduled backups.
 
 ## Deliverable
 
@@ -410,11 +407,109 @@ A fully working kitchen touchscreen system used by the family.
 
 ---
 
+# Post-Launch Features
+
+Features added after the initial v1 release.
+
+## Prayer Times (COMPLETED)
+
+### Task 1 — Backend: Prayer Times API
+
+- Integrated Aladhan API with Method 15 (Moonsighting Committee) and Hanafi school for closest UK mosque times.
+- Created backend prayer service with GET /api/v1/prayer-times endpoint.
+- Added in-memory cache with daily refresh at 1am via APScheduler.
+- Current prayer highlight recalculated on each request.
+
+### Pull-to-Refresh
+
+- Added pull-to-refresh component on dashboard to manually update weather, prayer times, and all cards.
+
+### Task 2 — Frontend: Prayer Times Hook
+
+- Added PrayerTime and PrayerTimes TypeScript interfaces.
+- Created axios function (fetchPrayerTimes).
+- Created TanStack Query hook (usePrayerTimes) with 1-hour stale time.
+
+### Task 3 — Frontend: Prayer Times Bar
+
+- Created PrayerTimesBar displaying all 5 prayers in a horizontal row on the dashboard.
+- Current prayer highlighted in blue with tinted background.
+
+### Task 4 — Islamic Calendar Date
+
+- Added Hijri date to the prayer times API response from Aladhan.
+- Displayed Islamic date in the app header alongside the Gregorian date.
+- Tuned prayer time settings (Method 15, Hanafi, tune 0,0,0,5,0,5,0,9,0) to closely match Masjid-e-Salaam Preston timetable.
+
+---
+
+## Long-Press Edit & UI Polish (COMPLETED)
+
+### Task 1 — Long-Press Hook
+
+- Created reusable useLongPress hook that detects 500ms finger hold.
+
+### Task 2 — Edit Tasks
+
+- Created EditTaskModal with pre-filled title and member assignment.
+- Wired long-press on TaskList rows to open edit modal.
+
+### Task 3 — Edit Shopping Items
+
+- Added long-press on ShoppingList rows to open existing EditItemModal.
+- Removed pencil edit icon (replaced by long-press).
+
+### Task 4 — Edit Notes
+
+- Created EditNoteModal with pre-filled content.
+- Added long-press on NoteList cards to open edit modal.
+
+### Task 5 — Edit Members
+
+- Created EditMemberModal with pre-filled name and colour picker.
+- Added backend PUT /api/v1/members/{id} endpoint with duplicate name check.
+- Added updateMember API function and useUpdateMember hook.
+- Wired long-press on MemberList rows to open edit modal.
+
+### Task 6 — Press Animations
+
+- Added consistent press-down animation (scale 0.98) to notes and member list rows.
+- Increased button press animation to scale 0.8 for more noticeable feedback.
+
+### Task 7 — Dashboard Toggle
+
+- Enabled task completion toggle directly from the dashboard TasksCard.
+- Enabled shopping item purchased toggle directly from the dashboard ShoppingCard.
+
+---
+
+## Test Suite & CI/CD (COMPLETED)
+
+### Task 1 — Backend: Fill Test Gaps
+
+- Added 15 new tests bringing total from 49 to 64.
+- Added member update tests (name, colour, duplicate rejection, not-found).
+- Added weather and prayer times endpoint response shape tests.
+- Added validation tests (empty title, empty name, empty content, invalid colour).
+- Added rotation tests (after member deletion, complete then rotate resets).
+- Added cross-module flow tests (update member reflects in tasks/notes, full create-assign-rotate flow).
+
+### Task 2 — GitHub Actions CI Pipeline
+
+- Created .github/workflows/ci.yml running on push to main/develop and PRs to main.
+- Backend job: Python 3.12 setup, install deps, run pytest.
+- Frontend job: Node 22 setup, install deps, tsc type check, npm build.
+
+### Task 3 — Frontend Type Check & Build in Pre-Push Hook
+
+- Updated pre-push hook to run three checks: pytest, tsc, and npm run build.
+- All three must pass before push is allowed.
+
+---
+
 # Future Expansion
 
-After the first version is stable, new modules can be added.
-
-Possible future features:
+New modules and features to be added.
 
 ## AI Assistant
 
@@ -448,11 +543,11 @@ Example:
 
 ---
 
-## Prayer Times
+## Rotation Duty Tracker
 
-- Scrape prayer times from local mosque website.
-- Display daily prayer schedule on the dashboard.
-- Highlight the next upcoming prayer.
+- Check dad's rotation duty schedule from an external source.
+- Display upcoming duties for the next 7 days on the dashboard.
+- Highlight today's duty if one is scheduled.
 
 ---
 
@@ -472,11 +567,45 @@ Example:
 
 ---
 
+## Auto-Update Deployment
+
+- Create a script that checks GitHub for new changes on main branch.
+- Auto-pull and rebuild Docker containers when updates are detected.
+- Schedule with cron to check every few minutes.
+- No manual SSH or pull needed — just merge to main and the Linux laptop updates itself.
+
+---
+
 ## Integration & End-to-End Tests
 
 - Add cross-module integration tests (e.g. full user flows across tasks, shopping, notes).
 - Add frontend component tests for critical UI interactions.
 - Add CI/CD pipeline to run tests on push.
+
+---
+
+## Proper Versioning
+
+- Add semantic versioning (e.g. v1.0.0, v1.1.0).
+- Tag releases in Git.
+- Display version number in the app Settings page.
+- Maintain a changelog.
+
+---
+
+## Dashboard Calendar
+
+- Add a calendar widget on the right side of the weather card.
+- Show current month with today highlighted.
+- Optionally display events or duties on specific dates.
+
+---
+
+## Quick-Add Shopping Items
+
+- Add a row of common grocery items with emojis at the top of the Shopping page (e.g. 🥛 Milk, 🥚 Eggs, 🍞 Bread, 🍗 Chicken).
+- Tap an emoji to instantly add that item to the shopping list.
+- Faster than opening the Add Item modal for everyday items.
 
 ---
 

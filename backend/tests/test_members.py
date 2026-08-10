@@ -58,6 +58,49 @@ async def test_create_duplicate_member(client):
 
 
 @pytest.mark.asyncio
+async def test_create_member_invalid_colour(client):
+    response = await client.post("/api/v1/members", json={"name": "Danial", "colour": "red"})
+    assert response.status_code == 422
+
+
+@pytest.mark.asyncio
+async def test_update_member_name(client):
+    create = await client.post("/api/v1/members", json={"name": "Danail", "colour": "#2563eb"})
+    member_id = create.json()["id"]
+
+    response = await client.put(f"/api/v1/members/{member_id}", json={"name": "Danial", "colour": "#2563eb"})
+    assert response.status_code == 200
+    assert response.json()["name"] == "Danial"
+
+
+@pytest.mark.asyncio
+async def test_update_member_colour(client):
+    create = await client.post("/api/v1/members", json={"name": "Danial", "colour": "#2563eb"})
+    member_id = create.json()["id"]
+
+    response = await client.put(f"/api/v1/members/{member_id}", json={"name": "Danial", "colour": "#16a34a"})
+    assert response.status_code == 200
+    assert response.json()["colour"] == "#16a34a"
+
+
+@pytest.mark.asyncio
+async def test_update_member_duplicate_name(client):
+    await client.post("/api/v1/members", json={"name": "Danial", "colour": "#2563eb"})
+    create2 = await client.post("/api/v1/members", json={"name": "Ali", "colour": "#16a34a"})
+    ali_id = create2.json()["id"]
+
+    response = await client.put(f"/api/v1/members/{ali_id}", json={"name": "Danial", "colour": "#16a34a"})
+    assert response.status_code == 422
+    assert "already exists" in response.json()["error"]
+
+
+@pytest.mark.asyncio
+async def test_update_nonexistent_member(client):
+    response = await client.put("/api/v1/members/999", json={"name": "Danial", "colour": "#2563eb"})
+    assert response.status_code == 404
+
+
+@pytest.mark.asyncio
 async def test_delete_member(client):
     create_response = await client.post("/api/v1/members", json={"name": "Danial", "colour": "#2563eb"})
     member_id = create_response.json()["id"]

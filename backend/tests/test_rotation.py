@@ -121,3 +121,36 @@ async def test_double_rotation_cycles_back(client):
 
     tasks = (await client.get("/api/v1/tasks")).json()
     assert tasks[0]["assigned_to"] == danial["id"]
+
+
+@pytest.mark.asyncio
+async def test_rotation_after_member_deletion(client):
+    danial = await create_member(client, "Danial", "#2563eb")
+    ali = await create_member(client, "Ali", "#16a34a")
+
+    await create_task(client, "Dishes", danial["id"])
+    await client.delete(f"/api/v1/members/{danial['id']}")
+
+    response = await client.post("/api/v1/tasks/rotate")
+    assert response.status_code == 200
+
+    tasks = (await client.get("/api/v1/tasks")).json()
+    assert tasks[0]["assigned_to"] == ali["id"]
+
+
+@pytest.mark.asyncio
+async def test_rotation_resets_after_complete(client):
+    danial = await create_member(client, "Danial", "#2563eb")
+    ali = await create_member(client, "Ali", "#16a34a")
+
+    task = await create_task(client, "Dishes", danial["id"])
+    await client.patch(f"/api/v1/tasks/{task['id']}/toggle")
+
+    tasks_before = (await client.get("/api/v1/tasks")).json()
+    assert tasks_before[0]["is_completed"] is True
+
+    await client.post("/api/v1/tasks/rotate")
+
+    tasks_after = (await client.get("/api/v1/tasks")).json()
+    assert tasks_after[0]["is_completed"] is False
+    assert tasks_after[0]["assigned_to"] == ali["id"]

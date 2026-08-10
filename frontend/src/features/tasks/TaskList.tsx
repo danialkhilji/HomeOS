@@ -1,10 +1,12 @@
 import { motion } from "framer-motion";
 import { IconButton } from "../../components";
+import { useLongPress } from "../../hooks/useLongPress";
 import type { Task } from "../../types";
 
 interface TaskListProps {
   tasks: Task[];
   onToggle: (id: number) => void;
+  onEdit: (task: Task) => void;
   onDelete: (id: number) => void;
 }
 
@@ -36,60 +38,76 @@ function CheckCircle({ filled }: { filled: boolean }) {
   );
 }
 
-export default function TaskList({ tasks, onToggle, onDelete }: TaskListProps) {
+function TaskRow({ task, onToggle, onEdit, onDelete }: { task: Task; onToggle: () => void; onEdit: () => void; onDelete: () => void }) {
+  const longPress = useLongPress(onEdit);
+
+  return (
+    <motion.div
+      whileTap={{ scale: 0.98 }}
+      transition={{ type: "spring", stiffness: 400, damping: 20 }}
+      className="flex items-center gap-3 py-3 px-3 rounded-xl bg-white border border-border dark:bg-surface-dark-dim dark:border-border-dark"
+      {...longPress}
+    >
+      <button
+        onClick={onToggle}
+        className={`shrink-0 transition-colors ${
+          task.is_completed
+            ? "text-success"
+            : "text-border dark:text-border-dark"
+        }`}
+      >
+        <CheckCircle filled={task.is_completed} />
+      </button>
+
+      <div
+        onClick={() => {
+          if (!longPress.wasLongPress()) onToggle();
+        }}
+        className="flex-1 min-w-0 cursor-pointer"
+      >
+        <p
+          className={`text-lg transition-colors ${
+            task.is_completed
+              ? "line-through text-text-muted dark:text-text-dark-muted"
+              : "text-text dark:text-text-dark"
+          }`}
+        >
+          {task.title}
+        </p>
+        {task.member && (
+          <div className="flex items-center gap-1.5 mt-0.5">
+            <div
+              className="w-3 h-3 rounded-full shrink-0"
+              style={{ backgroundColor: task.member.colour }}
+            />
+            <span className="text-sm text-text-muted dark:text-text-dark-muted">
+              {task.member.name}
+            </span>
+          </div>
+        )}
+      </div>
+
+      <IconButton
+        icon={<TrashIcon />}
+        variant="danger"
+        label={`Delete ${task.title}`}
+        onClick={onDelete}
+      />
+    </motion.div>
+  );
+}
+
+export default function TaskList({ tasks, onToggle, onEdit, onDelete }: TaskListProps) {
   return (
     <div className="space-y-2">
       {tasks.map((task) => (
-        <motion.div
+        <TaskRow
           key={task.id}
-          whileTap={{ scale: 0.98 }}
-          transition={{ type: "spring", stiffness: 400, damping: 20 }}
-          className="flex items-center gap-3 py-3 px-3 rounded-xl bg-white border border-border dark:bg-surface-dark-dim dark:border-border-dark"
-        >
-          <button
-            onClick={() => onToggle(task.id)}
-            className={`shrink-0 transition-colors ${
-              task.is_completed
-                ? "text-success"
-                : "text-border dark:text-border-dark"
-            }`}
-          >
-            <CheckCircle filled={task.is_completed} />
-          </button>
-
-          <div
-            onClick={() => onToggle(task.id)}
-            className="flex-1 min-w-0 cursor-pointer"
-          >
-            <p
-              className={`text-lg transition-colors ${
-                task.is_completed
-                  ? "line-through text-text-muted dark:text-text-dark-muted"
-                  : "text-text dark:text-text-dark"
-              }`}
-            >
-              {task.title}
-            </p>
-            {task.member && (
-              <div className="flex items-center gap-1.5 mt-0.5">
-                <div
-                  className="w-3 h-3 rounded-full shrink-0"
-                  style={{ backgroundColor: task.member.colour }}
-                />
-                <span className="text-sm text-text-muted dark:text-text-dark-muted">
-                  {task.member.name}
-                </span>
-              </div>
-            )}
-          </div>
-
-          <IconButton
-            icon={<TrashIcon />}
-            variant="danger"
-            label={`Delete ${task.title}`}
-            onClick={() => onDelete(task.id)}
-          />
-        </motion.div>
+          task={task}
+          onToggle={() => onToggle(task.id)}
+          onEdit={() => onEdit(task)}
+          onDelete={() => onDelete(task.id)}
+        />
       ))}
     </div>
   );

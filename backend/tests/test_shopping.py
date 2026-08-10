@@ -39,6 +39,12 @@ async def test_create_item(client):
 
 
 @pytest.mark.asyncio
+async def test_create_item_empty_name(client):
+    response = await client.post("/api/v1/shopping", json={"name": ""})
+    assert response.status_code == 422
+
+
+@pytest.mark.asyncio
 async def test_list_items_unpurchased_first(client):
     await client.post("/api/v1/shopping", json={"name": "Milk"})
     eggs = await client.post("/api/v1/shopping", json={"name": "Eggs"})

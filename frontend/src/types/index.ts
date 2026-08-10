@@ -42,6 +42,17 @@ export interface Weather {
   icon: string;
 }
 
+export interface PrayerTime {
+  name: string;
+  time: string;
+}
+
+export interface PrayerTimes {
+  prayers: PrayerTime[];
+  current_prayer: string | null;
+  hijri_date: string | null;
+}
+
 export interface HealthResponse {
   app: string;
   version: string;

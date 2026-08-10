@@ -6,6 +6,7 @@ from app.modules.tasks.router import router as tasks_router
 from app.modules.shopping.router import router as shopping_router
 from app.modules.notes.router import router as notes_router
 from app.modules.weather.router import router as weather_router
+from app.modules.prayer.router import router as prayer_router
 
 v1_router = APIRouter()
 v1_router.include_router(health_router)
@@ -14,3 +15,4 @@ v1_router.include_router(tasks_router)
 v1_router.include_router(shopping_router)
 v1_router.include_router(notes_router)
 v1_router.include_router(weather_router)
+v1_router.include_router(prayer_router)
