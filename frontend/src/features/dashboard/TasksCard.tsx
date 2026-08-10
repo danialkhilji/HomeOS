@@ -1,5 +1,5 @@
 import { Card, EmptyState, LoadingSpinner } from "../../components";
-import { useTasks } from "../../hooks/useTasks";
+import { useTasks, useToggleTask } from "../../hooks/useTasks";
 
 function CheckIcon() {
   return (
@@ -11,6 +11,7 @@ function CheckIcon() {
 
 export default function TasksCard() {
   const { data: tasks = [], isLoading } = useTasks();
+  const toggleTask = useToggleTask();
 
   return (
     <Card title="Today's Tasks">
@@ -21,7 +22,11 @@ export default function TasksCard() {
       ) : (
         <div className="space-y-2">
           {tasks.map((task) => (
-            <div key={task.id} className="flex items-center gap-3 py-1.5">
+            <div
+              key={task.id}
+              onClick={() => toggleTask.mutate(task.id)}
+              className="flex items-center gap-3 py-1.5 cursor-pointer"
+            >
               <div
                 className={`flex items-center justify-center w-6 h-6 rounded-full shrink-0 ${
                   task.is_completed

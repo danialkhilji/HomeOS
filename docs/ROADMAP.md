@@ -443,31 +443,43 @@ Features added after the initial v1 release.
 
 ---
 
-## Long-Press Edit (IN PROGRESS)
+## Long-Press Edit & UI Polish (COMPLETED)
 
 ### Task 1 — Long-Press Hook
 
-- Create reusable useLongPress hook that detects 500ms finger hold.
+- Created reusable useLongPress hook that detects 500ms finger hold.
 
 ### Task 2 — Edit Tasks
 
-- Create EditTaskModal with pre-filled title and member assignment.
-- Add backend PUT endpoint support (already exists).
-- Wire long-press on TaskList rows to open edit modal.
+- Created EditTaskModal with pre-filled title and member assignment.
+- Wired long-press on TaskList rows to open edit modal.
 
 ### Task 3 — Edit Shopping Items
 
-- Add long-press on ShoppingList rows to open existing EditItemModal.
+- Added long-press on ShoppingList rows to open existing EditItemModal.
+- Removed pencil edit icon (replaced by long-press).
 
 ### Task 4 — Edit Notes
 
-- Create EditNoteModal with pre-filled content.
-- Add long-press on NoteList cards to open edit modal.
+- Created EditNoteModal with pre-filled content.
+- Added long-press on NoteList cards to open edit modal.
 
 ### Task 5 — Edit Members
 
-- Create EditMemberModal with pre-filled name and colour.
-- Add long-press on MemberList rows to open edit modal.
+- Created EditMemberModal with pre-filled name and colour picker.
+- Added backend PUT /api/v1/members/{id} endpoint with duplicate name check.
+- Added updateMember API function and useUpdateMember hook.
+- Wired long-press on MemberList rows to open edit modal.
+
+### Task 6 — Press Animations
+
+- Added consistent press-down animation (scale 0.98) to notes and member list rows.
+- Increased button press animation to scale 0.8 for more noticeable feedback.
+
+### Task 7 — Dashboard Toggle
+
+- Enabled task completion toggle directly from the dashboard TasksCard.
+- Enabled shopping item purchased toggle directly from the dashboard ShoppingCard.
 
 ---
 
