@@ -68,8 +68,11 @@ async def fetch_prayer_times() -> PrayerTimesResponse:
                 clean_time = raw_time.split(" ")[0]
                 prayers.append(PrayerTime(name=name, time=_to_12h(clean_time)))
 
+        hijri = data["data"]["date"]["hijri"]
+        hijri_date = f"{hijri['day']} {hijri['month']['en']} {hijri['year']}"
+
         current_prayer = _find_current_prayer(prayers)
-        _cache = PrayerTimesResponse(prayers=prayers, current_prayer=current_prayer)
+        _cache = PrayerTimesResponse(prayers=prayers, current_prayer=current_prayer, hijri_date=hijri_date)
         logger.info("Prayer times updated: %d prayers fetched", len(prayers))
 
     except Exception:

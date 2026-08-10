@@ -32,8 +32,8 @@ export default function DashboardPage() {
   return (
     <PullToRefresh onRefresh={handleRefresh}>
       <div className="space-y-4">
-        <PrayerTimesBar />
         <WeatherCard />
+        <PrayerTimesBar />
         <TasksCard />
         <ShoppingCard />
         <NotesCard />

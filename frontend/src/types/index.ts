@@ -50,6 +50,7 @@ export interface PrayerTime {
 export interface PrayerTimes {
   prayers: PrayerTime[];
   current_prayer: string | null;
+  hijri_date: string | null;
 }
 
 export interface HealthResponse {

@@ -9,3 +9,4 @@ class PrayerTime(BaseModel):
 class PrayerTimesResponse(BaseModel):
     prayers: list[PrayerTime]
     current_prayer: str | None = None
+    hijri_date: str | None = None
