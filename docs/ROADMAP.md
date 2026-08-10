@@ -483,6 +483,28 @@ Features added after the initial v1 release.
 
 ---
 
+## Test Suite & CI/CD (IN PROGRESS)
+
+### Task 1 — Backend: Fill Test Gaps
+
+- Add tests for member update endpoint (PUT /api/v1/members/{id}).
+- Add tests for weather endpoint.
+- Add cross-module flow tests (e.g. create member, assign tasks and notes, update member, verify data integrity).
+
+### Task 2 — GitHub Actions CI Pipeline
+
+- Create GitHub Actions workflow that runs on every push and pull request.
+- Run pytest for all backend tests.
+- Run tsc for frontend type checking.
+- Run npm run build to verify frontend compiles.
+- Mark push/PR as failed if any step fails.
+
+### Task 3 — Frontend Type Check in Pre-Push Hook
+
+- Update existing pre-push git hook to also run tsc before allowing push.
+
+---
+
 # Future Expansion
 
 New modules and features to be added.
@@ -557,6 +579,31 @@ Example:
 - Add cross-module integration tests (e.g. full user flows across tasks, shopping, notes).
 - Add frontend component tests for critical UI interactions.
 - Add CI/CD pipeline to run tests on push.
+
+---
+
+## Proper Versioning
+
+- Add semantic versioning (e.g. v1.0.0, v1.1.0).
+- Tag releases in Git.
+- Display version number in the app Settings page.
+- Maintain a changelog.
+
+---
+
+## Dashboard Calendar
+
+- Add a calendar widget on the right side of the weather card.
+- Show current month with today highlighted.
+- Optionally display events or duties on specific dates.
+
+---
+
+## Quick-Add Shopping Items
+
+- Add a row of common grocery items with emojis at the top of the Shopping page (e.g. 🥛 Milk, 🥚 Eggs, 🍞 Bread, 🍗 Chicken).
+- Tap an emoji to instantly add that item to the shopping list.
+- Faster than opening the Add Item modal for everyday items.
 
 ---
 

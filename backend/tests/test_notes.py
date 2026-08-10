@@ -45,6 +45,12 @@ async def test_create_note_without_author(client):
 
 
 @pytest.mark.asyncio
+async def test_create_note_empty_content(client):
+    response = await client.post("/api/v1/notes", json={"content": ""})
+    assert response.status_code == 422
+
+
+@pytest.mark.asyncio
 async def test_create_note_with_author(client, member):
     response = await client.post("/api/v1/notes", json={"content": "Coming home late", "author_id": member["id"]})
     assert response.status_code == 201

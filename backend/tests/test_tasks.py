@@ -88,6 +88,21 @@ async def test_update_task(client, member):
 
 
 @pytest.mark.asyncio
+async def test_create_task_empty_title(client):
+    response = await client.post("/api/v1/tasks", json={"title": ""})
+    assert response.status_code == 422
+
+
+@pytest.mark.asyncio
+async def test_update_task_invalid_member(client):
+    create = await client.post("/api/v1/tasks", json={"title": "Dishes"})
+    task_id = create.json()["id"]
+
+    response = await client.put(f"/api/v1/tasks/{task_id}", json={"title": "Dishes", "assigned_to": 999})
+    assert response.status_code == 404
+
+
+@pytest.mark.asyncio
 async def test_update_nonexistent_task(client):
     response = await client.put("/api/v1/tasks/999", json={"title": "Vacuum"})
     assert response.status_code == 404
