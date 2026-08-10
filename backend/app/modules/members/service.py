@@ -3,7 +3,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.exceptions import NotFoundError, ValidationError
 from app.modules.members.models import Member
-from app.modules.members.schemas import MemberCreate
+from app.modules.members.schemas import MemberCreate, MemberUpdate
 from app.modules.tasks.models import Task
 from app.modules.notes.models import Note
 
@@ -20,6 +20,24 @@ async def create_member(db: AsyncSession, data: MemberCreate) -> Member:
 
     member = Member(name=data.name, colour=data.colour)
     db.add(member)
+    await db.flush()
+    await db.refresh(member)
+    return member
+
+
+async def update_member(db: AsyncSession, member_id: int, data: MemberUpdate) -> Member:
+    result = await db.execute(select(Member).where(Member.id == member_id))
+    member = result.scalar_one_or_none()
+    if not member:
+        raise NotFoundError("Member", member_id)
+
+    if data.name != member.name:
+        existing = await db.execute(select(Member).where(Member.name == data.name))
+        if existing.scalar_one_or_none():
+            raise ValidationError("Member with this name already exists")
+
+    member.name = data.name
+    member.colour = data.colour
     await db.flush()
     await db.refresh(member)
     return member

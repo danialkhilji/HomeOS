@@ -16,6 +16,16 @@ export async function createMember(data: CreateMemberPayload): Promise<Member> {
   return response.data;
 }
 
+export interface UpdateMemberPayload {
+  name: string;
+  colour: string;
+}
+
+export async function updateMember(id: number, data: UpdateMemberPayload): Promise<Member> {
+  const response = await apiClient.put<Member>(`/members/${id}`, data);
+  return response.data;
+}
+
 export async function deleteMember(id: number): Promise<void> {
   await apiClient.delete(`/members/${id}`);
 }

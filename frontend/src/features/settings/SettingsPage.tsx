@@ -1,21 +1,33 @@
 import { useState } from "react";
 import { useThemeStore } from "../../stores/themeStore";
-import { useMembers, useCreateMember, useDeleteMember } from "../../hooks/useMembers";
+import { useMembers, useCreateMember, useUpdateMember, useDeleteMember } from "../../hooks/useMembers";
 import { PageHeader, Card, Button, EmptyState } from "../../components";
 import AddMemberModal from "./AddMemberModal";
+import EditMemberModal from "./EditMemberModal";
 import MemberList from "./MemberList";
+import type { Member } from "../../types";
 
 export default function SettingsPage() {
   const { theme, toggle } = useThemeStore();
   const { data: members = [] } = useMembers();
   const createMember = useCreateMember();
+  const updateMember = useUpdateMember();
   const deleteMember = useDeleteMember();
-  const [modalOpen, setModalOpen] = useState(false);
+  const [addModalOpen, setAddModalOpen] = useState(false);
+  const [editingMember, setEditingMember] = useState<Member | null>(null);
 
-  function handleSave(name: string, colour: string) {
+  function handleCreate(name: string, colour: string) {
     createMember.mutate({ name, colour }, {
-      onSuccess: () => setModalOpen(false),
+      onSuccess: () => setAddModalOpen(false),
     });
+  }
+
+  function handleEdit(name: string, colour: string) {
+    if (!editingMember) return;
+    updateMember.mutate(
+      { id: editingMember.id, data: { name, colour } },
+      { onSuccess: () => setEditingMember(null) },
+    );
   }
 
   return (
@@ -36,24 +48,32 @@ export default function SettingsPage() {
           {members.length === 0 ? (
             <EmptyState
               message="No members yet. Add your first member."
-              action={<Button onClick={() => setModalOpen(true)}>Add Member</Button>}
+              action={<Button onClick={() => setAddModalOpen(true)}>Add Member</Button>}
             />
           ) : (
             <div className="space-y-4">
               <MemberList
                 members={members}
+                onEdit={(member) => setEditingMember(member)}
                 onDelete={(id) => deleteMember.mutate(id)}
               />
-              <Button fullWidth onClick={() => setModalOpen(true)}>Add Member</Button>
+              <Button fullWidth onClick={() => setAddModalOpen(true)}>Add Member</Button>
             </div>
           )}
         </Card>
       </div>
 
       <AddMemberModal
-        open={modalOpen}
-        onClose={() => setModalOpen(false)}
-        onSave={handleSave}
+        open={addModalOpen}
+        onClose={() => setAddModalOpen(false)}
+        onSave={handleCreate}
+      />
+
+      <EditMemberModal
+        open={editingMember !== null}
+        onClose={() => setEditingMember(null)}
+        onSave={handleEdit}
+        member={editingMember}
       />
     </div>
   );
