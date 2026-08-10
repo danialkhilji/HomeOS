@@ -1,6 +1,7 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { useCallback, useEffect } from "react";
 import { PullToRefresh } from "../../components";
+import PrayerTimesBar from "./PrayerTimesBar";
 import WeatherCard from "./WeatherCard";
 import TasksCard from "./TasksCard";
 import ShoppingCard from "./ShoppingCard";
@@ -31,6 +32,7 @@ export default function DashboardPage() {
   return (
     <PullToRefresh onRefresh={handleRefresh}>
       <div className="space-y-4">
+        <PrayerTimesBar />
         <WeatherCard />
         <TasksCard />
         <ShoppingCard />
