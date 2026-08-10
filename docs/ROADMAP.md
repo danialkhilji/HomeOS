@@ -407,17 +407,38 @@ A fully working kitchen touchscreen system used by the family.
 
 ---
 
-# Post-Launch Features (COMPLETED)
+# Post-Launch Features
 
 Features added after the initial v1 release.
 
-## Prayer Times
+## Prayer Times (IN PROGRESS)
+
+### Completed Tasks
+
+#### Task 1 — Backend: Prayer Times API
 
 - Integrated Aladhan API with Method 15 (Moonsighting Committee) and Hanafi school for closest UK mosque times.
 - Created backend prayer service with GET /api/v1/prayer-times endpoint.
 - Added in-memory cache with daily refresh at 1am via APScheduler.
 - Current prayer highlight recalculated on each request.
-- Added pull-to-refresh on dashboard to manually update weather and prayer times.
+
+#### Pull-to-Refresh
+
+- Added pull-to-refresh component on dashboard to manually update weather, prayer times, and all cards.
+
+### Remaining Tasks
+
+#### Task 2 — Frontend: Prayer Times Hook
+
+- Add PrayerTimes TypeScript interface.
+- Create axios function for prayer times endpoint.
+- Create TanStack Query hook (usePrayerTimes).
+
+#### Task 3 — Frontend: Prayer Times Bar
+
+- Display prayer times at the top of the dashboard.
+- Highlight the current prayer.
+- Touch-friendly layout with all 5 prayer times visible at a glance.
 
 ---
 
