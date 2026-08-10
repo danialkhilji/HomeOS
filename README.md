@@ -155,6 +155,17 @@ crontab -e
 0 3 * * * cd /path/to/HomeOS && ./scripts/backup.sh >> ~/homeos-backups/backup.log 2>&1
 ```
 
+### Pre-Push Checks
+
+Run all checks (backend tests, frontend type check, frontend build) manually before pushing:
+
+```bash
+cd HomeOS
+.git/hooks/pre-push
+```
+
+These checks also run automatically on every `git push`. If any check fails, the push is blocked.
+
 ### Run Tests
 
 ```bash

@@ -483,25 +483,27 @@ Features added after the initial v1 release.
 
 ---
 
-## Test Suite & CI/CD (IN PROGRESS)
+## Test Suite & CI/CD (COMPLETED)
 
 ### Task 1 — Backend: Fill Test Gaps
 
-- Add tests for member update endpoint (PUT /api/v1/members/{id}).
-- Add tests for weather endpoint.
-- Add cross-module flow tests (e.g. create member, assign tasks and notes, update member, verify data integrity).
+- Added 15 new tests bringing total from 49 to 64.
+- Added member update tests (name, colour, duplicate rejection, not-found).
+- Added weather and prayer times endpoint response shape tests.
+- Added validation tests (empty title, empty name, empty content, invalid colour).
+- Added rotation tests (after member deletion, complete then rotate resets).
+- Added cross-module flow tests (update member reflects in tasks/notes, full create-assign-rotate flow).
 
 ### Task 2 — GitHub Actions CI Pipeline
 
-- Create GitHub Actions workflow that runs on every push and pull request.
-- Run pytest for all backend tests.
-- Run tsc for frontend type checking.
-- Run npm run build to verify frontend compiles.
-- Mark push/PR as failed if any step fails.
+- Created .github/workflows/ci.yml running on push to main/develop and PRs to main.
+- Backend job: Python 3.12 setup, install deps, run pytest.
+- Frontend job: Node 22 setup, install deps, tsc type check, npm build.
 
-### Task 3 — Frontend Type Check in Pre-Push Hook
+### Task 3 — Frontend Type Check & Build in Pre-Push Hook
 
-- Update existing pre-push git hook to also run tsc before allowing push.
+- Updated pre-push hook to run three checks: pytest, tsc, and npm run build.
+- All three must pass before push is allowed.
 
 ---
 
