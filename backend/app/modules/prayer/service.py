@@ -52,6 +52,7 @@ async def fetch_prayer_times() -> PrayerTimesResponse:
             "longitude": settings.WEATHER_LONGITUDE,
             "method": 15,
             "school": 1,
+            "tune": "0,0,0,5,0,5,0,9,0",
         }
 
         async with httpx.AsyncClient(timeout=15.0, follow_redirects=True) as client:
