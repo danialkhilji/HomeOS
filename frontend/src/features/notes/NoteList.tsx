@@ -1,8 +1,10 @@
 import { IconButton } from "../../components";
+import { useLongPress } from "../../hooks/useLongPress";
 import type { Note } from "../../types";
 
 interface NoteListProps {
   notes: Note[];
+  onEdit: (note: Note) => void;
   onDelete: (id: number) => void;
 }
 
@@ -18,40 +20,53 @@ function TrashIcon() {
   );
 }
 
-export default function NoteList({ notes, onDelete }: NoteListProps) {
+function NoteCard({ note, onEdit, onDelete }: { note: Note; onEdit: () => void; onDelete: () => void }) {
+  const longPress = useLongPress(onEdit);
+
+  return (
+    <div
+      className="rounded-xl p-4 bg-white border border-border dark:bg-surface-dark-dim dark:border-border-dark"
+      {...longPress}
+    >
+      <div className="flex items-start justify-between gap-3">
+        <div className="flex-1 min-w-0">
+          {note.author && (
+            <div className="flex items-center gap-2 mb-2">
+              <div
+                className="w-5 h-5 rounded-full shrink-0"
+                style={{ backgroundColor: note.author.colour }}
+              />
+              <span className="text-sm font-semibold text-text dark:text-text-dark">
+                {note.author.name}
+              </span>
+            </div>
+          )}
+          <p className="text-base text-text dark:text-text-dark whitespace-pre-wrap">
+            {note.content}
+          </p>
+        </div>
+
+        <IconButton
+          icon={<TrashIcon />}
+          variant="danger"
+          label="Delete note"
+          onClick={onDelete}
+        />
+      </div>
+    </div>
+  );
+}
+
+export default function NoteList({ notes, onEdit, onDelete }: NoteListProps) {
   return (
     <div className="space-y-3">
       {notes.map((note) => (
-        <div
+        <NoteCard
           key={note.id}
-          className="rounded-xl p-4 bg-white border border-border dark:bg-surface-dark-dim dark:border-border-dark"
-        >
-          <div className="flex items-start justify-between gap-3">
-            <div className="flex-1 min-w-0">
-              {note.author && (
-                <div className="flex items-center gap-2 mb-2">
-                  <div
-                    className="w-5 h-5 rounded-full shrink-0"
-                    style={{ backgroundColor: note.author.colour }}
-                  />
-                  <span className="text-sm font-semibold text-text dark:text-text-dark">
-                    {note.author.name}
-                  </span>
-                </div>
-              )}
-              <p className="text-base text-text dark:text-text-dark whitespace-pre-wrap">
-                {note.content}
-              </p>
-            </div>
-
-            <IconButton
-              icon={<TrashIcon />}
-              variant="danger"
-              label="Delete note"
-              onClick={() => onDelete(note.id)}
-            />
-          </div>
-        </div>
+          note={note}
+          onEdit={() => onEdit(note)}
+          onDelete={() => onDelete(note.id)}
+        />
       ))}
     </div>
   );
