@@ -31,7 +31,7 @@ export default function Button({
       type={type}
       onClick={onClick}
       disabled={disabled}
-      whileTap={{ scale: 0.95 }}
+      whileTap={{ scale: 0.8 }}
       transition={{ type: "spring", stiffness: 400, damping: 20 }}
       className={`min-h-[48px] px-6 rounded-xl font-semibold text-base transition-colors ${variantStyles[variant]} ${
         fullWidth ? "w-full" : ""
