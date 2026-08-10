@@ -584,25 +584,25 @@ Example:
 
 ---
 
-## Proper Versioning (IN PROGRESS)
+## Proper Versioning (COMPLETED)
 
 Using two-number format (v1.0, v1.1, v1.2).
 
 ### Task 1 — Tag Existing Releases
 
-- Tag v1.0 on the initial release commit (Phase 1-8 complete).
-- Tag v1.1 on current main (prayer times, long-press edit, CI/CD, test suite).
+- Tagged v1.0 on the initial release commit (Phase 1-8 complete).
+- Tagged v1.1 on current main (prayer times, long-press edit, CI/CD, test suite).
+- Pushed tags to GitHub.
 
 ### Task 2 — Display Version in Settings Page
 
-- Update backend config and frontend package.json with current version.
-- Show version number at the bottom of the Settings page.
+- Updated backend config VERSION to "1.1" and frontend package.json to "1.1.0".
+- Added "HomeOS v1.1" text at the bottom of the Settings page.
 
 ### Task 3 — Create CHANGELOG
 
-- Create CHANGELOG.md listing what changed in each version.
-- v1.0: initial release with tasks, shopping, notes, members, weather, deployment.
-- v1.1: prayer times, long-press edit, dashboard toggle, CI/CD, test suite.
+- Created CHANGELOG.md with full release history for v1.0 and v1.1.
+- Added versioning instructions to README.
 
 ---
 
