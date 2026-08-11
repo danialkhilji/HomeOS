@@ -630,6 +630,13 @@ Example:
 
 ---
 
+## Project Visibility
+
+- Added MIT license to the project.
+- Follow the visibility plan in KnowledgeBase/projects/homeos-visibility.md to increase project reach across LinkedIn, Reddit, GitHub, Hacker News, and other platforms.
+
+---
+
 # Completion Criteria
 
 The first version of HomeOS is complete when:
