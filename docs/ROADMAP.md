@@ -475,6 +475,7 @@ Features added after the initial v1 release.
 
 - Added consistent press-down animation (scale 0.98) to notes and member list rows.
 - Increased button press animation to scale 0.8 for more noticeable feedback.
+- Added press animation to bottom navigation icons.
 
 ### Task 7 — Dashboard Toggle
 
@@ -504,6 +505,35 @@ Features added after the initial v1 release.
 
 - Updated pre-push hook to run three checks: pytest, tsc, and npm run build.
 - All three must pass before push is allowed.
+
+---
+
+## Proper Versioning (COMPLETED)
+
+Using two-number format (v1.0, v1.1, v1.2).
+
+### Task 1 — Tag Existing Releases
+
+- Tagged v1.0 on the initial release commit (Phase 1-8 complete).
+- Tagged v1.1 on current main (prayer times, long-press edit, CI/CD, test suite).
+- Pushed tags to GitHub.
+
+### Task 2 — Display Version in Settings Page
+
+- Updated backend config VERSION to "1.1" and frontend package.json to "1.1.0".
+- Added "HomeOS v1.1" text at the bottom of the Settings page.
+
+### Task 3 — Create CHANGELOG
+
+- Created CHANGELOG.md with full release history for v1.0 and v1.1.
+- Added versioning instructions to README.
+
+---
+
+## Docker & Production Fixes (COMPLETED)
+
+- Set TZ=Europe/London in Docker container for correct prayer time highlighting.
+- Fixed bottom navigation icon spacing after adding press animations.
 
 ---
 
@@ -581,28 +611,6 @@ Example:
 - Add cross-module integration tests (e.g. full user flows across tasks, shopping, notes).
 - Add frontend component tests for critical UI interactions.
 - Add CI/CD pipeline to run tests on push.
-
----
-
-## Proper Versioning (COMPLETED)
-
-Using two-number format (v1.0, v1.1, v1.2).
-
-### Task 1 — Tag Existing Releases
-
-- Tagged v1.0 on the initial release commit (Phase 1-8 complete).
-- Tagged v1.1 on current main (prayer times, long-press edit, CI/CD, test suite).
-- Pushed tags to GitHub.
-
-### Task 2 — Display Version in Settings Page
-
-- Updated backend config VERSION to "1.1" and frontend package.json to "1.1.0".
-- Added "HomeOS v1.1" text at the bottom of the Settings page.
-
-### Task 3 — Create CHANGELOG
-
-- Created CHANGELOG.md with full release history for v1.0 and v1.1.
-- Added versioning instructions to README.
 
 ---
 
