@@ -632,8 +632,14 @@ Example:
 
 ## Project Visibility
 
+### Completed
 - Added MIT license to the project.
-- Follow the visibility plan in KnowledgeBase/projects/homeos-visibility.md to increase project reach across LinkedIn, Reddit, GitHub, Hacker News, and other platforms.
+- Added GitHub topics/tags: self-hosted, smart-home, react, fastapi, dashboard, touchscreen, docker, python, typescript, prayer-times, household, open-source.
+
+### Remaining
+- [ ] Add screenshots to the README (dashboard, tasks page, shopping page, dark mode, iPad setup).
+- [ ] Add a "Contributing" section in README.
+- [ ] Follow the full visibility plan in KnowledgeBase/projects/homeos-visibility.md.
 
 ---
 
