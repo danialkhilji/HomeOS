@@ -1,14 +1,17 @@
 import { useQueryClient } from "@tanstack/react-query";
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { PullToRefresh } from "../../components";
-import PrayerTimesBar from "./PrayerTimesBar";
 import WeatherCard from "./WeatherCard";
+import CalendarWidget from "./CalendarWidget";
+import CalendarModal from "./CalendarModal";
+import PrayerTimesBar from "./PrayerTimesBar";
 import TasksCard from "./TasksCard";
 import ShoppingCard from "./ShoppingCard";
 import NotesCard from "./NotesCard";
 
 export default function DashboardPage() {
   const queryClient = useQueryClient();
+  const [calendarOpen, setCalendarOpen] = useState(false);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -32,12 +35,20 @@ export default function DashboardPage() {
   return (
     <PullToRefresh onRefresh={handleRefresh}>
       <div className="space-y-4">
-        <WeatherCard />
+        <div className="grid grid-cols-2 gap-4">
+          <WeatherCard />
+          <CalendarWidget onExpand={() => setCalendarOpen(true)} />
+        </div>
         <PrayerTimesBar />
         <TasksCard />
         <ShoppingCard />
         <NotesCard />
       </div>
+
+      <CalendarModal
+        open={calendarOpen}
+        onClose={() => setCalendarOpen(false)}
+      />
     </PullToRefresh>
   );
 }
