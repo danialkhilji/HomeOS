@@ -49,6 +49,15 @@ async def toggle_item(db: AsyncSession, item_id: int) -> ShoppingItem:
     return item
 
 
+async def reorder_items(db: AsyncSession, ids: list[int]) -> None:
+    for index, item_id in enumerate(ids):
+        result = await db.execute(select(ShoppingItem).where(ShoppingItem.id == item_id))
+        item = result.scalar_one_or_none()
+        if item:
+            item.sort_order = index
+    await db.flush()
+
+
 async def delete_item(db: AsyncSession, item_id: int) -> None:
     result = await db.execute(select(ShoppingItem).where(ShoppingItem.id == item_id))
     item = result.scalar_one_or_none()

@@ -63,6 +63,15 @@ async def toggle_task(db: AsyncSession, task_id: int) -> Task:
     return task
 
 
+async def reorder_tasks(db: AsyncSession, ids: list[int]) -> None:
+    for index, task_id in enumerate(ids):
+        result = await db.execute(select(Task).where(Task.id == task_id))
+        task = result.scalar_one_or_none()
+        if task:
+            task.sort_order = index
+    await db.flush()
+
+
 async def delete_task(db: AsyncSession, task_id: int) -> None:
     result = await db.execute(select(Task).where(Task.id == task_id))
     task = result.scalar_one_or_none()
