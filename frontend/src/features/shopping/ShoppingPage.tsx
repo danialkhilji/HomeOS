@@ -11,6 +11,7 @@ import {
   useDeleteShoppingItem,
 } from "../../hooks/useShopping";
 import { PageHeader, Button, EmptyState } from "../../components";
+import QuickAddBar from "./QuickAddBar";
 import AddItemModal from "./AddItemModal";
 import EditItemModal from "./EditItemModal";
 import { ShoppingRow } from "./ShoppingList";
@@ -105,6 +106,11 @@ export default function ShoppingPage() {
   }
 
   const hasStores = groups.length > 1 || (groups.length === 1 && groups[0]!.storeId !== null);
+  const existingNames = items.map((i) => i.name);
+
+  function handleQuickAdd(name: string) {
+    createItem.mutate({ name });
+  }
 
   return (
     <div>
@@ -113,9 +119,11 @@ export default function ShoppingPage() {
         action={<Button onClick={() => setAddModalOpen(true)}>Add Item</Button>}
       />
 
+      <QuickAddBar onAdd={handleQuickAdd} existingItems={existingNames} />
+
       {items.length === 0 ? (
         <EmptyState
-          message="No items yet. Add your first item."
+          message="No items yet. Tap an item above or add your own."
           action={<Button onClick={() => setAddModalOpen(true)}>Add Item</Button>}
         />
       ) : (
