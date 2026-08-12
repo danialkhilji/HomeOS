@@ -4,6 +4,7 @@ import {
   createShoppingItem,
   updateShoppingItem,
   toggleShoppingItem,
+  reorderShoppingItems,
   deleteShoppingItem,
 } from "../api/shopping";
 import type { CreateShoppingItemPayload, UpdateShoppingItemPayload } from "../api/shopping";
@@ -44,6 +45,17 @@ export function useToggleShoppingItem() {
 
   return useMutation({
     mutationFn: (id: number) => toggleShoppingItem(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: SHOPPING_KEY });
+    },
+  });
+}
+
+export function useReorderShoppingItems() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (ids: number[]) => reorderShoppingItems(ids),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: SHOPPING_KEY });
     },

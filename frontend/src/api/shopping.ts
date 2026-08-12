@@ -29,6 +29,10 @@ export async function toggleShoppingItem(id: number): Promise<ShoppingItem> {
   return response.data;
 }
 
+export async function reorderShoppingItems(ids: number[]): Promise<void> {
+  await apiClient.patch("/shopping/reorder", { ids });
+}
+
 export async function deleteShoppingItem(id: number): Promise<void> {
   await apiClient.delete(`/shopping/${id}`);
 }
