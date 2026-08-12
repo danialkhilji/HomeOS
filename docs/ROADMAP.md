@@ -659,6 +659,29 @@ Tap emoji buttons to instantly add common items without opening a modal.
 
 ---
 
+## Dashboard Calendar (COMPLETED)
+
+### Task 1 — CalendarWidget Component
+
+- Created compact month grid showing current month with today highlighted.
+- Tap the widget to expand to full view.
+
+### Task 2 — Expanded Calendar Modal
+
+- Created centered modal with scale-in animation.
+- Month and year dropdown selectors.
+- Swipe up/down to change months with slide animation.
+- Tap any date to select it (blue ring highlight).
+- Today's date highlighted with solid blue circle.
+- Today button to jump back to current month.
+- Background scroll locked when modal is open.
+
+### Task 3 — Dashboard Layout
+
+- Placed WeatherCard and CalendarWidget side by side on the dashboard.
+
+---
+
 # Future Expansion
 
 New modules and features to be added.
@@ -736,24 +759,6 @@ Example:
 
 ---
 
-## Dashboard Calendar
-
-### Task 1 — CalendarWidget Component
-
-- Create compact month grid showing current month with today highlighted.
-- Tap the widget to expand to full view.
-
-### Task 2 — Expanded Calendar Modal
-
-- Full-size calendar with month/year header and left/right navigation arrows.
-- Swipe up/down to change months (touch-friendly).
-- Today button to jump back to current month.
-- Today's date highlighted.
-
-### Task 3 — Dashboard Layout
-
-- Place WeatherCard and CalendarWidget side by side on the dashboard.
-- Stack vertically on narrow screens.
 
 ---
 
