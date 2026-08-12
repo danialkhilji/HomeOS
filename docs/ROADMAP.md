@@ -576,52 +576,56 @@ Drag handle on each task and shopping item to reorder by priority.
 
 ---
 
-## Store-Based Shopping Lists
+## Store-Based Shopping Lists (COMPLETED)
 
 Organise shopping items by store with an "Any Store" option for unassigned items.
 
 ### Task 1 — Backend: Store Model & Migration
 
-- Create Store SQLAlchemy model (id, name, colour, created_at).
-- Add store_id foreign key (nullable) to ShoppingItem model.
-- Generate and apply Alembic migration.
+- Created Store SQLAlchemy model (id, name, colour, created_at).
+- Added store_id foreign key (nullable) to ShoppingItem model with joined relationship.
+- Generated and applied Alembic migration.
 
 ### Task 2 — Backend: Store API
 
-- Create Pydantic schemas for stores (StoreCreate, StoreUpdate, StoreResponse).
-- Create service layer (create, list, update, delete).
-- Create REST endpoints (GET, POST, PUT, DELETE under /api/v1/stores).
-- Update ShoppingItem schemas to include store info in responses.
-- Update ShoppingItem create/update to accept optional store_id.
-- Add tests for store endpoints and shopping-store integration.
+- Created Pydantic schemas (StoreCreate, StoreUpdate, StoreResponse, StoreSummary).
+- Created store service with CRUD and cascade (deleting store unassigns items).
+- Created REST endpoints (GET, POST, PUT, DELETE under /api/v1/stores).
+- Updated ShoppingItem schemas with store_id and store info in responses.
+- Updated ShoppingItem create/update to accept and verify optional store_id.
+- Added 14 tests covering store CRUD, shopping-store integration, cascade, and toggle keeps store.
 
 ### Task 3 — Frontend: Store API Client & State
 
-- Add Store TypeScript interface.
-- Update ShoppingItem interface to include store field.
-- Create axios functions and TanStack Query hooks for stores (useStores, useCreateStore, useUpdateStore, useDeleteStore).
+- Added Store and StoreSummary TypeScript interfaces.
+- Updated ShoppingItem interface with store_id and store fields.
+- Created axios functions and TanStack Query hooks for stores.
+- Updated shopping payloads with optional store_id.
 
 ### Task 4 — Frontend: Store Management in Settings
 
-- Add Stores card in Settings page (same pattern as Household Members).
-- Add AddStoreModal with name and colour picker.
-- Add long-press edit and delete for stores.
+- Added Stores card in Settings page below Household Members.
+- Created AddStoreModal with name input and colour picker.
+- Created EditStoreModal with pre-filled name and colour.
+- Created StoreList with long-press edit, delete, and press animation.
 
 ### Task 5 — Frontend: Store Assignment in Shopping
 
-- Update AddItemModal with store picker (Any Store + list of stores).
-- Update EditItemModal to allow changing store.
+- Updated AddItemModal with store picker (Any Store + list of stores with colour dots).
+- Updated EditItemModal to accept full ShoppingItem and show store picker with current store pre-selected.
 
 ### Task 6 — Frontend: Group Shopping Items by Store
 
-- Update ShoppingPage to group items by store.
+- Updated ShoppingPage to group items by store with section headers.
 - "Any Store" items shown at the top.
 - Each store section shows store name with colour dot.
-- Collapsible store sections.
+- Falls back to flat list when no stores exist.
+- Store colour dot and name shown on each item row.
 
 ### Task 7 — Frontend: Dashboard Shopping Card
 
-- Update ShoppingCard to show unpurchased count per store.
+- Updated ShoppingCard to show per-store unpurchased counts when stores exist.
+- Falls back to flat item list with toggle when no stores exist.
 
 ---
 
