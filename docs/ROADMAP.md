@@ -629,6 +629,36 @@ Organise shopping items by store with an "Any Store" option for unassigned items
 
 ---
 
+## Quick-Add Shopping Items (COMPLETED)
+
+Tap emoji buttons to instantly add common items without opening a modal.
+
+### Task 1 — QuickAddBar Component
+
+- Created QuickAddBar component with preset emoji buttons (Milk, Eggs, Bread, Banana, Apple, Potato, Onion, Tomato, Grapes, Yoghurt).
+- Tapping a button instantly adds the item to "Any Store".
+- Scale 0.8 press animation on tap.
+
+### Task 2 — Add to Shopping Page
+
+- Placed QuickAddBar above the item list on the Shopping page.
+- Items already in the shopping list are dimmed (opacity 30%) to avoid duplicates.
+
+### Task 3 — Backend: Custom Quick-Add Items
+
+- Created QuickAddItem model (id, name, emoji, sort_order).
+- Created API endpoints (GET, POST, DELETE under /api/v1/quick-add).
+- Generated and applied Alembic migration.
+- Added 6 tests covering list, create, ordering, delete, and not-found.
+
+### Task 4 — Frontend: Custom Quick-Add Management in Settings
+
+- Added Quick-Add Items card in Settings page with emoji, name, and delete button per item.
+- Created AddQuickAddModal with emoji and name inputs.
+- QuickAddBar loads custom items from API when available, falls back to default presets when none exist.
+
+---
+
 # Future Expansion
 
 New modules and features to be added.
@@ -711,36 +741,6 @@ Example:
 - Add a calendar widget on the right side of the weather card.
 - Show current month with today highlighted.
 - Optionally display events or duties on specific dates.
-
----
-
-## Quick-Add Shopping Items
-
-Tap emoji buttons to instantly add common items without opening a modal.
-
-### Task 1 — QuickAddBar Component
-
-- Create a QuickAddBar component with preset emoji buttons (Milk, Eggs, Bread, Chicken, Butter, Cheese, Banana, Apple, etc.).
-- Tapping a button instantly adds the item to "Any Store" via useCreateShoppingItem.
-- Press animation on tap for feedback.
-
-### Task 2 — Add to Shopping Page
-
-- Place QuickAddBar above the item list on the Shopping page.
-- Items already in the shopping list are dimmed to avoid duplicates.
-
-### Task 3 — Backend: Custom Quick-Add Items
-
-- Create QuickAddItem model (id, name, emoji, sort_order).
-- Create API endpoints (GET, POST, DELETE under /api/v1/quick-add).
-- Generate and apply Alembic migration.
-
-### Task 4 — Frontend: Custom Quick-Add Management in Settings
-
-- Add Quick-Add Items card in Settings page.
-- Allow adding custom items with emoji and name.
-- Allow deleting custom items.
-- QuickAddBar loads from API instead of hardcoded list.
 
 ---
 

@@ -7,7 +7,6 @@ const DEFAULT_ITEMS = [
   { emoji: "🍞", name: "Bread" },
   { emoji: "🍌", name: "Banana" },
   { emoji: "🍎", name: "Apple" },
-  { emoji: "🍚", name: "Rice" },
   { emoji: "🥔", name: "Potato" },
   { emoji: "🧅", name: "Onion" },
   { emoji: "🍅", name: "Tomato" },
