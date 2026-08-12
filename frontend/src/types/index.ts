@@ -43,6 +43,13 @@ export interface ShoppingItem {
   store: StoreSummary | null;
 }
 
+export interface QuickAddItem {
+  id: number;
+  name: string;
+  emoji: string;
+  sort_order: number;
+}
+
 export interface Note {
   id: number;
   content: string;

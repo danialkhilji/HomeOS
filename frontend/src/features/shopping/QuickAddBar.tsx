@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
+import { useQuickAddItems } from "../../hooks/useQuickAdd";
 
-const PRESET_ITEMS = [
+const DEFAULT_ITEMS = [
   { emoji: "🥛", name: "Milk" },
   { emoji: "🥚", name: "Eggs" },
   { emoji: "🍞", name: "Bread" },
@@ -20,11 +21,16 @@ interface QuickAddBarProps {
 }
 
 export default function QuickAddBar({ onAdd, existingItems }: QuickAddBarProps) {
+  const { data: customItems = [] } = useQuickAddItems();
+  const items = customItems.length > 0
+    ? customItems.map((i) => ({ emoji: i.emoji, name: i.name }))
+    : DEFAULT_ITEMS;
+
   const existingLower = existingItems.map((n) => n.toLowerCase());
 
   return (
     <div className="flex flex-wrap gap-2 mb-4">
-      {PRESET_ITEMS.map((item) => {
+      {items.map((item) => {
         const exists = existingLower.includes(item.name.toLowerCase());
 
         return (
