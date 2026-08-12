@@ -21,11 +21,26 @@ export interface Task {
   member: MemberSummary | null;
 }
 
+export interface Store {
+  id: number;
+  name: string;
+  colour: string;
+  created_at: string;
+}
+
+export interface StoreSummary {
+  id: number;
+  name: string;
+  colour: string;
+}
+
 export interface ShoppingItem {
   id: number;
   name: string;
   is_purchased: boolean;
+  store_id: number | null;
   created_at: string;
+  store: StoreSummary | null;
 }
 
 export interface Note {

@@ -3,10 +3,12 @@ import type { ShoppingItem } from "../types";
 
 export interface CreateShoppingItemPayload {
   name: string;
+  store_id?: number | null;
 }
 
 export interface UpdateShoppingItemPayload {
   name: string;
+  store_id?: number | null;
 }
 
 export async function fetchShoppingItems(): Promise<ShoppingItem[]> {
@@ -27,6 +29,10 @@ export async function updateShoppingItem(id: number, data: UpdateShoppingItemPay
 export async function toggleShoppingItem(id: number): Promise<ShoppingItem> {
   const response = await apiClient.patch<ShoppingItem>(`/shopping/${id}/toggle`);
   return response.data;
+}
+
+export async function reorderShoppingItems(ids: number[]): Promise<void> {
+  await apiClient.patch("/shopping/reorder", { ids });
 }
 
 export async function deleteShoppingItem(id: number): Promise<void> {

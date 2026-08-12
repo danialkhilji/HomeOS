@@ -1,6 +1,7 @@
-import { motion } from "framer-motion";
 import { IconButton } from "../../components";
 import { useLongPress } from "../../hooks/useLongPress";
+import { useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 import type { ShoppingItem } from "../../types";
 
 interface ShoppingListProps {
@@ -8,6 +9,19 @@ interface ShoppingListProps {
   onToggle: (id: number) => void;
   onEdit: (item: ShoppingItem) => void;
   onDelete: (id: number) => void;
+}
+
+function GripIcon() {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" width={20} height={20} viewBox="0 0 24 24" fill="currentColor">
+      <circle cx="9" cy="6" r="1.5" />
+      <circle cx="15" cy="6" r="1.5" />
+      <circle cx="9" cy="12" r="1.5" />
+      <circle cx="15" cy="12" r="1.5" />
+      <circle cx="9" cy="18" r="1.5" />
+      <circle cx="15" cy="18" r="1.5" />
+    </svg>
+  );
 }
 
 function TrashIcon() {
@@ -38,16 +52,37 @@ function CheckBox({ checked }: { checked: boolean }) {
   );
 }
 
-function ShoppingRow({ item, onToggle, onEdit, onDelete }: { item: ShoppingItem; onToggle: () => void; onEdit: () => void; onDelete: () => void }) {
+export function ShoppingRow({ item, onToggle, onEdit, onDelete }: { item: ShoppingItem; onToggle: () => void; onEdit: () => void; onDelete: () => void }) {
   const longPress = useLongPress(onEdit);
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ id: item.id });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    opacity: isDragging ? 0.5 : 1,
+  };
 
   return (
-    <motion.div
-      whileTap={{ scale: 0.98 }}
-      transition={{ type: "spring", stiffness: 400, damping: 20 }}
-      className="flex items-center gap-3 py-3 px-3 rounded-xl bg-white border border-border dark:bg-surface-dark-dim dark:border-border-dark"
-      {...longPress}
+    <div
+      ref={setNodeRef}
+      style={style}
+      className="flex items-center gap-2 py-3 px-3 rounded-xl bg-white border border-border dark:bg-surface-dark-dim dark:border-border-dark"
     >
+      <div
+        {...attributes}
+        {...listeners}
+        className="shrink-0 cursor-grab active:cursor-grabbing text-text-muted dark:text-text-dark-muted touch-none"
+      >
+        <GripIcon />
+      </div>
+
       <button
         onClick={onToggle}
         className={`shrink-0 transition-colors ${
@@ -60,6 +95,7 @@ function ShoppingRow({ item, onToggle, onEdit, onDelete }: { item: ShoppingItem;
       </button>
 
       <div
+        {...longPress}
         onClick={() => {
           if (!longPress.wasLongPress()) onToggle();
         }}
@@ -74,6 +110,17 @@ function ShoppingRow({ item, onToggle, onEdit, onDelete }: { item: ShoppingItem;
         >
           {item.name}
         </p>
+        {item.store && (
+          <div className="flex items-center gap-1.5 mt-0.5">
+            <div
+              className="w-3 h-3 rounded-full shrink-0"
+              style={{ backgroundColor: item.store.colour }}
+            />
+            <span className="text-sm text-text-muted dark:text-text-dark-muted">
+              {item.store.name}
+            </span>
+          </div>
+        )}
       </div>
 
       <IconButton
@@ -82,7 +129,7 @@ function ShoppingRow({ item, onToggle, onEdit, onDelete }: { item: ShoppingItem;
         label={`Delete ${item.name}`}
         onClick={onDelete}
       />
-    </motion.div>
+    </div>
   );
 }
 

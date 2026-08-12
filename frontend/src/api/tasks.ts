@@ -32,6 +32,10 @@ export async function toggleTask(id: number): Promise<Task> {
   return response.data;
 }
 
+export async function reorderTasks(ids: number[]): Promise<void> {
+  await apiClient.patch("/tasks/reorder", { ids });
+}
+
 export async function deleteTask(id: number): Promise<void> {
   await apiClient.delete(`/tasks/${id}`);
 }

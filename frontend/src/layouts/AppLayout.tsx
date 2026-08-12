@@ -73,21 +73,27 @@ export default function AppLayout() {
 
       <nav className="flex shrink-0 border-t border-border bg-surface dark:border-border-dark dark:bg-surface-dark-dim">
         {navItems.map((item) => (
-          <NavLink
+          <motion.div
             key={item.to}
-            to={item.to}
-            end={item.to === "/"}
-            className={({ isActive }) =>
-              `flex flex-1 flex-col items-center gap-1 py-3 text-xs transition-colors ${
-                isActive
-                  ? "text-primary font-semibold"
-                  : "text-text-muted dark:text-text-dark-muted"
-              }`
-            }
+            whileTap={{ scale: 0.8 }}
+            transition={{ type: "spring", stiffness: 400, damping: 20 }}
+            className="flex-1"
           >
-            <item.icon size={22} />
-            <span>{item.label}</span>
-          </NavLink>
+            <NavLink
+              to={item.to}
+              end={item.to === "/"}
+              className={({ isActive }) =>
+                `flex flex-col items-center gap-1 py-3 text-xs transition-colors ${
+                  isActive
+                    ? "text-primary font-semibold"
+                    : "text-text-muted dark:text-text-dark-muted"
+                }`
+              }
+            >
+              <item.icon size={22} />
+              <span>{item.label}</span>
+            </NavLink>
+          </motion.div>
         ))}
       </nav>
     </div>

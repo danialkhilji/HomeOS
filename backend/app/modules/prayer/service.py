@@ -88,5 +88,6 @@ async def get_prayer_times() -> PrayerTimesResponse:
         return PrayerTimesResponse(
             prayers=_cache.prayers,
             current_prayer=_find_current_prayer(_cache.prayers),
+            hijri_date=_cache.hijri_date,
         )
     return await fetch_prayer_times()

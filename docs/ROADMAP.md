@@ -475,6 +475,7 @@ Features added after the initial v1 release.
 
 - Added consistent press-down animation (scale 0.98) to notes and member list rows.
 - Increased button press animation to scale 0.8 for more noticeable feedback.
+- Added press animation to bottom navigation icons.
 
 ### Task 7 — Dashboard Toggle
 
@@ -504,6 +505,127 @@ Features added after the initial v1 release.
 
 - Updated pre-push hook to run three checks: pytest, tsc, and npm run build.
 - All three must pass before push is allowed.
+
+---
+
+## Proper Versioning (COMPLETED)
+
+Using two-number format (v1.0, v1.1, v1.2).
+
+### Task 1 — Tag Existing Releases
+
+- Tagged v1.0 on the initial release commit (Phase 1-8 complete).
+- Tagged v1.1 on current main (prayer times, long-press edit, CI/CD, test suite).
+- Pushed tags to GitHub.
+
+### Task 2 — Display Version in Settings Page
+
+- Updated backend config VERSION to "1.1" and frontend package.json to "1.1.0".
+- Added "HomeOS v1.1" text at the bottom of the Settings page.
+
+### Task 3 — Create CHANGELOG
+
+- Created CHANGELOG.md with full release history for v1.0 and v1.1.
+- Added versioning instructions to README.
+
+---
+
+## Docker & Production Fixes (COMPLETED)
+
+- Set TZ=Europe/London in Docker container for correct prayer time highlighting.
+- Fixed bottom navigation icon spacing after adding press animations.
+
+---
+
+## Drag-and-Drop Reorder (COMPLETED)
+
+Drag handle on each task and shopping item to reorder by priority.
+
+### Task 1 — Backend: Add sort_order Column
+
+- Added sort_order integer column to tasks and shopping_items tables.
+- Generated and applied Alembic migration.
+- Updated list endpoints to order by sort_order first.
+
+### Task 2 — Backend: Reorder Endpoints
+
+- Added PATCH /api/v1/tasks/reorder accepting a list of IDs in desired order.
+- Added PATCH /api/v1/shopping/reorder accepting a list of IDs in desired order.
+- Added 4 reorder tests (tasks, shopping, invalid IDs, empty list rejection).
+
+### Task 3 — Frontend: Install dnd-kit
+
+- Installed @dnd-kit/core, @dnd-kit/sortable, and @dnd-kit/utilities packages.
+
+### Task 4 — Frontend: Drag-and-Drop TaskList
+
+- Added grip handle (⠿) icon to each task row with dnd-kit useSortable.
+- Wrapped TasksPage in DndContext and SortableContext.
+- Sends new order to backend on drop.
+
+### Task 5 — Frontend: Drag-and-Drop ShoppingList
+
+- Added grip handle (⠿) icon to each shopping item row with dnd-kit useSortable.
+- Wrapped ShoppingPage in DndContext and SortableContext.
+- Sends new order to backend on drop.
+
+### Task 6 — Frontend: Reorder API Hooks
+
+- Added reorderTasks and reorderShoppingItems axios functions.
+- Added useReorderTasks and useReorderShoppingItems hooks.
+
+---
+
+## Store-Based Shopping Lists (COMPLETED)
+
+Organise shopping items by store with an "Any Store" option for unassigned items.
+
+### Task 1 — Backend: Store Model & Migration
+
+- Created Store SQLAlchemy model (id, name, colour, created_at).
+- Added store_id foreign key (nullable) to ShoppingItem model with joined relationship.
+- Generated and applied Alembic migration.
+
+### Task 2 — Backend: Store API
+
+- Created Pydantic schemas (StoreCreate, StoreUpdate, StoreResponse, StoreSummary).
+- Created store service with CRUD and cascade (deleting store unassigns items).
+- Created REST endpoints (GET, POST, PUT, DELETE under /api/v1/stores).
+- Updated ShoppingItem schemas with store_id and store info in responses.
+- Updated ShoppingItem create/update to accept and verify optional store_id.
+- Added 14 tests covering store CRUD, shopping-store integration, cascade, and toggle keeps store.
+
+### Task 3 — Frontend: Store API Client & State
+
+- Added Store and StoreSummary TypeScript interfaces.
+- Updated ShoppingItem interface with store_id and store fields.
+- Created axios functions and TanStack Query hooks for stores.
+- Updated shopping payloads with optional store_id.
+
+### Task 4 — Frontend: Store Management in Settings
+
+- Added Stores card in Settings page below Household Members.
+- Created AddStoreModal with name input and colour picker.
+- Created EditStoreModal with pre-filled name and colour.
+- Created StoreList with long-press edit, delete, and press animation.
+
+### Task 5 — Frontend: Store Assignment in Shopping
+
+- Updated AddItemModal with store picker (Any Store + list of stores with colour dots).
+- Updated EditItemModal to accept full ShoppingItem and show store picker with current store pre-selected.
+
+### Task 6 — Frontend: Group Shopping Items by Store
+
+- Updated ShoppingPage to group items by store with section headers.
+- "Any Store" items shown at the top.
+- Each store section shows store name with colour dot.
+- Falls back to flat list when no stores exist.
+- Store colour dot and name shown on each item row.
+
+### Task 7 — Frontend: Dashboard Shopping Card
+
+- Updated ShoppingCard to show per-store unpurchased counts when stores exist.
+- Falls back to flat item list with toggle when no stores exist.
 
 ---
 
@@ -584,15 +706,6 @@ Example:
 
 ---
 
-## Proper Versioning
-
-- Add semantic versioning (e.g. v1.0.0, v1.1.0).
-- Tag releases in Git.
-- Display version number in the app Settings page.
-- Maintain a changelog.
-
----
-
 ## Dashboard Calendar
 
 - Add a calendar widget on the right side of the weather card.
@@ -606,6 +719,19 @@ Example:
 - Add a row of common grocery items with emojis at the top of the Shopping page (e.g. 🥛 Milk, 🥚 Eggs, 🍞 Bread, 🍗 Chicken).
 - Tap an emoji to instantly add that item to the shopping list.
 - Faster than opening the Add Item modal for everyday items.
+
+---
+
+## Project Visibility
+
+### Completed
+- Added MIT license to the project.
+- Added GitHub topics/tags: self-hosted, smart-home, react, fastapi, dashboard, touchscreen, docker, python, typescript, prayer-times, household, open-source.
+
+### Remaining
+- [ ] Add screenshots to the README (dashboard, tasks page, shopping page, dark mode, iPad setup).
+- [ ] Add a "Contributing" section in README.
+- [ ] Follow the full visibility plan in KnowledgeBase/projects/homeos-visibility.md.
 
 ---
 

@@ -16,7 +16,7 @@ async def _verify_member_exists(db: AsyncSession, member_id: int) -> None:
 
 
 async def get_all_tasks(db: AsyncSession, assigned_to: int | None = None) -> list[Task]:
-    query = select(Task).order_by(Task.created_at)
+    query = select(Task).order_by(Task.sort_order, Task.created_at)
     if assigned_to is not None:
         query = query.where(Task.assigned_to == assigned_to)
     result = await db.execute(query)
@@ -61,6 +61,15 @@ async def toggle_task(db: AsyncSession, task_id: int) -> Task:
     await db.flush()
     await db.refresh(task)
     return task
+
+
+async def reorder_tasks(db: AsyncSession, ids: list[int]) -> None:
+    for index, task_id in enumerate(ids):
+        result = await db.execute(select(Task).where(Task.id == task_id))
+        task = result.scalar_one_or_none()
+        if task:
+            task.sort_order = index
+    await db.flush()
 
 
 async def delete_task(db: AsyncSession, task_id: int) -> None:
