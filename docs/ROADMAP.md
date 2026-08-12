@@ -537,6 +537,45 @@ Using two-number format (v1.0, v1.1, v1.2).
 
 ---
 
+## Drag-and-Drop Reorder
+
+Drag handle on each task and shopping item to reorder by priority.
+
+### Task 1 — Backend: Add sort_order Column
+
+- Add sort_order integer column to tasks and shopping_items tables.
+- New Alembic migration.
+- Update list endpoints to return items ordered by sort_order.
+
+### Task 2 — Backend: Reorder Endpoints
+
+- Add PATCH /api/v1/tasks/reorder accepting a list of IDs in desired order.
+- Add PATCH /api/v1/shopping/reorder accepting a list of IDs in desired order.
+- Add tests for reorder endpoints.
+
+### Task 3 — Frontend: Install dnd-kit
+
+- Add @dnd-kit/core and @dnd-kit/sortable packages.
+
+### Task 4 — Frontend: Drag-and-Drop TaskList
+
+- Add grip handle icon to each task row.
+- Implement sortable behaviour with dnd-kit.
+- Send new order to backend on drop.
+
+### Task 5 — Frontend: Drag-and-Drop ShoppingList
+
+- Add grip handle icon to each shopping item row.
+- Implement sortable behaviour with dnd-kit.
+- Send new order to backend on drop.
+
+### Task 6 — Frontend: Reorder API Hooks
+
+- Add reorder axios functions for tasks and shopping.
+- Add useReorderTasks and useReorderShoppingItems hooks.
+
+---
+
 # Future Expansion
 
 New modules and features to be added.

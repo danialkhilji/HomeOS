@@ -10,6 +10,7 @@ async def get_all_items(db: AsyncSession) -> list[ShoppingItem]:
     result = await db.execute(
         select(ShoppingItem).order_by(
             case((ShoppingItem.is_purchased == False, 0), else_=1),  # noqa: E712
+            ShoppingItem.sort_order,
             ShoppingItem.created_at,
         )
     )

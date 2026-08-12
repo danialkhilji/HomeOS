@@ -16,7 +16,7 @@ async def _verify_member_exists(db: AsyncSession, member_id: int) -> None:
 
 
 async def get_all_tasks(db: AsyncSession, assigned_to: int | None = None) -> list[Task]:
-    query = select(Task).order_by(Task.created_at)
+    query = select(Task).order_by(Task.sort_order, Task.created_at)
     if assigned_to is not None:
         query = query.where(Task.assigned_to == assigned_to)
     result = await db.execute(query)
