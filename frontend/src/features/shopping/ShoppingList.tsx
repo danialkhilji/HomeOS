@@ -110,6 +110,17 @@ export function ShoppingRow({ item, onToggle, onEdit, onDelete }: { item: Shoppi
         >
           {item.name}
         </p>
+        {item.store && (
+          <div className="flex items-center gap-1.5 mt-0.5">
+            <div
+              className="w-3 h-3 rounded-full shrink-0"
+              style={{ backgroundColor: item.store.colour }}
+            />
+            <span className="text-sm text-text-muted dark:text-text-dark-muted">
+              {item.store.name}
+            </span>
+          </div>
+        )}
       </div>
 
       <IconButton

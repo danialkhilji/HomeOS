@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { DndContext, closestCenter, PointerSensor, TouchSensor, useSensor, useSensors } from "@dnd-kit/core";
 import type { DragEndEvent } from "@dnd-kit/core";
 import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
@@ -16,6 +16,13 @@ import EditItemModal from "./EditItemModal";
 import { ShoppingRow } from "./ShoppingList";
 import type { ShoppingItem } from "../../types";
 
+interface StoreGroup {
+  storeId: number | null;
+  storeName: string;
+  storeColour: string | null;
+  items: ShoppingItem[];
+}
+
 export default function ShoppingPage() {
   const { data: items = [] } = useShoppingItems();
   const createItem = useCreateShoppingItem();
@@ -31,6 +38,42 @@ export default function ShoppingPage() {
     useSensor(PointerSensor, { activationConstraint: { distance: 8 } }),
     useSensor(TouchSensor, { activationConstraint: { delay: 200, tolerance: 5 } }),
   );
+
+  const groups = useMemo(() => {
+    const groupMap = new Map<number | null, StoreGroup>();
+
+    groupMap.set(null, {
+      storeId: null,
+      storeName: "Any Store",
+      storeColour: null,
+      items: [],
+    });
+
+    for (const item of items) {
+      const key = item.store_id;
+      if (!groupMap.has(key)) {
+        groupMap.set(key, {
+          storeId: key,
+          storeName: item.store?.name ?? "Any Store",
+          storeColour: item.store?.colour ?? null,
+          items: [],
+        });
+      }
+      groupMap.get(key)!.items.push(item);
+    }
+
+    const result: StoreGroup[] = [];
+    const anyStore = groupMap.get(null)!;
+    if (anyStore.items.length > 0) {
+      result.push(anyStore);
+    }
+    for (const [key, group] of groupMap) {
+      if (key !== null && group.items.length > 0) {
+        result.push(group);
+      }
+    }
+    return result;
+  }, [items]);
 
   function handleAdd(name: string, storeId: number | null) {
     createItem.mutate({ name, store_id: storeId }, {
@@ -61,6 +104,8 @@ export default function ShoppingPage() {
     reorderItems.mutate(reordered.map((i) => i.id));
   }
 
+  const hasStores = groups.length > 1 || (groups.length === 1 && groups[0]!.storeId !== null);
+
   return (
     <div>
       <PageHeader
@@ -80,17 +125,48 @@ export default function ShoppingPage() {
           onDragEnd={handleDragEnd}
         >
           <SortableContext items={items.map((i) => i.id)} strategy={verticalListSortingStrategy}>
-            <div className="space-y-2">
-              {items.map((item) => (
-                <ShoppingRow
-                  key={item.id}
-                  item={item}
-                  onToggle={() => toggleItem.mutate(item.id)}
-                  onEdit={() => setEditingItem(item)}
-                  onDelete={() => deleteItem.mutate(item.id)}
-                />
-              ))}
-            </div>
+            {hasStores ? (
+              <div className="space-y-6">
+                {groups.map((group) => (
+                  <div key={group.storeId ?? "any"}>
+                    <div className="flex items-center gap-2 mb-2">
+                      {group.storeColour && (
+                        <div
+                          className="w-4 h-4 rounded-full shrink-0"
+                          style={{ backgroundColor: group.storeColour }}
+                        />
+                      )}
+                      <h3 className="text-sm font-semibold uppercase tracking-wide text-text-muted dark:text-text-dark-muted">
+                        {group.storeName}
+                      </h3>
+                    </div>
+                    <div className="space-y-2">
+                      {group.items.map((item) => (
+                        <ShoppingRow
+                          key={item.id}
+                          item={item}
+                          onToggle={() => toggleItem.mutate(item.id)}
+                          onEdit={() => setEditingItem(item)}
+                          onDelete={() => deleteItem.mutate(item.id)}
+                        />
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="space-y-2">
+                {items.map((item) => (
+                  <ShoppingRow
+                    key={item.id}
+                    item={item}
+                    onToggle={() => toggleItem.mutate(item.id)}
+                    onEdit={() => setEditingItem(item)}
+                    onDelete={() => deleteItem.mutate(item.id)}
+                  />
+                ))}
+              </div>
+            )}
           </SortableContext>
         </DndContext>
       )}
