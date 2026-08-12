@@ -1,5 +1,27 @@
 # Changelog
 
+## v1.2
+
+### New Features
+- Store-based shopping lists — create stores (Aldi, Tesco, etc.) in Settings and assign shopping items to specific stores
+- Shopping page groups items by store with section headers and colour dots
+- Dashboard shopping card shows per-store unpurchased counts when stores exist
+- Drag-and-drop reorder for tasks and shopping items using grip handle
+- MIT license added
+
+### Improvements
+- Purchased items now visible on dashboard shopping card with checkmark and strikethrough
+- Fixed Islamic calendar date disappearing on page refresh
+- Fixed bottom navigation icon spacing
+- Store colour dot and name shown on shopping item rows
+
+### Tests
+- 82 backend tests (up from 64)
+- Added 14 store tests (CRUD, shopping-store integration, cascade, toggle keeps store)
+- Added 4 reorder tests (tasks, shopping, invalid IDs, empty list)
+
+---
+
 ## v1.1
 
 ### New Features
