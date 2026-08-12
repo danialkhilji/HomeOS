@@ -738,9 +738,22 @@ Example:
 
 ## Dashboard Calendar
 
-- Add a calendar widget on the right side of the weather card.
-- Show current month with today highlighted.
-- Optionally display events or duties on specific dates.
+### Task 1 — CalendarWidget Component
+
+- Create compact month grid showing current month with today highlighted.
+- Tap the widget to expand to full view.
+
+### Task 2 — Expanded Calendar Modal
+
+- Full-size calendar with month/year header and left/right navigation arrows.
+- Swipe up/down to change months (touch-friendly).
+- Today button to jump back to current month.
+- Today's date highlighted.
+
+### Task 3 — Dashboard Layout
+
+- Place WeatherCard and CalendarWidget side by side on the dashboard.
+- Stack vertically on narrow screens.
 
 ---
 
