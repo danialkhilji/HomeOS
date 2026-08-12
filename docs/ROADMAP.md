@@ -537,42 +537,42 @@ Using two-number format (v1.0, v1.1, v1.2).
 
 ---
 
-## Drag-and-Drop Reorder
+## Drag-and-Drop Reorder (COMPLETED)
 
 Drag handle on each task and shopping item to reorder by priority.
 
 ### Task 1 — Backend: Add sort_order Column
 
-- Add sort_order integer column to tasks and shopping_items tables.
-- New Alembic migration.
-- Update list endpoints to return items ordered by sort_order.
+- Added sort_order integer column to tasks and shopping_items tables.
+- Generated and applied Alembic migration.
+- Updated list endpoints to order by sort_order first.
 
 ### Task 2 — Backend: Reorder Endpoints
 
-- Add PATCH /api/v1/tasks/reorder accepting a list of IDs in desired order.
-- Add PATCH /api/v1/shopping/reorder accepting a list of IDs in desired order.
-- Add tests for reorder endpoints.
+- Added PATCH /api/v1/tasks/reorder accepting a list of IDs in desired order.
+- Added PATCH /api/v1/shopping/reorder accepting a list of IDs in desired order.
+- Added 4 reorder tests (tasks, shopping, invalid IDs, empty list rejection).
 
 ### Task 3 — Frontend: Install dnd-kit
 
-- Add @dnd-kit/core and @dnd-kit/sortable packages.
+- Installed @dnd-kit/core, @dnd-kit/sortable, and @dnd-kit/utilities packages.
 
 ### Task 4 — Frontend: Drag-and-Drop TaskList
 
-- Add grip handle icon to each task row.
-- Implement sortable behaviour with dnd-kit.
-- Send new order to backend on drop.
+- Added grip handle (⠿) icon to each task row with dnd-kit useSortable.
+- Wrapped TasksPage in DndContext and SortableContext.
+- Sends new order to backend on drop.
 
 ### Task 5 — Frontend: Drag-and-Drop ShoppingList
 
-- Add grip handle icon to each shopping item row.
-- Implement sortable behaviour with dnd-kit.
-- Send new order to backend on drop.
+- Added grip handle (⠿) icon to each shopping item row with dnd-kit useSortable.
+- Wrapped ShoppingPage in DndContext and SortableContext.
+- Sends new order to backend on drop.
 
 ### Task 6 — Frontend: Reorder API Hooks
 
-- Add reorder axios functions for tasks and shopping.
-- Add useReorderTasks and useReorderShoppingItems hooks.
+- Added reorderTasks and reorderShoppingItems axios functions.
+- Added useReorderTasks and useReorderShoppingItems hooks.
 
 ---
 
