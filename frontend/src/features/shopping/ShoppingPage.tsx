@@ -32,16 +32,16 @@ export default function ShoppingPage() {
     useSensor(TouchSensor, { activationConstraint: { delay: 200, tolerance: 5 } }),
   );
 
-  function handleAdd(name: string) {
-    createItem.mutate({ name }, {
+  function handleAdd(name: string, storeId: number | null) {
+    createItem.mutate({ name, store_id: storeId }, {
       onSuccess: () => setAddModalOpen(false),
     });
   }
 
-  function handleEdit(name: string) {
+  function handleEdit(name: string, storeId: number | null) {
     if (!editingItem) return;
     updateItem.mutate(
-      { id: editingItem.id, data: { name } },
+      { id: editingItem.id, data: { name, store_id: storeId } },
       { onSuccess: () => setEditingItem(null) },
     );
   }
@@ -105,7 +105,7 @@ export default function ShoppingPage() {
         open={editingItem !== null}
         onClose={() => setEditingItem(null)}
         onSave={handleEdit}
-        currentName={editingItem?.name ?? ""}
+        item={editingItem}
       />
     </div>
   );
