@@ -3,10 +3,12 @@ import type { ShoppingItem } from "../types";
 
 export interface CreateShoppingItemPayload {
   name: string;
+  store_id?: number | null;
 }
 
 export interface UpdateShoppingItemPayload {
   name: string;
+  store_id?: number | null;
 }
 
 export async function fetchShoppingItems(): Promise<ShoppingItem[]> {
