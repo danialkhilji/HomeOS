@@ -1,9 +1,12 @@
 import { useState } from "react";
-import { useTasks, useCreateTask, useUpdateTask, useToggleTask, useDeleteTask } from "../../hooks/useTasks";
+import { DndContext, closestCenter, PointerSensor, TouchSensor, useSensor, useSensors } from "@dnd-kit/core";
+import type { DragEndEvent } from "@dnd-kit/core";
+import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
+import { useTasks, useCreateTask, useUpdateTask, useToggleTask, useReorderTasks, useDeleteTask } from "../../hooks/useTasks";
 import { PageHeader, Button, EmptyState } from "../../components";
 import AddTaskModal from "./AddTaskModal";
 import EditTaskModal from "./EditTaskModal";
-import TaskList from "./TaskList";
+import { TaskRow } from "./TaskList";
 import type { Task } from "../../types";
 
 export default function TasksPage() {
@@ -11,9 +14,15 @@ export default function TasksPage() {
   const createTask = useCreateTask();
   const updateTask = useUpdateTask();
   const toggleTask = useToggleTask();
+  const reorderTasks = useReorderTasks();
   const deleteTask = useDeleteTask();
   const [addModalOpen, setAddModalOpen] = useState(false);
   const [editingTask, setEditingTask] = useState<Task | null>(null);
+
+  const sensors = useSensors(
+    useSensor(PointerSensor, { activationConstraint: { distance: 8 } }),
+    useSensor(TouchSensor, { activationConstraint: { delay: 200, tolerance: 5 } }),
+  );
 
   function handleCreate(title: string, assignedTo: number | null) {
     createTask.mutate(
@@ -30,6 +39,21 @@ export default function TasksPage() {
     );
   }
 
+  function handleDragEnd(event: DragEndEvent) {
+    const { active, over } = event;
+    if (!over || active.id === over.id) return;
+
+    const oldIndex = tasks.findIndex((t) => t.id === active.id);
+    const newIndex = tasks.findIndex((t) => t.id === over.id);
+    if (oldIndex === -1 || newIndex === -1) return;
+
+    const reordered = [...tasks];
+    const [moved] = reordered.splice(oldIndex, 1);
+    reordered.splice(newIndex, 0, moved!);
+
+    reorderTasks.mutate(reordered.map((t) => t.id));
+  }
+
   return (
     <div>
       <PageHeader
@@ -43,12 +67,25 @@ export default function TasksPage() {
           action={<Button onClick={() => setAddModalOpen(true)}>Add Task</Button>}
         />
       ) : (
-        <TaskList
-          tasks={tasks}
-          onToggle={(id) => toggleTask.mutate(id)}
-          onEdit={(task) => setEditingTask(task)}
-          onDelete={(id) => deleteTask.mutate(id)}
-        />
+        <DndContext
+          sensors={sensors}
+          collisionDetection={closestCenter}
+          onDragEnd={handleDragEnd}
+        >
+          <SortableContext items={tasks.map((t) => t.id)} strategy={verticalListSortingStrategy}>
+            <div className="space-y-2">
+              {tasks.map((task) => (
+                <TaskRow
+                  key={task.id}
+                  task={task}
+                  onToggle={() => toggleTask.mutate(task.id)}
+                  onEdit={() => setEditingTask(task)}
+                  onDelete={() => deleteTask.mutate(task.id)}
+                />
+              ))}
+            </div>
+          </SortableContext>
+        </DndContext>
       )}
 
       <AddTaskModal
