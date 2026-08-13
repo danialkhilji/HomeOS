@@ -209,7 +209,7 @@ export default function CalendarModal({ open, onClose }: CalendarModalProps) {
             <div
               className="w-full max-w-lg rounded-2xl bg-white dark:bg-surface-dark shadow-xl pointer-events-auto overflow-hidden max-h-[85dvh] flex flex-col"
             >
-              <div className="flex-1 overflow-y-auto px-6 pt-4">
+              <div className="shrink-0 px-6 pt-4">
               <div className="flex items-center justify-center gap-3 mb-4">
                 <select
                   value={viewMonth}
@@ -293,9 +293,11 @@ export default function CalendarModal({ open, onClose }: CalendarModalProps) {
                   </motion.div>
                 </AnimatePresence>
               </div>
+              </div>
 
               {selectedDay !== null && isViewingSelectedMonth && (
-                <div className="mt-4 pt-3 border-t border-border dark:border-border-dark">
+                <div className="flex-1 overflow-y-auto px-6">
+                <div className="pt-3 border-t border-border dark:border-border-dark">
                   <h3 className="text-sm font-semibold text-text-muted dark:text-text-dark-muted mb-2">
                     Tasks for {formatSelectedDate()}
                   </h3>
@@ -364,9 +366,8 @@ export default function CalendarModal({ open, onClose }: CalendarModalProps) {
                     </>
                   )}
                 </div>
+                </div>
               )}
-
-              </div>
 
               <div className="flex gap-3 px-6 py-3 shrink-0 border-t border-border dark:border-border-dark">
                 {selectedDay !== null && isViewingSelectedMonth && (
