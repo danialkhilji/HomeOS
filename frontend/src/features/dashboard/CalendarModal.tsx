@@ -1,7 +1,9 @@
 import { useState, useMemo, useRef, useCallback, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Button, LoadingSpinner } from "../../components";
+import { Button, LoadingSpinner, IconButton } from "../../components";
 import { useTasksByDate } from "../../hooks/useTasks";
+import { useBirthdaysByDate, useCreateBirthday, useDeleteBirthday } from "../../hooks/useBirthdays";
+import AddBirthdayModal from "./AddBirthdayModal";
 
 const DAYS = ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"];
 const MONTHS = [
@@ -16,6 +18,18 @@ function getDaysInMonth(year: number, month: number) {
 function getFirstDayOfMonth(year: number, month: number) {
   const day = new Date(year, month, 1).getDay();
   return day === 0 ? 6 : day - 1;
+}
+
+function TrashIcon() {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" width={16} height={16} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+      <polyline points="3 6 5 6 21 6" />
+      <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" />
+      <path d="M10 11v6" />
+      <path d="M14 11v6" />
+      <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2" />
+    </svg>
+  );
 }
 
 interface CalendarModalProps {
@@ -43,6 +57,13 @@ export default function CalendarModal({ open, onClose }: CalendarModalProps) {
     : null;
 
   const { data: dateTasks = [], isLoading: tasksLoading } = useTasksByDate(selectedDateStr);
+  const { data: dateBirthdays = [] } = useBirthdaysByDate(
+    selectedDay !== null ? selectedMonth + 1 : null,
+    selectedDay,
+  );
+  const createBirthday = useCreateBirthday();
+  const deleteBirthday = useDeleteBirthday();
+  const [birthdayModalOpen, setBirthdayModalOpen] = useState(false);
 
   const grid = useMemo(() => {
     const daysInMonth = getDaysInMonth(viewYear, viewMonth);
@@ -97,6 +118,14 @@ export default function CalendarModal({ open, onClose }: CalendarModalProps) {
     setSelectedDay(today.getDate());
     setSelectedMonth(today.getMonth());
     setSelectedYear(today.getFullYear());
+  }
+
+  function handleAddBirthday(name: string) {
+    if (selectedDay === null) return;
+    createBirthday.mutate(
+      { name, month: selectedMonth + 1, day: selectedDay },
+      { onSuccess: () => setBirthdayModalOpen(false) },
+    );
   }
 
   useEffect(() => {
@@ -309,20 +338,53 @@ export default function CalendarModal({ open, onClose }: CalendarModalProps) {
                       ))}
                     </div>
                   )}
+
+                  {dateBirthdays.length > 0 && (
+                    <>
+                      <h3 className="text-sm font-semibold text-text-muted dark:text-text-dark-muted mt-4 mb-2">
+                        🎂 Birthdays
+                      </h3>
+                      <div className="space-y-1">
+                        {dateBirthdays.map((bday) => (
+                          <div key={bday.id} className="flex items-center justify-between py-1">
+                            <span className="text-sm text-text dark:text-text-dark">{bday.name}</span>
+                            <IconButton
+                              icon={<TrashIcon />}
+                              variant="danger"
+                              label={`Delete ${bday.name}`}
+                              onClick={() => deleteBirthday.mutate(bday.id)}
+                            />
+                          </div>
+                        ))}
+                      </div>
+                    </>
+                  )}
                 </div>
               )}
 
-              {(!isCurrentMonth || selectedDay !== null) && (
-                <div className="mt-4">
+              <div className="flex gap-3 mt-4">
+                {selectedDay !== null && isViewingSelectedMonth && (
+                  <Button fullWidth onClick={() => setBirthdayModalOpen(true)}>
+                    Add Birthday
+                  </Button>
+                )}
+                {(!isCurrentMonth || selectedDay !== null) && (
                   <Button fullWidth variant="secondary" onClick={goToday}>
                     Today
                   </Button>
-                </div>
-              )}
+                )}
+              </div>
             </div>
           </motion.div>
         </>
       )}
+
+      <AddBirthdayModal
+        open={birthdayModalOpen}
+        onClose={() => setBirthdayModalOpen(false)}
+        onSave={handleAddBirthday}
+        dateLabel={formatSelectedDate()}
+      />
     </AnimatePresence>
   );
 }
