@@ -19,6 +19,19 @@ async def run_prayer_refresh() -> None:
         logger.exception("Scheduled prayer times refresh failed")
 
 
+async def run_recurrence_reset() -> None:
+    from app.modules.tasks.recurrence import reset_recurring_tasks
+
+    logger.info("Scheduled recurring task reset triggered")
+    async with async_session_factory() as session:
+        try:
+            await reset_recurring_tasks(session)
+            await session.commit()
+        except Exception:
+            await session.rollback()
+            logger.exception("Scheduled recurring task reset failed")
+
+
 async def run_rotation() -> None:
     from app.modules.tasks.rotation import rotate_tasks
 
@@ -40,13 +53,19 @@ def setup_scheduler() -> None:
         replace_existing=True,
     )
     scheduler.add_job(
+        run_recurrence_reset,
+        trigger=CronTrigger(hour=0, minute=1),
+        id="daily_recurrence_reset",
+        replace_existing=True,
+    )
+    scheduler.add_job(
         run_prayer_refresh,
         trigger=CronTrigger(hour=1, minute=0),
         id="daily_prayer_refresh",
         replace_existing=True,
     )
     scheduler.start()
-    logger.info("Scheduler started: task rotation every Monday at midnight, prayer times refresh daily at 1am")
+    logger.info("Scheduler started: recurrence reset daily at 00:01, task rotation every Monday at midnight, prayer times refresh daily at 1am")
 
 
 def shutdown_scheduler() -> None:
