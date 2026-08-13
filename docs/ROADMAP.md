@@ -790,33 +790,44 @@ Track birthdays for anyone — family, friends, relatives. Added through the cal
 
 ---
 
-## Calendar as Core System
+## Calendar as Core System (COMPLETED)
 
-Restructure the codebase to make the calendar the central hub for all date-based features. Currently tasks-by-date and birthdays-by-date are fetched separately — this unifies them.
+Restructured the codebase to make the calendar the central hub for all date-based features.
 
 ### Task 1 — Backend: Create Calendar Module
 
-- Create modules/calendar/ with router and service.
-- Move modules/birthdays/ into modules/calendar/ (birthdays are a calendar concept).
-- Create unified GET /api/v1/calendar/by-date?date=2026-08-15 endpoint.
-- Returns tasks, birthdays, and future event types in one response.
+- Created modules/calendar/ with unified router and service.
+- Moved modules/birthdays/ into modules/calendar/ (birthday_models, birthday_schemas, birthday_service, birthday_router).
+- Created unified GET /api/v1/calendar/by-date?date=2026-08-15 endpoint.
+- Returns tasks and birthdays in one response via CalendarDateResponse.
 - Calendar service calls into tasks and birthdays services internally.
-- Update all imports and API router references.
+- Updated all imports, API router references, and migrations/env.py.
+- Removed old modules/birthdays/ directory.
 
 ### Task 2 — Frontend: Move Calendar to Own Feature Folder
 
-- Move CalendarWidget, CalendarModal, AddBirthdayModal, BirthdayCard from features/dashboard/ to features/calendar/.
-- Update imports in DashboardPage.
+- Moved CalendarWidget, CalendarModal, AddBirthdayModal, BirthdayCard to features/calendar/.
+- Updated DashboardPage imports.
 
 ### Task 3 — Frontend: Unified Calendar Hook
 
-- Create useCalendarDate(date) hook that fetches everything for a date in one call.
-- Replace separate useTasksByDate + useBirthdaysByDate calls in CalendarModal.
+- Created CalendarDateResponse TypeScript interface.
+- Created fetchCalendarByDate axios function and useCalendarDate hook.
+- Replaced separate useTasksByDate + useBirthdaysByDate with single useCalendarDate in CalendarModal.
+- One API call, one cache key.
 
 ### Task 4 — Tests
 
-- Add tests for the unified calendar endpoint.
-- Verify tasks and birthdays both appear in the response.
+- Added 6 tests for unified calendar endpoint (response shape, tasks only, birthdays only, both, empty, no cross-contamination).
+- 119 backend tests total.
+
+---
+
+## Family Management (COMPLETED)
+
+- Calendar — dashboard calendar with month navigation, date selection, swipe gestures.
+- Birthdays — birthday tracking via calendar, upcoming birthdays on dashboard.
+- Reminders — task reminders with date/time, overdue highlighting on dashboard.
 
 ---
 
@@ -832,6 +843,8 @@ New modules and features to be added.
 - Manage shopping list.
 - Receive notifications.
 
+---
+
 ### UI Theme Upgrade
 
 - Redesign the overall look and feel of the app.
@@ -841,13 +854,17 @@ New modules and features to be added.
 
 ---
 
-### Family Management
+### Meal Planner
 
-- Calendar.
-- Birthdays.
-- Reminders.
-- Meal planner.
-- Household expenses.
+- Plan weekly meals for the household.
+- Display on dashboard.
+
+---
+
+### Household Expenses
+
+- Track household spending.
+- Display on dashboard.
 
 ---
 
@@ -867,6 +884,14 @@ New modules and features to be added.
 
 ---
 
+### Integration & End-to-End Tests
+
+- ~~Add CI/CD pipeline to run tests on push.~~ (DONE — GitHub Actions + pre-push hook)
+- ~~Add cross-module integration tests.~~ (PARTIALLY DONE — member cascade, calendar unified endpoint, full flow tests)
+- Add frontend component tests for critical UI interactions.
+
+---
+
 ### Auto-Update Deployment
 
 - Create a script that checks GitHub for new changes on main branch.
@@ -876,24 +901,12 @@ New modules and features to be added.
 
 ---
 
-### Integration & End-to-End Tests
-
-- Add cross-module integration tests (e.g. full user flows across tasks, shopping, notes).
-- Add frontend component tests for critical UI interactions.
-- Add CI/CD pipeline to run tests on push.
-
----
-
 ### AI Assistant
 
 - Voice commands.
 - Ask questions.
 - Add shopping items using speech.
 - Query household information.
-
-Example:
-
-"Who is washing dishes today?"
 
 ---
 
