@@ -722,29 +722,30 @@ Set reminders with date/time on tasks and configure tasks to repeat on a schedul
 
 ---
 
-## Calendar-Task Integration
+## Calendar-Task Integration (COMPLETED)
 
 Show tasks for a selected date inside the expanded calendar modal.
 
 ### Task 1 — Backend: Tasks by Date Endpoint
 
-- Create GET /api/v1/tasks/by-date?date=2026-08-13 endpoint.
-- Returns tasks with reminders on that date.
-- Returns daily recurring tasks (every day).
-- Returns weekly recurring tasks (matching weekday).
-- Returns monthly recurring tasks (matching day of month).
-- Returns non-recurring tasks with no reminder only for today's date.
+- Created GET /api/v1/tasks/by-date?date=2026-08-13 endpoint.
+- Returns tasks with reminders on that date, daily recurring, weekly (matching weekday), monthly (matching day), and non-recurring only for today.
+- Added 7 tests covering all scenarios.
+- 104 backend tests total.
 
 ### Task 2 — Frontend: Hook and API
 
-- Create fetchTasksByDate axios function.
-- Create useTasksByDate TanStack Query hook that accepts a date string.
+- Created fetchTasksByDate axios function.
+- Created useTasksByDate TanStack Query hook (enabled only when date is selected).
 
 ### Task 3 — Frontend: Task List in CalendarModal
 
-- When a date is selected, fetch and display tasks below the calendar grid.
-- Show reminder time, recurrence type, and member info.
-- Empty state if no tasks for that date.
+- When a date is selected, tasks for that date shown below the calendar grid.
+- Shows member name, task title, reminder time (🔔), and recurrence type (🔁).
+- Completed tasks show strikethrough. Empty state when no tasks.
+- Today auto-selected on open with tasks shown immediately.
+- Selected date persists when navigating between months — tasks reappear when returning to the selected month.
+- Today button re-selects today and shows its tasks.
 
 ---
 
