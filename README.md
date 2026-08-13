@@ -127,6 +127,27 @@ To verify Docker is running after a restart:
 sudo systemctl status docker
 ```
 
+### Remote Access with Tailscale
+
+Access HomeOS from your phone outside your home WiFi using Tailscale (free VPN).
+
+**On the Linux laptop (HomeOS server):**
+
+```bash
+curl -fsSL https://tailscale.com/install.sh | sh
+sudo tailscale up
+```
+
+Note the Tailscale IP shown (e.g. `100.x.x.x`).
+
+**On your phone:**
+
+1. Install Tailscale from App Store (iPhone) or Play Store (Android)
+2. Sign in with the same account used on the Linux laptop
+3. Open `http://100.x.x.x` in your phone browser (use the Tailscale IP from above)
+
+Tailscale runs in the background — once set up, your phone can reach HomeOS from anywhere without opening ports or exposing your home network.
+
 ### Useful commands
 
 ```bash
