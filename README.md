@@ -148,6 +148,26 @@ Note the Tailscale IP shown (e.g. `100.x.x.x`).
 
 Tailscale runs in the background — once set up, your phone can reach HomeOS from anywhere without opening ports or exposing your home network.
 
+### Install on Phone (Add to Home Screen)
+
+HomeOS is a PWA — it can be installed on your phone's home screen like a native app.
+
+**iPhone (Safari):**
+
+1. Open HomeOS in Safari (use your home WiFi IP or Tailscale IP)
+2. Tap the Share button (square with arrow)
+3. Scroll down and tap "Add to Home Screen"
+4. Tap "Add"
+
+**Android (Chrome):**
+
+1. Open HomeOS in Chrome
+2. Tap the three-dot menu
+3. Tap "Add to Home screen" or "Install app"
+4. Tap "Add"
+
+The app opens fullscreen without a browser address bar, with the HomeOS icon on your home screen.
+
 ### Useful commands
 
 ```bash
