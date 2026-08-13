@@ -40,6 +40,11 @@ export async function reorderTasks(ids: number[]): Promise<void> {
   await apiClient.patch("/tasks/reorder", { ids });
 }
 
+export async function fetchTasksByDate(date: string): Promise<Task[]> {
+  const response = await apiClient.get<Task[]>("/tasks/by-date", { params: { date } });
+  return response.data;
+}
+
 export async function deleteTask(id: number): Promise<void> {
   await apiClient.delete(`/tasks/${id}`);
 }
