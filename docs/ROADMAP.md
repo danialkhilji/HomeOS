@@ -831,39 +831,38 @@ Restructured the codebase to make the calendar the central hub for all date-base
 
 ---
 
-# Future Expansion
-
-New modules and features to be added.
-
----
-
-### Mobile Application (PWA + Tailscale)
+## Mobile Application (PWA + Tailscale) — COMPLETED
 
 Access HomeOS from your phone — at home on WiFi or remotely via Tailscale VPN.
 
-#### Task 1 — PWA Manifest & Icons
+### Task 1 — PWA Manifest & Icons
 
-- Add proper web app manifest with HomeOS name, description, and theme colour.
-- Create HomeOS app icon for phone home screen.
-- Configure Vite PWA plugin for installable app.
+- Created web app manifest with HomeOS name, standalone display, blue theme colour.
+- Created SVG app icon for phone home screen.
+- Added manifest link and Apple meta tags to index.html.
 
-#### Task 2 — Responsive UI for Phone Screens
+### Task 2 — Responsive UI for Phone Screens
 
-- Review and fix dashboard layout for small screens (cards, modals, navigation).
-- Ensure calendar modal, task modals, and shopping modals work on phone widths.
-- Test bottom navigation on small screens.
+- Header text and Hijri date responsive — hides on small screens, smaller text on mobile.
+- Dashboard weather/calendar grid stacks vertically on phones, side by side on tablets.
+- Calendar modal uses tighter padding on phones with more height.
+- Bottom navigation tighter spacing on small screens.
+- Base font size 14px on phones, 18px on tablets/touchscreens.
 
-#### Task 3 — Tailscale Remote Access
+### Task 3 — Tailscale Remote Access
 
-- Install Tailscale on the Linux laptop (HomeOS server).
-- Install Tailscale on phone.
-- Access HomeOS via Tailscale IP from anywhere.
-- Document setup steps in README.
+- Documented Tailscale setup in README for Linux laptop and phone.
+- Tested and verified — HomeOS accessible from iPhone via Tailscale IP.
 
-#### Task 4 — Add to Home Screen Instructions
+### Task 4 — Add to Home Screen Instructions
 
-- Update README with instructions for installing PWA on iPhone (Safari) and Android (Chrome).
-- Include screenshots of the install process.
+- Added step-by-step instructions for installing PWA on iPhone (Safari) and Android (Chrome) in README.
+
+---
+
+# Future Expansion
+
+New modules and features to be added.
 
 ---
 
