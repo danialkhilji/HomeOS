@@ -1,6 +1,7 @@
 import { useState, useMemo, useRef, useCallback, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Button } from "../../components";
+import { Button, LoadingSpinner } from "../../components";
+import { useTasksByDate } from "../../hooks/useTasks";
 
 const DAYS = ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"];
 const MONTHS = [
@@ -31,6 +32,12 @@ export default function CalendarModal({ open, onClose }: CalendarModalProps) {
   const touchStartY = useRef(0);
 
   const yearOptions = Array.from({ length: 201 }, (_, i) => 1900 + i);
+
+  const selectedDateStr = selectedDay !== null
+    ? `${viewYear}-${String(viewMonth + 1).padStart(2, "0")}-${String(selectedDay).padStart(2, "0")}`
+    : null;
+
+  const { data: dateTasks = [], isLoading: tasksLoading } = useTasksByDate(selectedDateStr);
 
   const grid = useMemo(() => {
     const daysInMonth = getDaysInMonth(viewYear, viewMonth);
@@ -82,6 +89,7 @@ export default function CalendarModal({ open, onClose }: CalendarModalProps) {
 
   function goToday() {
     setDirection(0);
+    setSelectedDay(null);
     setViewYear(today.getFullYear());
     setViewMonth(today.getMonth());
   }
@@ -89,6 +97,7 @@ export default function CalendarModal({ open, onClose }: CalendarModalProps) {
   useEffect(() => {
     if (open) {
       document.body.style.overflow = "hidden";
+      setSelectedDay(null);
     } else {
       document.body.style.overflow = "";
     }
@@ -134,6 +143,11 @@ export default function CalendarModal({ open, onClose }: CalendarModalProps) {
 
   const selectStyle = "min-h-[48px] px-3 rounded-xl border border-border bg-surface text-text text-base font-semibold dark:border-border-dark dark:bg-surface-dark-dim dark:text-text-dark focus:outline-none focus:ring-2 focus:ring-primary appearance-none text-center";
 
+  function formatSelectedDate() {
+    if (selectedDay === null) return "";
+    return `${selectedDay} ${MONTHS[viewMonth]?.slice(0, 3)}`;
+  }
+
   return (
     <AnimatePresence>
       {open && (
@@ -155,7 +169,7 @@ export default function CalendarModal({ open, onClose }: CalendarModalProps) {
             className="fixed inset-0 z-50 flex items-center justify-center p-6 pointer-events-none"
           >
             <div
-              className="w-full max-w-lg rounded-2xl px-6 py-4 bg-white dark:bg-surface-dark shadow-xl pointer-events-auto overflow-hidden"
+              className="w-full max-w-lg rounded-2xl px-6 py-4 bg-white dark:bg-surface-dark shadow-xl pointer-events-auto overflow-hidden max-h-[85dvh] overflow-y-auto"
               onTouchStart={handleTouchStart}
               onTouchMove={handleTouchMove}
               onTouchEnd={handleTouchEnd}
@@ -233,6 +247,57 @@ export default function CalendarModal({ open, onClose }: CalendarModalProps) {
                   })}
                 </motion.div>
               </AnimatePresence>
+
+              {selectedDay !== null && (
+                <div className="mt-4 pt-3 border-t border-border dark:border-border-dark">
+                  <h3 className="text-sm font-semibold text-text-muted dark:text-text-dark-muted mb-2">
+                    Tasks for {formatSelectedDate()}
+                  </h3>
+                  {tasksLoading ? (
+                    <LoadingSpinner size={20} />
+                  ) : dateTasks.length === 0 ? (
+                    <p className="text-sm text-text-muted dark:text-text-dark-muted py-2">
+                      No tasks for this date.
+                    </p>
+                  ) : (
+                    <div className="space-y-2">
+                      {dateTasks.map((task) => (
+                        <div key={task.id} className="py-1.5">
+                          <div className="flex items-center gap-2">
+                            <span className={`text-sm ${
+                              task.is_completed
+                                ? "line-through text-text-muted dark:text-text-dark-muted"
+                                : "text-text dark:text-text-dark"
+                            }`}>
+                              {task.member && (
+                                <>
+                                  <span className="font-semibold">{task.member.name}</span>
+                                  <span className="text-text-muted dark:text-text-dark-muted"> — </span>
+                                </>
+                              )}
+                              {task.title}
+                            </span>
+                          </div>
+                          {(task.reminder_at || task.recurrence !== "none") && (
+                            <div className="flex items-center gap-2 mt-0.5">
+                              {task.reminder_at && (
+                                <span className="text-xs text-text-muted dark:text-text-dark-muted">
+                                  🔔 {new Date(task.reminder_at).toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" })}
+                                </span>
+                              )}
+                              {task.recurrence !== "none" && (
+                                <span className="text-xs text-text-muted dark:text-text-dark-muted">
+                                  🔁 {task.recurrence}
+                                </span>
+                              )}
+                            </div>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )}
 
               {!isCurrentMonth && (
                 <div className="mt-4">
