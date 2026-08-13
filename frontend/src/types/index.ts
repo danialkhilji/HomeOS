@@ -60,6 +60,22 @@ export interface Note {
   author: MemberSummary | null;
 }
 
+export interface Birthday {
+  id: number;
+  name: string;
+  month: number;
+  day: number;
+  created_at: string;
+}
+
+export interface UpcomingBirthday {
+  id: number;
+  name: string;
+  month: number;
+  day: number;
+  days_until: number;
+}
+
 export interface Weather {
   temperature: number;
   condition: string;
