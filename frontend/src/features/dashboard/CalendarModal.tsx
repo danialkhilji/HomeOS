@@ -208,9 +208,6 @@ export default function CalendarModal({ open, onClose }: CalendarModalProps) {
           >
             <div
               className="w-full max-w-lg rounded-2xl px-6 py-4 bg-white dark:bg-surface-dark shadow-xl pointer-events-auto overflow-hidden max-h-[85dvh] overflow-y-auto"
-              onTouchStart={handleTouchStart}
-              onTouchMove={handleTouchMove}
-              onTouchEnd={handleTouchEnd}
             >
               <div className="flex items-center justify-center gap-3 mb-4">
                 <select
@@ -240,55 +237,61 @@ export default function CalendarModal({ open, onClose }: CalendarModalProps) {
                 </select>
               </div>
 
-              <div className="grid grid-cols-7 gap-1 text-center">
-                {DAYS.map((d) => (
-                  <div key={d} className="text-sm font-semibold text-text-muted dark:text-text-dark-muted py-1">
-                    {d}
-                  </div>
-                ))}
+              <div
+                onTouchStart={handleTouchStart}
+                onTouchMove={handleTouchMove}
+                onTouchEnd={handleTouchEnd}
+              >
+                <div className="grid grid-cols-7 gap-1 text-center">
+                  {DAYS.map((d) => (
+                    <div key={d} className="text-sm font-semibold text-text-muted dark:text-text-dark-muted py-1">
+                      {d}
+                    </div>
+                  ))}
+                </div>
+
+                <AnimatePresence mode="wait" custom={direction}>
+                  <motion.div
+                    key={`${viewYear}-${viewMonth}`}
+                    custom={direction}
+                    variants={slideVariants}
+                    initial="enter"
+                    animate="center"
+                    exit="exit"
+                    transition={{ duration: 0.2 }}
+                    className="grid grid-cols-7 gap-1 text-center"
+                  >
+                    {grid.map((day, i) => {
+                      const todayMatch = isToday(day);
+                      const selected = day !== null && day === activeDay && !todayMatch;
+
+                      return (
+                        <div
+                          key={i}
+                          onClick={() => {
+                            if (day !== null) {
+                              setSelectedDay(day);
+                              setSelectedMonth(viewMonth);
+                              setSelectedYear(viewYear);
+                            }
+                          }}
+                          className={`text-base py-2 rounded-full cursor-pointer ${
+                            selected
+                              ? "bg-primary/20 text-primary font-bold ring-2 ring-primary"
+                              : todayMatch
+                                ? "bg-primary text-white font-bold"
+                                : day !== null
+                                  ? "text-text dark:text-text-dark active:bg-surface-dim dark:active:bg-surface-dark-dim"
+                                  : ""
+                          }`}
+                        >
+                          {day ?? ""}
+                        </div>
+                      );
+                    })}
+                  </motion.div>
+                </AnimatePresence>
               </div>
-
-              <AnimatePresence mode="wait" custom={direction}>
-                <motion.div
-                  key={`${viewYear}-${viewMonth}`}
-                  custom={direction}
-                  variants={slideVariants}
-                  initial="enter"
-                  animate="center"
-                  exit="exit"
-                  transition={{ duration: 0.2 }}
-                  className="grid grid-cols-7 gap-1 text-center"
-                >
-                  {grid.map((day, i) => {
-                    const todayMatch = isToday(day);
-                    const selected = day !== null && day === activeDay && !todayMatch;
-
-                    return (
-                      <div
-                        key={i}
-                        onClick={() => {
-                          if (day !== null) {
-                            setSelectedDay(day);
-                            setSelectedMonth(viewMonth);
-                            setSelectedYear(viewYear);
-                          }
-                        }}
-                        className={`text-base py-2 rounded-full cursor-pointer ${
-                          selected
-                            ? "bg-primary/20 text-primary font-bold ring-2 ring-primary"
-                            : todayMatch
-                              ? "bg-primary text-white font-bold"
-                              : day !== null
-                                ? "text-text dark:text-text-dark active:bg-surface-dim dark:active:bg-surface-dark-dim"
-                                : ""
-                        }`}
-                      >
-                        {day ?? ""}
-                      </div>
-                    );
-                  })}
-                </motion.div>
-              </AnimatePresence>
 
               {selectedDay !== null && isViewingSelectedMonth && (
                 <div className="mt-4 pt-3 border-t border-border dark:border-border-dark">
