@@ -1,3 +1,5 @@
+from datetime import date
+
 from fastapi import APIRouter, Depends, Query
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -15,6 +17,14 @@ async def list_tasks(
     db: AsyncSession = Depends(get_db),
 ):
     return await service.get_all_tasks(db, assigned_to=assigned_to)
+
+
+@router.get("/by-date", response_model=list[TaskResponse])
+async def tasks_by_date(
+    date: date = Query(...),
+    db: AsyncSession = Depends(get_db),
+):
+    return await service.get_tasks_by_date(db, date)
 
 
 @router.post("", response_model=TaskResponse, status_code=201)

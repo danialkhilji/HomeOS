@@ -682,46 +682,69 @@ Tap emoji buttons to instantly add common items without opening a modal.
 
 ---
 
-## Task Reminders & Recurring Tasks
+## Task Reminders & Recurring Tasks (COMPLETED)
 
 Set reminders with date/time on tasks and configure tasks to repeat on a schedule.
 
 ### Task 1 — Backend: Add Reminder and Recurrence Columns
 
-- Add reminder_at (datetime, nullable) to tasks table.
-- Add recurrence (string: none/daily/weekly/monthly, default none) to tasks table.
-- Generate and apply Alembic migration.
+- Added reminder_at (datetime, nullable) and recurrence (string, default "none") to tasks table.
+- Generated and applied Alembic migration.
 
 ### Task 2 — Backend: Update Task Schemas and API
 
-- Update TaskCreate and TaskUpdate schemas to accept reminder_at and recurrence.
-- Include reminder_at, recurrence in TaskResponse.
-- Validate recurrence values.
+- Added Recurrence enum (none/daily/weekly/monthly) with validation.
+- Updated TaskCreate, TaskUpdate, and TaskResponse schemas with reminder_at and recurrence.
+- Updated service create/update to pass new fields through.
 
 ### Task 3 — Backend: Recurring Task Reset Scheduler
 
-- APScheduler job at midnight that resets daily recurring tasks to incomplete.
-- Weekly recurring tasks reset every Monday.
-- Monthly recurring tasks reset on the 1st of each month.
-- Add to existing scheduler setup.
+- Created recurrence.py with reset logic for daily, weekly (Mondays), and monthly (1st) tasks.
+- Added APScheduler job at 00:01 daily to run the reset.
 
 ### Task 4 — Frontend: Reminder and Recurrence in Task Modals
 
-- Add date/time picker for reminder in AddTaskModal and EditTaskModal.
-- Add recurrence selector (None, Daily, Weekly, Monthly) in both modals.
-- Show reminder time and recurrence icon on task rows.
+- Added datetime-local picker for reminder in AddTaskModal and EditTaskModal.
+- Added tappable recurrence selector (None/Daily/Weekly/Monthly) in both modals.
+- Task rows show 🔔 with date/time for reminders (red if overdue) and 🔁 with recurrence type.
 
 ### Task 5 — Frontend: Show Reminders on Dashboard
 
-- Highlight tasks with due/overdue reminders on the dashboard TasksCard.
-- Overdue reminders shown in red.
-- Upcoming reminders show clock icon with time.
+- Overdue reminders highlighted with red background tint and red text on dashboard TasksCard.
+- Upcoming reminders show 🔔 with date/time in muted text.
+- Recurrence shown with 🔁 indicator.
 
 ### Task 6 — Tests
 
-- Test recurring task reset logic (daily, weekly, monthly).
-- Test reminder fields in API create/update/response.
-- Test edge cases (complete recurring task, reset, re-complete).
+- Added 4 recurrence tests (daily reset, skip incomplete, non-recurring not reset, preserves task data).
+- Added 5 task API tests (create with reminder, create with recurrence, invalid recurrence, update both, clear reminder).
+- 97 backend tests total.
+
+---
+
+## Calendar-Task Integration
+
+Show tasks for a selected date inside the expanded calendar modal.
+
+### Task 1 — Backend: Tasks by Date Endpoint
+
+- Create GET /api/v1/tasks/by-date?date=2026-08-13 endpoint.
+- Returns tasks with reminders on that date.
+- Returns daily recurring tasks (every day).
+- Returns weekly recurring tasks (matching weekday).
+- Returns monthly recurring tasks (matching day of month).
+- Returns non-recurring tasks with no reminder only for today's date.
+
+### Task 2 — Frontend: Hook and API
+
+- Create fetchTasksByDate axios function.
+- Create useTasksByDate TanStack Query hook that accepts a date string.
+
+### Task 3 — Frontend: Task List in CalendarModal
+
+- When a date is selected, fetch and display tasks below the calendar grid.
+- Show reminder time, recurrence type, and member info.
+- Empty state if no tasks for that date.
 
 ---
 
