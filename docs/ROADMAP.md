@@ -749,9 +749,53 @@ Show tasks for a selected date inside the expanded calendar modal.
 
 ---
 
+## Birthdays via Calendar
+
+Track birthdays for anyone — family, friends, relatives. Added through the calendar, repeats yearly automatically.
+
+### Task 1 — Backend: Birthday Model & Migration
+
+- Create Birthday table (id, name, month, day, created_at).
+- Stores only month and day since birthdays repeat yearly.
+- Generate and apply Alembic migration.
+
+### Task 2 — Backend: Birthday API
+
+- Create CRUD endpoints under /api/v1/birthdays (GET, POST, DELETE).
+- Create GET /api/v1/birthdays/upcoming returning birthdays in next 7 days.
+- Create GET /api/v1/birthdays/by-date?month=8&day=15 for calendar lookup.
+- Add tests.
+
+### Task 3 — Frontend: Types, API, Hooks
+
+- Add Birthday TypeScript interface.
+- Create axios functions and TanStack Query hooks for birthdays.
+
+### Task 4 — Frontend: Add/Delete Birthdays in CalendarModal
+
+- Add "Add Birthday" button on the left and "Today" button on the right, side by side below the calendar.
+- AddBirthdayModal with name input (date comes from selected calendar date).
+- Show birthday list with 🎂 icon and delete button for selected date.
+
+### Task 5 — Frontend: Dashboard Birthday Card
+
+- Show upcoming birthdays (next 7 days) on the dashboard.
+- Display name and date with days remaining.
+
+---
+
 # Future Expansion
 
 New modules and features to be added.
+
+## UI Theme Upgrade
+
+- Redesign the overall look and feel of the app.
+- Explore modern colour palettes, typography, and card styles.
+- Improve visual hierarchy and spacing.
+- Make the app feel more polished and premium on the touchscreen.
+
+---
 
 ## AI Assistant
 

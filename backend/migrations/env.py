@@ -13,6 +13,7 @@ import app.modules.shopping.models  # noqa: F401
 import app.modules.shopping.store_models  # noqa: F401
 import app.modules.shopping.quick_add_models  # noqa: F401
 import app.modules.notes.models  # noqa: F401
+import app.modules.birthdays.models  # noqa: F401
 
 config = context.config
 config.set_main_option("sqlalchemy.url", settings.DATABASE_URL)
