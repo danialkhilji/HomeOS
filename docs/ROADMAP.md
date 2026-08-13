@@ -682,6 +682,49 @@ Tap emoji buttons to instantly add common items without opening a modal.
 
 ---
 
+## Task Reminders & Recurring Tasks
+
+Set reminders with date/time on tasks and configure tasks to repeat on a schedule.
+
+### Task 1 — Backend: Add Reminder and Recurrence Columns
+
+- Add reminder_at (datetime, nullable) to tasks table.
+- Add recurrence (string: none/daily/weekly/monthly, default none) to tasks table.
+- Generate and apply Alembic migration.
+
+### Task 2 — Backend: Update Task Schemas and API
+
+- Update TaskCreate and TaskUpdate schemas to accept reminder_at and recurrence.
+- Include reminder_at, recurrence in TaskResponse.
+- Validate recurrence values.
+
+### Task 3 — Backend: Recurring Task Reset Scheduler
+
+- APScheduler job at midnight that resets daily recurring tasks to incomplete.
+- Weekly recurring tasks reset every Monday.
+- Monthly recurring tasks reset on the 1st of each month.
+- Add to existing scheduler setup.
+
+### Task 4 — Frontend: Reminder and Recurrence in Task Modals
+
+- Add date/time picker for reminder in AddTaskModal and EditTaskModal.
+- Add recurrence selector (None, Daily, Weekly, Monthly) in both modals.
+- Show reminder time and recurrence icon on task rows.
+
+### Task 5 — Frontend: Show Reminders on Dashboard
+
+- Highlight tasks with due/overdue reminders on the dashboard TasksCard.
+- Overdue reminders shown in red.
+- Upcoming reminders show clock icon with time.
+
+### Task 6 — Tests
+
+- Test recurring task reset logic (daily, weekly, monthly).
+- Test reminder fields in API create/update/response.
+- Test edge cases (complete recurring task, reset, re-complete).
+
+---
+
 # Future Expansion
 
 New modules and features to be added.
