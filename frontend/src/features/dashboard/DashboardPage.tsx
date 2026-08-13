@@ -2,13 +2,13 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useCallback, useEffect, useState } from "react";
 import { PullToRefresh } from "../../components";
 import WeatherCard from "./WeatherCard";
-import CalendarWidget from "./CalendarWidget";
-import CalendarModal from "./CalendarModal";
+import CalendarWidget from "../calendar/CalendarWidget";
+import CalendarModal from "../calendar/CalendarModal";
 import PrayerTimesBar from "./PrayerTimesBar";
 import TasksCard from "./TasksCard";
 import ShoppingCard from "./ShoppingCard";
 import NotesCard from "./NotesCard";
-import BirthdayCard from "./BirthdayCard";
+import BirthdayCard from "../calendar/BirthdayCard";
 
 export default function DashboardPage() {
   const queryClient = useQueryClient();
