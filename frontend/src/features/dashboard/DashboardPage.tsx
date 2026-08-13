@@ -8,6 +8,7 @@ import PrayerTimesBar from "./PrayerTimesBar";
 import TasksCard from "./TasksCard";
 import ShoppingCard from "./ShoppingCard";
 import NotesCard from "./NotesCard";
+import BirthdayCard from "./BirthdayCard";
 
 export default function DashboardPage() {
   const queryClient = useQueryClient();
@@ -18,6 +19,7 @@ export default function DashboardPage() {
       queryClient.invalidateQueries({ queryKey: ["tasks"] });
       queryClient.invalidateQueries({ queryKey: ["shopping"] });
       queryClient.invalidateQueries({ queryKey: ["notes"] });
+      queryClient.invalidateQueries({ queryKey: ["birthdays"] });
     }, 5 * 60 * 1000);
     return () => clearInterval(interval);
   }, [queryClient]);
@@ -29,6 +31,7 @@ export default function DashboardPage() {
       queryClient.invalidateQueries({ queryKey: ["tasks"] }),
       queryClient.invalidateQueries({ queryKey: ["shopping"] }),
       queryClient.invalidateQueries({ queryKey: ["notes"] }),
+      queryClient.invalidateQueries({ queryKey: ["birthdays"] }),
     ]);
   }, [queryClient]);
 
@@ -40,6 +43,7 @@ export default function DashboardPage() {
           <CalendarWidget onExpand={() => setCalendarOpen(true)} />
         </div>
         <PrayerTimesBar />
+        <BirthdayCard />
         <TasksCard />
         <ShoppingCard />
         <NotesCard />
