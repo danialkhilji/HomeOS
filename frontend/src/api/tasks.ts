@@ -4,11 +4,15 @@ import type { Task } from "../types";
 export interface CreateTaskPayload {
   title: string;
   assigned_to?: number | null;
+  reminder_at?: string | null;
+  recurrence?: string;
 }
 
 export interface UpdateTaskPayload {
   title: string;
   assigned_to?: number | null;
+  reminder_at?: string | null;
+  recurrence?: string;
 }
 
 export async function fetchTasks(assignedTo?: number): Promise<Task[]> {

@@ -24,17 +24,17 @@ export default function TasksPage() {
     useSensor(TouchSensor, { activationConstraint: { delay: 200, tolerance: 5 } }),
   );
 
-  function handleCreate(title: string, assignedTo: number | null) {
+  function handleCreate(title: string, assignedTo: number | null, reminderAt: string | null, recurrence: string) {
     createTask.mutate(
-      { title, assigned_to: assignedTo },
+      { title, assigned_to: assignedTo, reminder_at: reminderAt, recurrence },
       { onSuccess: () => setAddModalOpen(false) },
     );
   }
 
-  function handleEdit(title: string, assignedTo: number | null) {
+  function handleEdit(title: string, assignedTo: number | null, reminderAt: string | null, recurrence: string) {
     if (!editingTask) return;
     updateTask.mutate(
-      { id: editingTask.id, data: { title, assigned_to: assignedTo } },
+      { id: editingTask.id, data: { title, assigned_to: assignedTo, reminder_at: reminderAt, recurrence } },
       { onSuccess: () => setEditingTask(null) },
     );
   }

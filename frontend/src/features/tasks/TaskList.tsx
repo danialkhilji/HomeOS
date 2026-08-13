@@ -121,6 +121,24 @@ export function TaskRow({ task, onToggle, onEdit, onDelete }: { task: Task; onTo
             </span>
           </div>
         )}
+        {(task.reminder_at || task.recurrence !== "none") && (
+          <div className="flex items-center gap-2 mt-0.5">
+            {task.reminder_at && (
+              <span className={`text-xs ${
+                new Date(task.reminder_at) < new Date() && !task.is_completed
+                  ? "text-danger font-semibold"
+                  : "text-text-muted dark:text-text-dark-muted"
+              }`}>
+                🔔 {new Date(task.reminder_at).toLocaleDateString("en-GB", { day: "numeric", month: "short" })} {new Date(task.reminder_at).toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" })}
+              </span>
+            )}
+            {task.recurrence !== "none" && (
+              <span className="text-xs text-text-muted dark:text-text-dark-muted">
+                🔁 {task.recurrence}
+              </span>
+            )}
+          </div>
+        )}
       </div>
 
       <IconButton

@@ -17,6 +17,8 @@ export interface Task {
   assigned_to: number | null;
   is_completed: boolean;
   completed_at: string | null;
+  reminder_at: string | null;
+  recurrence: string;
   created_at: string;
   member: MemberSummary | null;
 }
