@@ -46,14 +46,16 @@ export default function AppLayout() {
   return (
     <div className="flex flex-col h-dvh bg-surface text-text dark:bg-surface-dark dark:text-text-dark transition-colors">
       <header className="flex items-center justify-between px-4 py-3 shrink-0 border-b border-border dark:border-border-dark">
-        <span className="text-lg font-bold text-primary">HomeOS</span>
-        <div className="flex items-center gap-3 text-sm text-text-muted dark:text-text-dark-muted">
+        <span className="text-lg font-bold text-primary shrink-0">HomeOS</span>
+        <div className="flex items-center gap-2 sm:gap-3 text-xs sm:text-sm text-text-muted dark:text-text-dark-muted overflow-hidden">
           {prayerData?.hijri_date && (
-            <span>{prayerData.hijri_date}</span>
+            <span className="hidden sm:inline">{prayerData.hijri_date}</span>
           )}
-          <span className="text-text-muted dark:text-text-dark-muted">|</span>
-          <span>{formatDate(now)}</span>
-          <span className="font-semibold text-text dark:text-text-dark">{formatTime(now)}</span>
+          {prayerData?.hijri_date && (
+            <span className="hidden sm:inline text-text-muted dark:text-text-dark-muted">|</span>
+          )}
+          <span className="truncate">{formatDate(now)}</span>
+          <span className="font-semibold text-text dark:text-text-dark shrink-0">{formatTime(now)}</span>
         </div>
       </header>
 
@@ -83,7 +85,7 @@ export default function AppLayout() {
               to={item.to}
               end={item.to === "/"}
               className={({ isActive }) =>
-                `flex flex-col items-center gap-1 py-3 text-xs transition-colors ${
+                `flex flex-col items-center gap-0.5 sm:gap-1 py-2 sm:py-3 text-xs transition-colors ${
                   isActive
                     ? "text-primary font-semibold"
                     : "text-text-muted dark:text-text-dark-muted"
