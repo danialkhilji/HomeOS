@@ -27,7 +27,7 @@ async def create_task(db: AsyncSession, data: TaskCreate) -> Task:
     if data.assigned_to is not None:
         await _verify_member_exists(db, data.assigned_to)
 
-    task = Task(title=data.title, assigned_to=data.assigned_to)
+    task = Task(title=data.title, assigned_to=data.assigned_to, reminder_at=data.reminder_at, recurrence=data.recurrence.value)
     db.add(task)
     await db.flush()
     await db.refresh(task)
@@ -45,6 +45,8 @@ async def update_task(db: AsyncSession, task_id: int, data: TaskUpdate) -> Task:
 
     task.title = data.title
     task.assigned_to = data.assigned_to
+    task.reminder_at = data.reminder_at
+    task.recurrence = data.recurrence.value
     await db.flush()
     await db.refresh(task)
     return task
