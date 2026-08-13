@@ -76,6 +76,12 @@ export interface UpcomingBirthday {
   days_until: number;
 }
 
+export interface CalendarDateResponse {
+  date: string;
+  tasks: Task[];
+  birthdays: Birthday[];
+}
+
 export interface Weather {
   temperature: number;
   condition: string;

@@ -1,8 +1,8 @@
 import { useState, useMemo, useRef, useCallback, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button, LoadingSpinner, IconButton } from "../../components";
-import { useTasksByDate } from "../../hooks/useTasks";
-import { useBirthdaysByDate, useCreateBirthday, useDeleteBirthday } from "../../hooks/useBirthdays";
+import { useCalendarDate } from "../../hooks/useCalendar";
+import { useCreateBirthday, useDeleteBirthday } from "../../hooks/useBirthdays";
 import AddBirthdayModal from "./AddBirthdayModal";
 
 const DAYS = ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"];
@@ -56,11 +56,9 @@ export default function CalendarModal({ open, onClose }: CalendarModalProps) {
     ? `${selectedYear}-${String(selectedMonth + 1).padStart(2, "0")}-${String(selectedDay).padStart(2, "0")}`
     : null;
 
-  const { data: dateTasks = [], isLoading: tasksLoading } = useTasksByDate(selectedDateStr);
-  const { data: dateBirthdays = [] } = useBirthdaysByDate(
-    selectedDay !== null ? selectedMonth + 1 : null,
-    selectedDay,
-  );
+  const { data: calendarData, isLoading: calendarLoading } = useCalendarDate(selectedDateStr);
+  const dateTasks = calendarData?.tasks ?? [];
+  const dateBirthdays = calendarData?.birthdays ?? [];
   const createBirthday = useCreateBirthday();
   const deleteBirthday = useDeleteBirthday();
   const [birthdayModalOpen, setBirthdayModalOpen] = useState(false);
@@ -301,7 +299,7 @@ export default function CalendarModal({ open, onClose }: CalendarModalProps) {
                   <h3 className="text-sm font-semibold text-text-muted dark:text-text-dark-muted mb-2">
                     Tasks for {formatSelectedDate()}
                   </h3>
-                  {tasksLoading ? (
+                  {calendarLoading ? (
                     <LoadingSpinner size={20} />
                   ) : dateTasks.length === 0 ? (
                     <p className="text-sm text-text-muted dark:text-text-dark-muted py-2">
