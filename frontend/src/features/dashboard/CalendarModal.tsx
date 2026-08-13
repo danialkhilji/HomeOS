@@ -28,13 +28,18 @@ export default function CalendarModal({ open, onClose }: CalendarModalProps) {
   const [viewYear, setViewYear] = useState(today.getFullYear());
   const [viewMonth, setViewMonth] = useState(today.getMonth());
   const [selectedDay, setSelectedDay] = useState<number | null>(null);
+  const [selectedMonth, setSelectedMonth] = useState(today.getMonth());
+  const [selectedYear, setSelectedYear] = useState(today.getFullYear());
   const [direction, setDirection] = useState(0);
   const touchStartY = useRef(0);
 
   const yearOptions = Array.from({ length: 201 }, (_, i) => 1900 + i);
 
+  const isViewingSelectedMonth = viewMonth === selectedMonth && viewYear === selectedYear;
+  const activeDay = isViewingSelectedMonth ? selectedDay : null;
+
   const selectedDateStr = selectedDay !== null
-    ? `${viewYear}-${String(viewMonth + 1).padStart(2, "0")}-${String(selectedDay).padStart(2, "0")}`
+    ? `${selectedYear}-${String(selectedMonth + 1).padStart(2, "0")}-${String(selectedDay).padStart(2, "0")}`
     : null;
 
   const { data: dateTasks = [], isLoading: tasksLoading } = useTasksByDate(selectedDateStr);
@@ -67,7 +72,6 @@ export default function CalendarModal({ open, onClose }: CalendarModalProps) {
 
   function prevMonth() {
     setDirection(-1);
-    setSelectedDay(null);
     if (viewMonth === 0) {
       setViewMonth(11);
       setViewYear(viewYear - 1);
@@ -78,7 +82,6 @@ export default function CalendarModal({ open, onClose }: CalendarModalProps) {
 
   function nextMonth() {
     setDirection(1);
-    setSelectedDay(null);
     if (viewMonth === 11) {
       setViewMonth(0);
       setViewYear(viewYear + 1);
@@ -89,15 +92,21 @@ export default function CalendarModal({ open, onClose }: CalendarModalProps) {
 
   function goToday() {
     setDirection(0);
-    setSelectedDay(null);
     setViewYear(today.getFullYear());
     setViewMonth(today.getMonth());
+    setSelectedDay(today.getDate());
+    setSelectedMonth(today.getMonth());
+    setSelectedYear(today.getFullYear());
   }
 
   useEffect(() => {
     if (open) {
       document.body.style.overflow = "hidden";
-      setSelectedDay(null);
+      setViewYear(today.getFullYear());
+      setViewMonth(today.getMonth());
+      setSelectedDay(today.getDate());
+      setSelectedMonth(today.getMonth());
+      setSelectedYear(today.getFullYear());
     } else {
       document.body.style.overflow = "";
     }
@@ -179,7 +188,6 @@ export default function CalendarModal({ open, onClose }: CalendarModalProps) {
                   value={viewMonth}
                   onChange={(e) => {
                     setDirection(0);
-                    setSelectedDay(null);
                     setViewMonth(Number(e.target.value));
                   }}
                   className={selectStyle}
@@ -193,7 +201,6 @@ export default function CalendarModal({ open, onClose }: CalendarModalProps) {
                   value={viewYear}
                   onChange={(e) => {
                     setDirection(0);
-                    setSelectedDay(null);
                     setViewYear(Number(e.target.value));
                   }}
                   className={selectStyle}
@@ -225,12 +232,18 @@ export default function CalendarModal({ open, onClose }: CalendarModalProps) {
                 >
                   {grid.map((day, i) => {
                     const todayMatch = isToday(day);
-                    const selected = day !== null && day === selectedDay && !todayMatch;
+                    const selected = day !== null && day === activeDay && !todayMatch;
 
                     return (
                       <div
                         key={i}
-                        onClick={() => { if (day !== null) setSelectedDay(day); }}
+                        onClick={() => {
+                          if (day !== null) {
+                            setSelectedDay(day);
+                            setSelectedMonth(viewMonth);
+                            setSelectedYear(viewYear);
+                          }
+                        }}
                         className={`text-base py-2 rounded-full cursor-pointer ${
                           selected
                             ? "bg-primary/20 text-primary font-bold ring-2 ring-primary"
@@ -248,7 +261,7 @@ export default function CalendarModal({ open, onClose }: CalendarModalProps) {
                 </motion.div>
               </AnimatePresence>
 
-              {selectedDay !== null && (
+              {selectedDay !== null && isViewingSelectedMonth && (
                 <div className="mt-4 pt-3 border-t border-border dark:border-border-dark">
                   <h3 className="text-sm font-semibold text-text-muted dark:text-text-dark-muted mb-2">
                     Tasks for {formatSelectedDate()}
@@ -299,7 +312,7 @@ export default function CalendarModal({ open, onClose }: CalendarModalProps) {
                 </div>
               )}
 
-              {!isCurrentMonth && (
+              {(!isCurrentMonth || selectedDay !== null) && (
                 <div className="mt-4">
                   <Button fullWidth variant="secondary" onClick={goToday}>
                     Today
