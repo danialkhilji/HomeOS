@@ -4,8 +4,8 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.exceptions import NotFoundError
-from app.modules.birthdays.models import Birthday
-from app.modules.birthdays.schemas import BirthdayCreate, UpcomingBirthdayResponse
+from app.modules.calendar.birthday_models import Birthday
+from app.modules.calendar.birthday_schemas import BirthdayCreate, UpcomingBirthdayResponse
 
 
 async def get_all_birthdays(db: AsyncSession) -> list[Birthday]:

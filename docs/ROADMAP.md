@@ -749,38 +749,74 @@ Show tasks for a selected date inside the expanded calendar modal.
 
 ---
 
-## Birthdays via Calendar
+## Birthdays via Calendar (COMPLETED)
 
 Track birthdays for anyone — family, friends, relatives. Added through the calendar, repeats yearly automatically.
 
 ### Task 1 — Backend: Birthday Model & Migration
 
-- Create Birthday table (id, name, month, day, created_at).
+- Created Birthday table (id, name, month, day, created_at).
 - Stores only month and day since birthdays repeat yearly.
-- Generate and apply Alembic migration.
+- Generated and applied Alembic migration.
 
 ### Task 2 — Backend: Birthday API
 
-- Create CRUD endpoints under /api/v1/birthdays (GET, POST, DELETE).
-- Create GET /api/v1/birthdays/upcoming returning birthdays in next 7 days.
-- Create GET /api/v1/birthdays/by-date?month=8&day=15 for calendar lookup.
-- Add tests.
+- Created CRUD endpoints under /api/v1/birthdays (GET, POST, DELETE).
+- Created GET /api/v1/birthdays/upcoming returning birthdays in next 7 days with days_until.
+- Created GET /api/v1/birthdays/by-date?month=8&day=15 for calendar lookup.
+- Added 9 tests covering list, create, by-date, upcoming (today + future), delete, not-found, multiple same date.
+- 113 backend tests total.
 
 ### Task 3 — Frontend: Types, API, Hooks
 
-- Add Birthday TypeScript interface.
-- Create axios functions and TanStack Query hooks for birthdays.
+- Added Birthday and UpcomingBirthday TypeScript interfaces.
+- Created axios functions (fetchBirthdays, fetchUpcomingBirthdays, fetchBirthdaysByDate, createBirthday, deleteBirthday).
+- Created TanStack Query hooks (useBirthdays, useUpcomingBirthdays, useBirthdaysByDate, useCreateBirthday, useDeleteBirthday).
 
 ### Task 4 — Frontend: Add/Delete Birthdays in CalendarModal
 
-- Add "Add Birthday" button on the left and "Today" button on the right, side by side below the calendar.
-- AddBirthdayModal with name input (date comes from selected calendar date).
-- Show birthday list with 🎂 icon and delete button for selected date.
+- Created AddBirthdayModal with name input and date label from selected calendar date.
+- "Add Birthday" button on left and "Today" button on right, side by side with border separator.
+- Birthday list with 🎂 heading and delete button per entry shown for selected date.
+- Calendar grid stays fixed at top, tasks/birthdays scroll independently in the middle, buttons fixed at bottom.
+- Month swipe restricted to calendar grid area only.
 
 ### Task 5 — Frontend: Dashboard Birthday Card
 
-- Show upcoming birthdays (next 7 days) on the dashboard.
-- Display name and date with days remaining.
+- Created BirthdayCard showing upcoming birthdays in next 7 days.
+- Shows name, date, and days remaining ("Today!", "Tomorrow", "in 3 days").
+- Card hidden when no upcoming birthdays.
+- Included in auto-refresh and pull-to-refresh.
+
+---
+
+## Calendar as Core System
+
+Restructure the codebase to make the calendar the central hub for all date-based features. Currently tasks-by-date and birthdays-by-date are fetched separately — this unifies them.
+
+### Task 1 — Backend: Create Calendar Module
+
+- Create modules/calendar/ with router and service.
+- Move modules/birthdays/ into modules/calendar/ (birthdays are a calendar concept).
+- Create unified GET /api/v1/calendar/by-date?date=2026-08-15 endpoint.
+- Returns tasks, birthdays, and future event types in one response.
+- Calendar service calls into tasks and birthdays services internally.
+- Update all imports and API router references.
+
+### Task 2 — Frontend: Move Calendar to Own Feature Folder
+
+- Move CalendarWidget, CalendarModal, AddBirthdayModal, BirthdayCard from features/dashboard/ to features/calendar/.
+- Update imports in DashboardPage.
+
+### Task 3 — Frontend: Unified Calendar Hook
+
+- Create useCalendarDate(date) hook that fetches everything for a date in one call.
+- Replace separate useTasksByDate + useBirthdaysByDate calls in CalendarModal.
+
+### Task 4 — Tests
+
+- Add tests for the unified calendar endpoint.
+- Verify tasks and birthdays both appear in the response.
 
 ---
 
@@ -788,7 +824,15 @@ Track birthdays for anyone — family, friends, relatives. Added through the cal
 
 New modules and features to be added.
 
-## UI Theme Upgrade
+---
+
+### Mobile Application
+
+- View tasks remotely.
+- Manage shopping list.
+- Receive notifications.
+
+### UI Theme Upgrade
 
 - Redesign the overall look and feel of the app.
 - Explore modern colour palettes, typography, and card styles.
@@ -797,7 +841,50 @@ New modules and features to be added.
 
 ---
 
-## AI Assistant
+### Family Management
+
+- Calendar.
+- Birthdays.
+- Reminders.
+- Meal planner.
+- Household expenses.
+
+---
+
+### Rotation Duty Tracker
+
+- Check dad's rotation duty schedule from an external source.
+- Display upcoming duties for the next 7 days on the dashboard.
+- Highlight today's duty if one is scheduled.
+
+---
+
+### CCTV Live Feed
+
+- Display live CCTV camera feeds on the dashboard.
+- Switch between multiple camera views.
+- Fullscreen mode for individual cameras.
+
+---
+
+### Auto-Update Deployment
+
+- Create a script that checks GitHub for new changes on main branch.
+- Auto-pull and rebuild Docker containers when updates are detected.
+- Schedule with cron to check every few minutes.
+- No manual SSH or pull needed — just merge to main and the Linux laptop updates itself.
+
+---
+
+### Integration & End-to-End Tests
+
+- Add cross-module integration tests (e.g. full user flows across tasks, shopping, notes).
+- Add frontend component tests for critical UI interactions.
+- Add CI/CD pipeline to run tests on push.
+
+---
+
+### AI Assistant
 
 - Voice commands.
 - Ask questions.
@@ -810,17 +897,7 @@ Example:
 
 ---
 
-## Family Management
-
-- Calendar.
-- Birthdays.
-- Reminders.
-- Meal planner.
-- Household expenses.
-
----
-
-## Smart Home
+### Smart Home
 
 - Lights.
 - Thermostat.
@@ -829,51 +906,7 @@ Example:
 
 ---
 
-## Rotation Duty Tracker
-
-- Check dad's rotation duty schedule from an external source.
-- Display upcoming duties for the next 7 days on the dashboard.
-- Highlight today's duty if one is scheduled.
-
----
-
-## CCTV Live Feed
-
-- Display live CCTV camera feeds on the dashboard.
-- Switch between multiple camera views.
-- Fullscreen mode for individual cameras.
-
----
-
-## Mobile Application
-
-- View tasks remotely.
-- Manage shopping list.
-- Receive notifications.
-
----
-
-## Auto-Update Deployment
-
-- Create a script that checks GitHub for new changes on main branch.
-- Auto-pull and rebuild Docker containers when updates are detected.
-- Schedule with cron to check every few minutes.
-- No manual SSH or pull needed — just merge to main and the Linux laptop updates itself.
-
----
-
-## Integration & End-to-End Tests
-
-- Add cross-module integration tests (e.g. full user flows across tasks, shopping, notes).
-- Add frontend component tests for critical UI interactions.
-- Add CI/CD pipeline to run tests on push.
-
----
-
-
----
-
-## Project Visibility
+### Project Visibility
 
 ### Completed
 - Added MIT license to the project.
