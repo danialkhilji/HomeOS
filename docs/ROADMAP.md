@@ -837,11 +837,33 @@ New modules and features to be added.
 
 ---
 
-### Mobile Application
+### Mobile Application (PWA + Tailscale)
 
-- View tasks remotely.
-- Manage shopping list.
-- Receive notifications.
+Access HomeOS from your phone — at home on WiFi or remotely via Tailscale VPN.
+
+#### Task 1 — PWA Manifest & Icons
+
+- Add proper web app manifest with HomeOS name, description, and theme colour.
+- Create HomeOS app icon for phone home screen.
+- Configure Vite PWA plugin for installable app.
+
+#### Task 2 — Responsive UI for Phone Screens
+
+- Review and fix dashboard layout for small screens (cards, modals, navigation).
+- Ensure calendar modal, task modals, and shopping modals work on phone widths.
+- Test bottom navigation on small screens.
+
+#### Task 3 — Tailscale Remote Access
+
+- Install Tailscale on the Linux laptop (HomeOS server).
+- Install Tailscale on phone.
+- Access HomeOS via Tailscale IP from anywhere.
+- Document setup steps in README.
+
+#### Task 4 — Add to Home Screen Instructions
+
+- Update README with instructions for installing PWA on iPhone (Safari) and Android (Chrome).
+- Include screenshots of the install process.
 
 ---
 
