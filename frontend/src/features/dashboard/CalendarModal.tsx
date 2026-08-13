@@ -89,7 +89,7 @@ export default function CalendarModal({ open, onClose }: CalendarModalProps) {
     );
   };
 
-  const isCurrentMonth = viewMonth === today.getMonth() && viewYear === today.getFullYear();
+
 
   function prevMonth() {
     setDirection(-1);
@@ -370,16 +370,12 @@ export default function CalendarModal({ open, onClose }: CalendarModalProps) {
               )}
 
               <div className="flex gap-3 px-6 py-3 shrink-0 border-t border-border dark:border-border-dark">
-                {selectedDay !== null && isViewingSelectedMonth && (
-                  <Button fullWidth onClick={() => setBirthdayModalOpen(true)}>
-                    Add Birthday
-                  </Button>
-                )}
-                {(!isCurrentMonth || selectedDay !== null) && (
-                  <Button fullWidth variant="secondary" onClick={goToday}>
-                    Today
-                  </Button>
-                )}
+                <Button fullWidth onClick={() => setBirthdayModalOpen(true)}>
+                  Add Birthday
+                </Button>
+                <Button fullWidth variant="secondary" onClick={goToday}>
+                  Today
+                </Button>
               </div>
             </div>
           </motion.div>
