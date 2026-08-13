@@ -207,8 +207,9 @@ export default function CalendarModal({ open, onClose }: CalendarModalProps) {
             className="fixed inset-0 z-50 flex items-center justify-center p-6 pointer-events-none"
           >
             <div
-              className="w-full max-w-lg rounded-2xl px-6 py-4 bg-white dark:bg-surface-dark shadow-xl pointer-events-auto overflow-hidden max-h-[85dvh] overflow-y-auto"
+              className="w-full max-w-lg rounded-2xl bg-white dark:bg-surface-dark shadow-xl pointer-events-auto overflow-hidden max-h-[85dvh] flex flex-col"
             >
+              <div className="flex-1 overflow-y-auto px-6 pt-4">
               <div className="flex items-center justify-center gap-3 mb-4">
                 <select
                   value={viewMonth}
@@ -365,7 +366,9 @@ export default function CalendarModal({ open, onClose }: CalendarModalProps) {
                 </div>
               )}
 
-              <div className="flex gap-3 mt-4">
+              </div>
+
+              <div className="flex gap-3 px-6 py-3 shrink-0 border-t border-border dark:border-border-dark">
                 {selectedDay !== null && isViewingSelectedMonth && (
                   <Button fullWidth onClick={() => setBirthdayModalOpen(true)}>
                     Add Birthday
