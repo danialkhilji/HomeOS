@@ -896,6 +896,28 @@ Pure CSS weather animations — dynamic gradient backgrounds with animated effec
 
 ---
 
+### Enhanced Weather Data
+
+Add more useful weather data to the weather card — hero temperature with secondary info.
+
+#### Task 1 — Backend: Fetch Additional Weather Data
+
+- Fetch feels_like, rain_chance, daily high/low from Open-Meteo API.
+- Add feels_like (float), rain_chance (int), temp_high (float), temp_low (float) to WeatherResponse schema.
+
+#### Task 2 — Frontend: Update WeatherCard Layout
+
+- Centre the layout: emoji on top, large hero temperature, condition text.
+- Add secondary row: feels like temperature, rain chance percentage.
+- Add third row: today's high and low temperatures.
+- Adjust text sizes for phone and tablet.
+
+#### Task 3 — Frontend: Update Weather Type
+
+- Add feels_like, rain_chance, temp_high, temp_low to Weather TypeScript interface.
+
+---
+
 ### UI Theme Upgrade
 
 - Redesign the overall look and feel of the app.
