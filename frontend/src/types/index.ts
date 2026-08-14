@@ -87,6 +87,10 @@ export interface Weather {
   condition: string;
   icon: string;
   wind_speed: number;
+  feels_like: number;
+  rain_chance: number;
+  temp_high: number;
+  temp_low: number;
 }
 
 export interface PrayerTime {

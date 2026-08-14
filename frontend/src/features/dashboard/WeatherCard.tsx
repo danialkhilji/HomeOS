@@ -21,7 +21,6 @@ const WEATHER_CLASSES: Record<string, string> = {
   windy: "weather-windy",
 };
 
-const DARK_BACKGROUNDS = new Set(["rainy", "stormy", "windy", "cloudy"]);
 const LIGHT_BACKGROUNDS = new Set(["snowy"]);
 
 function getEffectiveWeather(icon: string, windSpeed: number): string {
@@ -53,32 +52,30 @@ export default function WeatherCard() {
   const effectiveWeather = getEffectiveWeather(weather.icon, weather.wind_speed);
   const bgClass = WEATHER_CLASSES[effectiveWeather] ?? "weather-cloudy";
   const icon = WEATHER_ICONS[effectiveWeather] ?? "🌤️";
-  const isDark = DARK_BACKGROUNDS.has(effectiveWeather);
   const isLight = LIGHT_BACKGROUNDS.has(effectiveWeather);
 
-  const textColor = isLight
-    ? "text-text"
-    : isDark
-      ? "text-white"
-      : "text-white";
-
-  const subtextColor = isLight
-    ? "text-text-muted"
-    : "text-white/70";
+  const textColor = isLight ? "text-text" : "text-white";
+  const subtextColor = isLight ? "text-text-muted" : "text-white/70";
 
   return (
     <div className={`rounded-2xl p-4 shadow-sm ${bgClass}`}>
-      <div className="relative z-10">
-        <div className="flex items-center gap-3">
-          <span className="text-3xl sm:text-4xl">{icon}</span>
-          <div>
-            <p className={`text-xl sm:text-2xl font-bold ${textColor}`}>
-              {weather.temperature}°C
-            </p>
-            <p className={`text-xs sm:text-sm ${subtextColor}`}>
-              {weather.condition}
-            </p>
-          </div>
+      <div className="relative z-10 flex flex-col items-center text-center">
+        <span className="text-3xl sm:text-4xl mb-1">{icon}</span>
+        <p className={`text-3xl sm:text-4xl font-bold ${textColor}`}>
+          {weather.temperature}°C
+        </p>
+        <p className={`text-xs sm:text-sm ${subtextColor}`}>
+          {weather.condition}
+        </p>
+
+        <div className={`flex items-center gap-3 mt-2 text-xs sm:text-sm ${subtextColor}`}>
+          <span>Feels {weather.feels_like}°</span>
+          <span>🌧 {weather.rain_chance}%</span>
+        </div>
+
+        <div className={`flex items-center gap-3 mt-1 text-xs sm:text-sm ${subtextColor}`}>
+          <span>↑ {weather.temp_high}°</span>
+          <span>↓ {weather.temp_low}°</span>
         </div>
       </div>
     </div>
