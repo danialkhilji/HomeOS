@@ -260,5 +260,6 @@ HomeOS/
 │       ├── layouts/   # App shell and navigation
 │       ├── stores/    # Zustand state management
 │       └── types/     # Shared TypeScript types
-└── docs/             # Vision, roadmap, engineering guidelines
+├── scripts/          # Backup and utility scripts
+└── CHANGELOG.md      # Release history
 ```
