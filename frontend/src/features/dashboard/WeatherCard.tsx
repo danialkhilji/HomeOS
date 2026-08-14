@@ -58,8 +58,8 @@ export default function WeatherCard() {
   const subtextColor = isLight ? "text-text-muted" : "text-white/70";
 
   return (
-    <div className={`rounded-2xl p-4 shadow-sm ${bgClass}`}>
-      <div className="relative z-10 flex flex-col items-center text-center">
+    <div className={`rounded-2xl p-4 shadow-sm h-full ${bgClass}`}>
+      <div className="relative z-10 flex flex-col items-center justify-center text-center h-full">
         <span className="text-3xl sm:text-4xl mb-1">{icon}</span>
         <p className={`text-3xl sm:text-4xl font-bold ${textColor}`}>
           {weather.temperature}°C
@@ -68,12 +68,12 @@ export default function WeatherCard() {
           {weather.condition}
         </p>
 
-        <div className={`flex items-center gap-3 mt-2 text-xs sm:text-sm ${subtextColor}`}>
+        <div className={`flex items-center justify-center gap-3 mt-2 text-xs sm:text-sm ${subtextColor}`}>
           <span>Feels {weather.feels_like}°</span>
           <span>🌧 {weather.rain_chance}%</span>
         </div>
 
-        <div className={`flex items-center gap-3 mt-1 text-xs sm:text-sm ${subtextColor}`}>
+        <div className={`flex items-center justify-center gap-3 mt-1 text-xs sm:text-sm ${subtextColor}`}>
           <span>↑ {weather.temp_high}°</span>
           <span>↓ {weather.temp_low}°</span>
         </div>
