@@ -177,7 +177,7 @@ export default function CalendarModal({ open, onClose }: CalendarModalProps) {
     }),
   };
 
-  const selectStyle = "min-h-[48px] px-3 rounded-xl border border-border bg-surface text-text text-base font-semibold dark:border-border-dark dark:bg-surface-dark-dim dark:text-text-dark focus:outline-none focus:ring-2 focus:ring-primary appearance-none text-center";
+  const selectStyle = "min-h-[48px] px-3 rounded-xl border border-border bg-surface text-text text-base font-semibold focus:outline-none focus:ring-2 focus:ring-primary appearance-none text-center";
 
   function formatSelectedDate() {
     if (selectedDay === null) return "";
@@ -205,7 +205,7 @@ export default function CalendarModal({ open, onClose }: CalendarModalProps) {
             className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 pointer-events-none"
           >
             <div
-              className="w-full max-w-lg rounded-2xl sm:rounded-2xl bg-white dark:bg-surface-dark shadow-xl pointer-events-auto overflow-hidden max-h-[90dvh] sm:max-h-[85dvh] flex flex-col"
+              className="w-full max-w-lg rounded-2xl sm:rounded-2xl bg-white shadow-xl pointer-events-auto overflow-hidden max-h-[90dvh] sm:max-h-[85dvh] flex flex-col"
             >
               <div className="shrink-0 px-6 pt-4">
               <div className="flex items-center justify-center gap-3 mb-4">
@@ -243,7 +243,7 @@ export default function CalendarModal({ open, onClose }: CalendarModalProps) {
               >
                 <div className="grid grid-cols-7 gap-1 text-center">
                   {DAYS.map((d) => (
-                    <div key={d} className="text-sm font-semibold text-text-muted dark:text-text-dark-muted py-1">
+                    <div key={d} className="text-sm font-semibold text-text-muted py-1">
                       {d}
                     </div>
                   ))}
@@ -280,7 +280,7 @@ export default function CalendarModal({ open, onClose }: CalendarModalProps) {
                               : todayMatch
                                 ? "bg-primary text-white font-bold"
                                 : day !== null
-                                  ? "text-text dark:text-text-dark active:bg-surface-dim dark:active:bg-surface-dark-dim"
+                                  ? "text-text active:bg-surface-dim"
                                   : ""
                           }`}
                         >
@@ -295,14 +295,14 @@ export default function CalendarModal({ open, onClose }: CalendarModalProps) {
 
               {selectedDay !== null && isViewingSelectedMonth && (
                 <div className="flex-1 overflow-y-auto px-6">
-                <div className="pt-3 border-t border-border dark:border-border-dark">
-                  <h3 className="text-sm font-semibold text-text-muted dark:text-text-dark-muted mb-2">
+                <div className="pt-3 border-t border-border">
+                  <h3 className="text-sm font-semibold text-text-muted mb-2">
                     Tasks for {formatSelectedDate()}
                   </h3>
                   {calendarLoading ? (
                     <LoadingSpinner size={20} />
                   ) : dateTasks.length === 0 ? (
-                    <p className="text-sm text-text-muted dark:text-text-dark-muted py-2">
+                    <p className="text-sm text-text-muted py-2">
                       No tasks for this date.
                     </p>
                   ) : (
@@ -312,13 +312,13 @@ export default function CalendarModal({ open, onClose }: CalendarModalProps) {
                           <div className="flex items-center gap-2">
                             <span className={`text-sm ${
                               task.is_completed
-                                ? "line-through text-text-muted dark:text-text-dark-muted"
-                                : "text-text dark:text-text-dark"
+                                ? "line-through text-text-muted"
+                                : "text-text"
                             }`}>
                               {task.member && (
                                 <>
                                   <span className="font-semibold">{task.member.name}</span>
-                                  <span className="text-text-muted dark:text-text-dark-muted"> — </span>
+                                  <span className="text-text-muted"> — </span>
                                 </>
                               )}
                               {task.title}
@@ -327,12 +327,12 @@ export default function CalendarModal({ open, onClose }: CalendarModalProps) {
                           {(task.reminder_at || task.recurrence !== "none") && (
                             <div className="flex items-center gap-2 mt-0.5">
                               {task.reminder_at && (
-                                <span className="text-xs text-text-muted dark:text-text-dark-muted">
+                                <span className="text-xs text-text-muted">
                                   🔔 {new Date(task.reminder_at).toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" })}
                                 </span>
                               )}
                               {task.recurrence !== "none" && (
-                                <span className="text-xs text-text-muted dark:text-text-dark-muted">
+                                <span className="text-xs text-text-muted">
                                   🔁 {task.recurrence}
                                 </span>
                               )}
@@ -345,13 +345,13 @@ export default function CalendarModal({ open, onClose }: CalendarModalProps) {
 
                   {dateBirthdays.length > 0 && (
                     <>
-                      <h3 className="text-sm font-semibold text-text-muted dark:text-text-dark-muted mt-4 mb-2">
+                      <h3 className="text-sm font-semibold text-text-muted mt-4 mb-2">
                         🎂 Birthdays
                       </h3>
                       <div className="space-y-1">
                         {dateBirthdays.map((bday) => (
                           <div key={bday.id} className="flex items-center justify-between py-1">
-                            <span className="text-sm text-text dark:text-text-dark">{bday.name}</span>
+                            <span className="text-sm text-text">{bday.name}</span>
                             <IconButton
                               icon={<TrashIcon />}
                               variant="danger"
@@ -367,7 +367,7 @@ export default function CalendarModal({ open, onClose }: CalendarModalProps) {
                 </div>
               )}
 
-              <div className="flex gap-3 px-6 py-3 shrink-0 border-t border-border dark:border-border-dark">
+              <div className="flex gap-3 px-6 py-3 shrink-0 border-t border-border">
                 <Button fullWidth onClick={() => setBirthdayModalOpen(true)}>
                   Add Birthday
                 </Button>

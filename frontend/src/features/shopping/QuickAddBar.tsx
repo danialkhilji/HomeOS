@@ -42,12 +42,12 @@ export default function QuickAddBar({ onAdd, existingItems }: QuickAddBarProps) 
             }}
             className={`flex items-center gap-1.5 px-3 py-2 rounded-xl border text-sm transition-colors ${
               exists
-                ? "opacity-30 border-border dark:border-border-dark"
-                : "border-border bg-white dark:border-border-dark dark:bg-surface-dark-dim active:bg-surface-dim dark:active:bg-surface-dark"
+                ? "opacity-30 border-border"
+                : "border-border bg-white active:bg-surface-dim"
             }`}
           >
             <span className="text-lg">{item.emoji}</span>
-            <span className="text-text dark:text-text-dark">{item.name}</span>
+            <span className="text-text">{item.name}</span>
           </motion.button>
         );
       })}

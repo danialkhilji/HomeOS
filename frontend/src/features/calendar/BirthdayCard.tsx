@@ -19,10 +19,10 @@ export default function BirthdayCard() {
         <div className="space-y-2">
           {birthdays.map((bday) => (
             <div key={bday.id} className="flex items-center justify-between py-1.5">
-              <span className="text-base text-text dark:text-text-dark">
+              <span className="text-base text-text">
                 {bday.name}
               </span>
-              <span className="text-sm text-text-muted dark:text-text-dark-muted">
+              <span className="text-sm text-text-muted">
                 {bday.day} {MONTHS[bday.month - 1]}
                 {bday.days_until === 0
                   ? " — Today!"

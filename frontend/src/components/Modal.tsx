@@ -26,13 +26,13 @@ export default function Modal({ open, onClose, title, children }: ModalProps) {
             animate={{ y: 0 }}
             exit={{ y: "100%" }}
             transition={{ type: "spring", stiffness: 300, damping: 30 }}
-            className="fixed bottom-0 left-0 right-0 z-50 rounded-t-2xl p-6 max-h-[80dvh] overflow-y-auto bg-white dark:bg-surface-dark"
+            className="fixed bottom-0 left-0 right-0 z-50 rounded-t-2xl p-6 max-h-[80dvh] overflow-y-auto bg-white"
           >
             <div className="flex justify-center mb-4">
-              <div className="w-10 h-1 rounded-full bg-border dark:bg-border-dark" />
+              <div className="w-10 h-1 rounded-full bg-border" />
             </div>
 
-            <h2 className="text-2xl font-bold mb-4 text-text dark:text-text-dark">
+            <h2 className="text-2xl font-bold mb-4 text-text">
               {title}
             </h2>
 

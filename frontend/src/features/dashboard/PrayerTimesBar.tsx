@@ -34,7 +34,7 @@ export default function PrayerTimesBar() {
                 className={`text-xs font-semibold uppercase tracking-wide ${
                   isCurrent
                     ? "text-primary"
-                    : "text-text-muted dark:text-text-dark-muted"
+                    : "text-text-muted"
                 }`}
               >
                 {prayer.name}
@@ -43,7 +43,7 @@ export default function PrayerTimesBar() {
                 className={`text-base font-bold ${
                   isCurrent
                     ? "text-primary"
-                    : "text-text dark:text-text-dark"
+                    : "text-text"
                 }`}
               >
                 {prayer.time}

@@ -31,7 +31,7 @@ export default function AddItemModal({ open, onClose, onSave }: AddItemModalProp
     <Modal open={open} onClose={handleClose} title="Add Item">
       <div className="space-y-6">
         <div>
-          <label className="block text-sm font-medium mb-2 text-text-muted dark:text-text-dark-muted">
+          <label className="block text-sm font-medium mb-2 text-text-muted">
             Item
           </label>
           <input
@@ -40,13 +40,13 @@ export default function AddItemModal({ open, onClose, onSave }: AddItemModalProp
             onChange={(e) => setName(e.target.value)}
             placeholder="Enter item name"
             autoFocus
-            className="w-full min-h-[48px] px-4 rounded-xl border border-border bg-surface text-text text-lg dark:border-border-dark dark:bg-surface-dark-dim dark:text-text-dark focus:outline-none focus:ring-2 focus:ring-primary"
+            className="w-full min-h-[48px] px-4 rounded-xl border border-border bg-surface text-text text-lg focus:outline-none focus:ring-2 focus:ring-primary"
           />
         </div>
 
         {stores.length > 0 && (
           <div>
-            <label className="block text-sm font-medium mb-2 text-text-muted dark:text-text-dark-muted">
+            <label className="block text-sm font-medium mb-2 text-text-muted">
               Store
             </label>
             <div className="flex flex-wrap gap-2">
@@ -55,7 +55,7 @@ export default function AddItemModal({ open, onClose, onSave }: AddItemModalProp
                 className={`min-h-[48px] px-4 rounded-xl border text-base transition-colors ${
                   storeId === null
                     ? "border-primary bg-primary/10 text-primary font-semibold"
-                    : "border-border text-text-muted dark:border-border-dark dark:text-text-dark-muted"
+                    : "border-border text-text-muted"
                 }`}
               >
                 Any Store
@@ -67,7 +67,7 @@ export default function AddItemModal({ open, onClose, onSave }: AddItemModalProp
                   className={`flex items-center gap-2 min-h-[48px] px-4 rounded-xl border text-base transition-colors ${
                     storeId === store.id
                       ? "border-primary bg-primary/10 text-primary font-semibold"
-                      : "border-border text-text-muted dark:border-border-dark dark:text-text-dark-muted"
+                      : "border-border text-text-muted"
                   }`}
                 >
                   <div

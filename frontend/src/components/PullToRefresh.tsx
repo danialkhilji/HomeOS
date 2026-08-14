@@ -51,7 +51,7 @@ export default function PullToRefresh({ onRefresh, children }: PullToRefreshProp
       className="h-full overflow-y-auto"
     >
       <div
-        className="flex items-center justify-center transition-all text-text-muted dark:text-text-dark-muted text-sm"
+        className="flex items-center justify-center transition-all text-text-muted text-sm"
         style={{ height: pullDistance > 0 ? pullDistance : 0 }}
       >
         {refreshing ? (

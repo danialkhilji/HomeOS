@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { useThemeStore } from "../../stores/themeStore";
 import { useMembers, useCreateMember, useUpdateMember, useDeleteMember } from "../../hooks/useMembers";
 import { useStores, useCreateStore, useUpdateStore, useDeleteStore } from "../../hooks/useStores";
 import { useQuickAddItems, useCreateQuickAddItem, useDeleteQuickAddItem } from "../../hooks/useQuickAdd";
@@ -27,8 +26,6 @@ function TrashIcon() {
 }
 
 export default function SettingsPage() {
-  const { theme, toggle } = useThemeStore();
-
   const { data: members = [] } = useMembers();
   const createMember = useCreateMember();
   const updateMember = useUpdateMember();
@@ -87,15 +84,6 @@ export default function SettingsPage() {
       <PageHeader title="Settings" />
 
       <div className="space-y-4">
-        <Card title="Appearance">
-          <div className="flex items-center justify-between">
-            <span className="text-lg">Dark Mode</span>
-            <Button onClick={toggle}>
-              {theme === "dark" ? "On" : "Off"}
-            </Button>
-          </div>
-        </Card>
-
         <Card title="Household Members">
           {members.length === 0 ? (
             <EmptyState
@@ -167,7 +155,7 @@ export default function SettingsPage() {
         </Card>
       </div>
 
-      <p className="text-center text-sm text-text-muted dark:text-text-dark-muted mt-8">
+      <p className="text-center text-sm text-text-muted mt-8">
         HomeOS v1.2
       </p>
 

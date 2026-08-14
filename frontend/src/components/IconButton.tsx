@@ -11,7 +11,7 @@ interface IconButtonProps {
 
 const variantStyles: Record<IconButtonVariant, string> = {
   default:
-    "text-text-muted active:bg-surface-dim dark:text-text-dark-muted dark:active:bg-surface-dark",
+    "text-text-muted active:bg-surface-dim",
   danger: "text-danger active:bg-red-100",
 };
 

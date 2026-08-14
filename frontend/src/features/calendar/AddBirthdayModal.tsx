@@ -26,12 +26,12 @@ export default function AddBirthdayModal({ open, onClose, onSave, dateLabel }: A
   return (
     <Modal open={open} onClose={handleClose} title="Add Birthday">
       <div className="space-y-6">
-        <p className="text-sm text-text-muted dark:text-text-dark-muted">
-          Date: <span className="font-semibold text-text dark:text-text-dark">{dateLabel}</span>
+        <p className="text-sm text-text-muted">
+          Date: <span className="font-semibold text-text">{dateLabel}</span>
         </p>
 
         <div>
-          <label className="block text-sm font-medium mb-2 text-text-muted dark:text-text-dark-muted">
+          <label className="block text-sm font-medium mb-2 text-text-muted">
             Name
           </label>
           <input
@@ -40,7 +40,7 @@ export default function AddBirthdayModal({ open, onClose, onSave, dateLabel }: A
             onChange={(e) => setName(e.target.value)}
             placeholder="Enter name"
             autoFocus
-            className="w-full min-h-[48px] px-4 rounded-xl border border-border bg-surface text-text text-lg dark:border-border-dark dark:bg-surface-dark-dim dark:text-text-dark focus:outline-none focus:ring-2 focus:ring-primary"
+            className="w-full min-h-[48px] px-4 rounded-xl border border-border bg-surface text-text text-lg focus:outline-none focus:ring-2 focus:ring-primary"
           />
         </div>
 

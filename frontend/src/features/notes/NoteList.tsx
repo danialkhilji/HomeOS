@@ -28,7 +28,7 @@ function NoteCard({ note, onEdit, onDelete }: { note: Note; onEdit: () => void; 
     <motion.div
       whileTap={{ scale: 0.98 }}
       transition={{ type: "spring", stiffness: 400, damping: 20 }}
-      className="rounded-xl p-4 bg-white border border-border dark:bg-surface-dark-dim dark:border-border-dark"
+      className="rounded-xl p-4 bg-white border border-border"
       {...longPress}
     >
       <div className="flex items-start justify-between gap-3">
@@ -39,12 +39,12 @@ function NoteCard({ note, onEdit, onDelete }: { note: Note; onEdit: () => void; 
                 className="w-5 h-5 rounded-full shrink-0"
                 style={{ backgroundColor: note.author.colour }}
               />
-              <span className="text-sm font-semibold text-text dark:text-text-dark">
+              <span className="text-sm font-semibold text-text">
                 {note.author.name}
               </span>
             </div>
           )}
-          <p className="text-base text-text dark:text-text-dark whitespace-pre-wrap">
+          <p className="text-base text-text whitespace-pre-wrap">
             {note.content}
           </p>
         </div>

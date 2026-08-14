@@ -47,13 +47,13 @@ export default function CalendarWidget({ onExpand }: { onExpand?: () => void }) 
 
   return (
     <Card onClick={onExpand}>
-      <div className="text-center text-sm font-semibold mb-2 text-text dark:text-text-dark">
+      <div className="text-center text-sm font-semibold mb-2 text-text">
         {MONTHS[viewMonth]} {viewYear}
       </div>
 
       <div className="grid grid-cols-7 gap-0.5 text-center">
         {DAYS.map((d) => (
-          <div key={d} className="text-xs font-medium text-text-muted dark:text-text-dark-muted py-0.5">
+          <div key={d} className="text-xs font-medium text-text-muted py-0.5">
             {d}
           </div>
         ))}
@@ -65,7 +65,7 @@ export default function CalendarWidget({ onExpand }: { onExpand?: () => void }) 
               isToday(day)
                 ? "bg-primary text-white font-bold"
                 : day !== null
-                  ? "text-text dark:text-text-dark"
+                  ? "text-text"
                   : ""
             }`}
           >

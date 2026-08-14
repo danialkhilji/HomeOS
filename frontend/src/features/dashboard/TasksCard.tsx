@@ -37,7 +37,7 @@ export default function TasksCard() {
                   className={`flex items-center justify-center w-6 h-6 rounded-full shrink-0 ${
                     task.is_completed
                       ? "bg-success text-white"
-                      : "border-2 border-border dark:border-border-dark"
+                      : "border-2 border-border"
                   }`}
                 >
                   {task.is_completed && <CheckIcon />}
@@ -47,16 +47,16 @@ export default function TasksCard() {
                   <span
                     className={`text-base ${
                       task.is_completed
-                        ? "line-through text-text-muted dark:text-text-dark-muted"
+                        ? "line-through text-text-muted"
                         : isOverdue
                           ? "text-danger font-semibold"
-                          : "text-text dark:text-text-dark"
+                          : "text-text"
                     }`}
                   >
                     {task.member && (
                       <>
                         <span className="font-semibold">{task.member.name}</span>
-                        <span className={isOverdue ? "text-danger" : "text-text-muted dark:text-text-dark-muted"}> — </span>
+                        <span className={isOverdue ? "text-danger" : "text-text-muted"}> — </span>
                       </>
                     )}
                     {task.title}
@@ -64,12 +64,12 @@ export default function TasksCard() {
                   {(task.reminder_at || task.recurrence !== "none") && (
                     <div className="flex items-center gap-2 mt-0.5">
                       {task.reminder_at && (
-                        <span className={`text-xs ${isOverdue ? "text-danger font-semibold" : "text-text-muted dark:text-text-dark-muted"}`}>
+                        <span className={`text-xs ${isOverdue ? "text-danger font-semibold" : "text-text-muted"}`}>
                           🔔 {new Date(task.reminder_at).toLocaleDateString("en-GB", { day: "numeric", month: "short" })} {new Date(task.reminder_at).toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" })}
                         </span>
                       )}
                       {task.recurrence !== "none" && (
-                        <span className="text-xs text-text-muted dark:text-text-dark-muted">
+                        <span className="text-xs text-text-muted">
                           🔁 {task.recurrence}
                         </span>
                       )}

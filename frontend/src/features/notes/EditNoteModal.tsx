@@ -25,7 +25,7 @@ export default function EditNoteModal({ open, onClose, onSave, currentContent }:
     <Modal open={open} onClose={onClose} title="Edit Note">
       <div className="space-y-6">
         <div>
-          <label className="block text-sm font-medium mb-2 text-text-muted dark:text-text-dark-muted">
+          <label className="block text-sm font-medium mb-2 text-text-muted">
             Message
           </label>
           <textarea
@@ -33,7 +33,7 @@ export default function EditNoteModal({ open, onClose, onSave, currentContent }:
             onChange={(e) => setContent(e.target.value)}
             autoFocus
             rows={4}
-            className="w-full min-h-[120px] px-4 py-3 rounded-xl border border-border bg-surface text-text text-lg resize-none dark:border-border-dark dark:bg-surface-dark-dim dark:text-text-dark focus:outline-none focus:ring-2 focus:ring-primary"
+            className="w-full min-h-[120px] px-4 py-3 rounded-xl border border-border bg-surface text-text text-lg resize-none focus:outline-none focus:ring-2 focus:ring-primary"
           />
         </div>
 

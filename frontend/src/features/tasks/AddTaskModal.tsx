@@ -40,13 +40,13 @@ export default function AddTaskModal({ open, onClose, onSave }: AddTaskModalProp
     onClose();
   }
 
-  const inputStyle = "w-full min-h-[48px] px-4 rounded-xl border border-border bg-surface text-text text-lg dark:border-border-dark dark:bg-surface-dark-dim dark:text-text-dark focus:outline-none focus:ring-2 focus:ring-primary";
+  const inputStyle = "w-full min-h-[48px] px-4 rounded-xl border border-border bg-surface text-text text-lg focus:outline-none focus:ring-2 focus:ring-primary";
 
   return (
     <Modal open={open} onClose={handleClose} title="Add Task">
       <div className="space-y-6">
         <div>
-          <label className="block text-sm font-medium mb-2 text-text-muted dark:text-text-dark-muted">
+          <label className="block text-sm font-medium mb-2 text-text-muted">
             Task
           </label>
           <input
@@ -60,7 +60,7 @@ export default function AddTaskModal({ open, onClose, onSave }: AddTaskModalProp
         </div>
 
         <div>
-          <label className="block text-sm font-medium mb-2 text-text-muted dark:text-text-dark-muted">
+          <label className="block text-sm font-medium mb-2 text-text-muted">
             Assign to
           </label>
           <div className="flex flex-wrap gap-2">
@@ -69,7 +69,7 @@ export default function AddTaskModal({ open, onClose, onSave }: AddTaskModalProp
               className={`min-h-[48px] px-4 rounded-xl border text-base transition-colors ${
                 assignedTo === null
                   ? "border-primary bg-primary/10 text-primary font-semibold"
-                  : "border-border text-text-muted dark:border-border-dark dark:text-text-dark-muted"
+                  : "border-border text-text-muted"
               }`}
             >
               Unassigned
@@ -81,7 +81,7 @@ export default function AddTaskModal({ open, onClose, onSave }: AddTaskModalProp
                 className={`flex items-center gap-2 min-h-[48px] px-4 rounded-xl border text-base transition-colors ${
                   assignedTo === member.id
                     ? "border-primary bg-primary/10 text-primary font-semibold"
-                    : "border-border text-text-muted dark:border-border-dark dark:text-text-dark-muted"
+                    : "border-border text-text-muted"
                 }`}
               >
                 <div
@@ -95,7 +95,7 @@ export default function AddTaskModal({ open, onClose, onSave }: AddTaskModalProp
         </div>
 
         <div>
-          <label className="block text-sm font-medium mb-2 text-text-muted dark:text-text-dark-muted">
+          <label className="block text-sm font-medium mb-2 text-text-muted">
             Reminder
           </label>
           <input
@@ -107,7 +107,7 @@ export default function AddTaskModal({ open, onClose, onSave }: AddTaskModalProp
         </div>
 
         <div>
-          <label className="block text-sm font-medium mb-2 text-text-muted dark:text-text-dark-muted">
+          <label className="block text-sm font-medium mb-2 text-text-muted">
             Repeat
           </label>
           <div className="flex flex-wrap gap-2">
@@ -118,7 +118,7 @@ export default function AddTaskModal({ open, onClose, onSave }: AddTaskModalProp
                 className={`min-h-[48px] px-4 rounded-xl border text-base transition-colors ${
                   recurrence === opt.value
                     ? "border-primary bg-primary/10 text-primary font-semibold"
-                    : "border-border text-text-muted dark:border-border-dark dark:text-text-dark-muted"
+                    : "border-border text-text-muted"
                 }`}
               >
                 {opt.label}

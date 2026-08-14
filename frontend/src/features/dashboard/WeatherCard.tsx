@@ -35,16 +35,16 @@ export default function WeatherCard() {
 
   if (isLoading) {
     return (
-      <div className="rounded-2xl p-4 bg-white border border-border shadow-sm dark:bg-surface-dark-dim dark:border-border-dark">
-        <p className="text-text-muted dark:text-text-dark-muted">Loading...</p>
+      <div className="rounded-2xl p-4 bg-white border border-border shadow-sm">
+        <p className="text-text-muted">Loading...</p>
       </div>
     );
   }
 
   if (!weather) {
     return (
-      <div className="rounded-2xl p-4 bg-white border border-border shadow-sm dark:bg-surface-dark-dim dark:border-border-dark">
-        <p className="text-text-muted dark:text-text-dark-muted">Weather unavailable</p>
+      <div className="rounded-2xl p-4 bg-white border border-border shadow-sm">
+        <p className="text-text-muted">Weather unavailable</p>
       </div>
     );
   }

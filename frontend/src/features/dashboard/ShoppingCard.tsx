@@ -68,7 +68,7 @@ export default function ShoppingCard() {
               ) : (
                 <div className="w-4 h-4 shrink-0" />
               )}
-              <span className="text-base text-text dark:text-text-dark">
+              <span className="text-base text-text">
                 {group.name} — {group.count} item{group.count === 1 ? "" : "s"}
               </span>
             </div>
@@ -86,7 +86,7 @@ export default function ShoppingCard() {
                 className={`flex items-center justify-center w-5 h-5 rounded shrink-0 ${
                   item.is_purchased
                     ? "bg-success text-white"
-                    : "border-2 border-border dark:border-border-dark"
+                    : "border-2 border-border"
                 }`}
               >
                 {item.is_purchased && <CheckIcon />}
@@ -94,8 +94,8 @@ export default function ShoppingCard() {
               <span
                 className={`text-base ${
                   item.is_purchased
-                    ? "line-through text-text-muted dark:text-text-dark-muted"
-                    : "text-text dark:text-text-dark"
+                    ? "line-through text-text-muted"
+                    : "text-text"
                 }`}
               >
                 {item.name}

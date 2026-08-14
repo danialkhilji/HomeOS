@@ -144,7 +144,7 @@ export default function ShoppingPage() {
                           style={{ backgroundColor: group.storeColour }}
                         />
                       )}
-                      <h3 className="text-sm font-semibold uppercase tracking-wide text-text-muted dark:text-text-dark-muted">
+                      <h3 className="text-sm font-semibold uppercase tracking-wide text-text-muted">
                         {group.storeName}
                       </h3>
                     </div>

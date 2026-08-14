@@ -73,12 +73,12 @@ export function ShoppingRow({ item, onToggle, onEdit, onDelete }: { item: Shoppi
     <div
       ref={setNodeRef}
       style={style}
-      className="flex items-center gap-2 py-3 px-3 rounded-xl bg-white border border-border dark:bg-surface-dark-dim dark:border-border-dark"
+      className="flex items-center gap-2 py-3 px-3 rounded-xl bg-white border border-border"
     >
       <div
         {...attributes}
         {...listeners}
-        className="shrink-0 cursor-grab active:cursor-grabbing text-text-muted dark:text-text-dark-muted touch-none"
+        className="shrink-0 cursor-grab active:cursor-grabbing text-text-muted touch-none"
       >
         <GripIcon />
       </div>
@@ -88,7 +88,7 @@ export function ShoppingRow({ item, onToggle, onEdit, onDelete }: { item: Shoppi
         className={`shrink-0 transition-colors ${
           item.is_purchased
             ? "text-success"
-            : "text-border dark:text-border-dark"
+            : "text-border"
         }`}
       >
         <CheckBox checked={item.is_purchased} />
@@ -104,8 +104,8 @@ export function ShoppingRow({ item, onToggle, onEdit, onDelete }: { item: Shoppi
         <p
           className={`text-lg transition-colors ${
             item.is_purchased
-              ? "line-through text-text-muted dark:text-text-dark-muted"
-              : "text-text dark:text-text-dark"
+              ? "line-through text-text-muted"
+              : "text-text"
           }`}
         >
           {item.name}
@@ -116,7 +116,7 @@ export function ShoppingRow({ item, onToggle, onEdit, onDelete }: { item: Shoppi
               className="w-3 h-3 rounded-full shrink-0"
               style={{ backgroundColor: item.store.colour }}
             />
-            <span className="text-sm text-text-muted dark:text-text-dark-muted">
+            <span className="text-sm text-text-muted">
               {item.store.name}
             </span>
           </div>

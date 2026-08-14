@@ -21,12 +21,12 @@ export default function NotesCard() {
                     className="w-4 h-4 rounded-full shrink-0"
                     style={{ backgroundColor: note.author.colour }}
                   />
-                  <span className="text-sm font-semibold text-text dark:text-text-dark">
+                  <span className="text-sm font-semibold text-text">
                     {note.author.name}
                   </span>
                 </div>
               )}
-              <p className="text-base text-text-muted dark:text-text-dark-muted line-clamp-2">
+              <p className="text-base text-text-muted line-clamp-2">
                 {note.content}
               </p>
             </div>

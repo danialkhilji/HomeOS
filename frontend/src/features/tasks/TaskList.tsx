@@ -73,12 +73,12 @@ export function TaskRow({ task, onToggle, onEdit, onDelete }: { task: Task; onTo
     <div
       ref={setNodeRef}
       style={style}
-      className="flex items-center gap-2 py-3 px-3 rounded-xl bg-white border border-border dark:bg-surface-dark-dim dark:border-border-dark"
+      className="flex items-center gap-2 py-3 px-3 rounded-xl bg-white border border-border"
     >
       <div
         {...attributes}
         {...listeners}
-        className="shrink-0 cursor-grab active:cursor-grabbing text-text-muted dark:text-text-dark-muted touch-none"
+        className="shrink-0 cursor-grab active:cursor-grabbing text-text-muted touch-none"
       >
         <GripIcon />
       </div>
@@ -88,7 +88,7 @@ export function TaskRow({ task, onToggle, onEdit, onDelete }: { task: Task; onTo
         className={`shrink-0 transition-colors ${
           task.is_completed
             ? "text-success"
-            : "text-border dark:text-border-dark"
+            : "text-border"
         }`}
       >
         <CheckCircle filled={task.is_completed} />
@@ -104,8 +104,8 @@ export function TaskRow({ task, onToggle, onEdit, onDelete }: { task: Task; onTo
         <p
           className={`text-lg transition-colors ${
             task.is_completed
-              ? "line-through text-text-muted dark:text-text-dark-muted"
-              : "text-text dark:text-text-dark"
+              ? "line-through text-text-muted"
+              : "text-text"
           }`}
         >
           {task.title}
@@ -116,7 +116,7 @@ export function TaskRow({ task, onToggle, onEdit, onDelete }: { task: Task; onTo
               className="w-3 h-3 rounded-full shrink-0"
               style={{ backgroundColor: task.member.colour }}
             />
-            <span className="text-sm text-text-muted dark:text-text-dark-muted">
+            <span className="text-sm text-text-muted">
               {task.member.name}
             </span>
           </div>
@@ -127,13 +127,13 @@ export function TaskRow({ task, onToggle, onEdit, onDelete }: { task: Task; onTo
               <span className={`text-xs ${
                 new Date(task.reminder_at) < new Date() && !task.is_completed
                   ? "text-danger font-semibold"
-                  : "text-text-muted dark:text-text-dark-muted"
+                  : "text-text-muted"
               }`}>
                 🔔 {new Date(task.reminder_at).toLocaleDateString("en-GB", { day: "numeric", month: "short" })} {new Date(task.reminder_at).toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" })}
               </span>
             )}
             {task.recurrence !== "none" && (
-              <span className="text-xs text-text-muted dark:text-text-dark-muted">
+              <span className="text-xs text-text-muted">
                 🔁 {task.recurrence}
               </span>
             )}
