@@ -70,10 +70,13 @@ async def get_weather() -> WeatherResponse:
         code = current.get("weathercode", 0)
         condition, icon = WEATHER_CODES.get(code, ("Unknown", "cloudy"))
 
+        wind_speed = current.get("windspeed", 0)
+
         result = WeatherResponse(
             temperature=round(current["temperature"], 1),
             condition=condition,
             icon=icon,
+            wind_speed=round(wind_speed, 1),
         )
 
         _cache["data"] = result

@@ -866,12 +866,50 @@ New modules and features to be added.
 
 ---
 
+### Animated Weather Card Backgrounds
+
+Pure CSS weather animations — dynamic gradient backgrounds with animated effects per weather type.
+
+#### Task 1 — Weather Background Styles
+
+- Create CSS keyframe animations and gradient backgrounds for each weather type:
+  - Sunny — warm yellow-to-blue gradient + subtle sun glow pulse
+  - Partly Cloudy — blue-to-grey gradient
+  - Cloudy — grey gradient + slow-drifting cloud shapes
+  - Rainy — dark blue gradient + falling rain drop animation
+  - Snowy — ice blue gradient + floating snowflake animation
+  - Stormy — dark purple gradient + lightning flash effect
+  - Windy — teal gradient + horizontal streak animation
+
+#### Task 2 — Update WeatherCard Component
+
+- Map weather icon codes from the API to the CSS background classes.
+- Apply animated background to WeatherCard.
+- Adjust text colour for readability on each background (white on dark, dark on light).
+- Ensure animations work in both light and dark mode.
+
+#### Task 3 — Performance & Polish
+
+- Ensure animations run at 60fps using hardware-accelerated properties (transform, opacity).
+- Disable animations on low-power mode or prefer-reduced-motion.
+- Test on iPad and phone.
+
+---
+
 ### UI Theme Upgrade
 
 - Redesign the overall look and feel of the app.
 - Explore modern colour palettes, typography, and card styles.
 - Improve visual hierarchy and spacing.
 - Make the app feel more polished and premium on the touchscreen.
+
+---
+
+### Rotation Duty Tracker
+
+- Check dad's rotation duty schedule from an external source.
+- Display upcoming duties for the next 7 days on the dashboard.
+- Highlight today's duty if one is scheduled.
 
 ---
 
@@ -886,14 +924,6 @@ New modules and features to be added.
 
 - Track household spending.
 - Display on dashboard.
-
----
-
-### Rotation Duty Tracker
-
-- Check dad's rotation duty schedule from an external source.
-- Display upcoming duties for the next 7 days on the dashboard.
-- Highlight today's duty if one is scheduled.
 
 ---
 

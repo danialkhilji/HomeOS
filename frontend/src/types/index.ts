@@ -86,6 +86,7 @@ export interface Weather {
   temperature: number;
   condition: string;
   icon: string;
+  wind_speed: number;
 }
 
 export interface PrayerTime {
