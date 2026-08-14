@@ -1,3 +1,19 @@
+/* GPU acceleration for all animated pseudo-elements */
+.weather-sunny::before,
+.weather-partly-cloudy::before,
+.weather-cloudy::before,
+.weather-cloudy::after,
+.weather-rainy::before,
+.weather-rainy::after,
+.weather-snowy::before,
+.weather-snowy::after,
+.weather-stormy::before,
+.weather-windy::before,
+.weather-windy::after {
+  will-change: transform, opacity;
+  transform: translateZ(0);
+}
+
 /* Sunny — warm gradient + sun glow pulse */
 .weather-sunny {
   background: linear-gradient(135deg, #f59e0b, #3b82f6);
@@ -207,4 +223,21 @@
   0% { transform: translateX(0); opacity: 0; }
   20% { opacity: 1; }
   100% { transform: translateX(250px); opacity: 0; }
+}
+
+/* Respect user preference for reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .weather-sunny::before,
+  .weather-partly-cloudy::before,
+  .weather-cloudy::before,
+  .weather-cloudy::after,
+  .weather-rainy::before,
+  .weather-rainy::after,
+  .weather-snowy::before,
+  .weather-snowy::after,
+  .weather-stormy::before,
+  .weather-windy::before,
+  .weather-windy::after {
+    animation: none;
+  }
 }
