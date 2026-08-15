@@ -155,3 +155,66 @@ async def test_delete_task(client):
 async def test_delete_nonexistent_task(client):
     response = await client.delete("/api/v1/tasks/999")
     assert response.status_code == 404
+
+
+@pytest.mark.asyncio
+async def test_create_task_with_reminder(client):
+    response = await client.post("/api/v1/tasks", json={
+        "title": "Dentist",
+        "reminder_at": "2026-08-15T14:00:00",
+    })
+    assert response.status_code == 201
+    data = response.json()
+    assert data["reminder_at"] is not None
+    assert data["recurrence"] == "none"
+
+
+@pytest.mark.asyncio
+async def test_create_task_with_recurrence(client):
+    response = await client.post("/api/v1/tasks", json={
+        "title": "Dishes",
+        "recurrence": "daily",
+    })
+    assert response.status_code == 201
+    assert response.json()["recurrence"] == "daily"
+
+
+@pytest.mark.asyncio
+async def test_create_task_invalid_recurrence(client):
+    response = await client.post("/api/v1/tasks", json={
+        "title": "Dishes",
+        "recurrence": "hourly",
+    })
+    assert response.status_code == 422
+
+
+@pytest.mark.asyncio
+async def test_update_task_reminder_and_recurrence(client):
+    create = await client.post("/api/v1/tasks", json={"title": "Dishes"})
+    task_id = create.json()["id"]
+
+    response = await client.put(f"/api/v1/tasks/{task_id}", json={
+        "title": "Dishes",
+        "reminder_at": "2026-08-20T09:00:00",
+        "recurrence": "weekly",
+    })
+    assert response.status_code == 200
+    data = response.json()
+    assert data["reminder_at"] is not None
+    assert data["recurrence"] == "weekly"
+
+
+@pytest.mark.asyncio
+async def test_clear_reminder(client):
+    create = await client.post("/api/v1/tasks", json={
+        "title": "Dentist",
+        "reminder_at": "2026-08-15T14:00:00",
+    })
+    task_id = create.json()["id"]
+
+    response = await client.put(f"/api/v1/tasks/{task_id}", json={
+        "title": "Dentist",
+        "reminder_at": None,
+    })
+    assert response.status_code == 200
+    assert response.json()["reminder_at"] is None

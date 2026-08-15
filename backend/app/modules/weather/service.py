@@ -57,7 +57,10 @@ async def get_weather() -> WeatherResponse:
     params = {
         "latitude": settings.WEATHER_LATITUDE,
         "longitude": settings.WEATHER_LONGITUDE,
-        "current_weather": True,
+        "current": "temperature_2m,apparent_temperature,weather_code,wind_speed_10m",
+        "daily": "temperature_2m_max,temperature_2m_min,precipitation_probability_max",
+        "timezone": "auto",
+        "forecast_days": 1,
     }
 
     try:
@@ -66,14 +69,21 @@ async def get_weather() -> WeatherResponse:
             response.raise_for_status()
             data = response.json()
 
-        current = data["current_weather"]
-        code = current.get("weathercode", 0)
+        current = data["current"]
+        code = current.get("weather_code", 0)
         condition, icon = WEATHER_CODES.get(code, ("Unknown", "cloudy"))
 
+        daily = data.get("daily", {})
+
         result = WeatherResponse(
-            temperature=round(current["temperature"], 1),
+            temperature=round(current["temperature_2m"], 1),
             condition=condition,
             icon=icon,
+            wind_speed=round(current.get("wind_speed_10m", 0), 1),
+            feels_like=round(current.get("apparent_temperature", 0), 1),
+            rain_chance=daily.get("precipitation_probability_max", [0])[0],
+            temp_high=round(daily.get("temperature_2m_max", [0])[0], 1),
+            temp_low=round(daily.get("temperature_2m_min", [0])[0], 1),
         )
 
         _cache["data"] = result

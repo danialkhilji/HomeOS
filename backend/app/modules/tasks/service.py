@@ -1,6 +1,6 @@
-from datetime import datetime, timezone
+from datetime import date, datetime, timezone
 
-from sqlalchemy import select
+from sqlalchemy import select, or_, and_, func
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.exceptions import NotFoundError
@@ -23,11 +23,44 @@ async def get_all_tasks(db: AsyncSession, assigned_to: int | None = None) -> lis
     return list(result.scalars().all())
 
 
+async def get_tasks_by_date(db: AsyncSession, target_date: date) -> list[Task]:
+    today = date.today()
+    weekday = target_date.weekday()
+    day_of_month = target_date.day
+
+    start_of_day = datetime(target_date.year, target_date.month, target_date.day)
+    end_of_day = datetime(target_date.year, target_date.month, target_date.day, 23, 59, 59)
+
+    conditions = [
+        and_(Task.reminder_at >= start_of_day, Task.reminder_at <= end_of_day),
+        Task.recurrence == "daily",
+    ]
+
+    if weekday == target_date.weekday():
+        conditions.append(
+            and_(Task.recurrence == "weekly", func.strftime("%w", Task.created_at) == str(target_date.isoweekday() % 7))
+        )
+
+    conditions.append(
+        and_(Task.recurrence == "monthly", func.strftime("%d", Task.created_at) == f"{day_of_month:02d}")
+    )
+
+    if target_date == today:
+        conditions.append(
+            and_(Task.recurrence == "none", Task.reminder_at.is_(None))
+        )
+
+    result = await db.execute(
+        select(Task).where(or_(*conditions)).order_by(Task.sort_order, Task.created_at)
+    )
+    return list(result.scalars().all())
+
+
 async def create_task(db: AsyncSession, data: TaskCreate) -> Task:
     if data.assigned_to is not None:
         await _verify_member_exists(db, data.assigned_to)
 
-    task = Task(title=data.title, assigned_to=data.assigned_to)
+    task = Task(title=data.title, assigned_to=data.assigned_to, reminder_at=data.reminder_at, recurrence=data.recurrence.value)
     db.add(task)
     await db.flush()
     await db.refresh(task)
@@ -45,6 +78,8 @@ async def update_task(db: AsyncSession, task_id: int, data: TaskUpdate) -> Task:
 
     task.title = data.title
     task.assigned_to = data.assigned_to
+    task.reminder_at = data.reminder_at
+    task.recurrence = data.recurrence.value
     await db.flush()
     await db.refresh(task)
     return task

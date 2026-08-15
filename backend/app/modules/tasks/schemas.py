@@ -1,6 +1,14 @@
 from datetime import datetime
+from enum import Enum
 
 from pydantic import BaseModel, Field
+
+
+class Recurrence(str, Enum):
+    none = "none"
+    daily = "daily"
+    weekly = "weekly"
+    monthly = "monthly"
 
 
 class MemberSummary(BaseModel):
@@ -14,11 +22,15 @@ class MemberSummary(BaseModel):
 class TaskCreate(BaseModel):
     title: str = Field(min_length=1, max_length=200)
     assigned_to: int | None = None
+    reminder_at: datetime | None = None
+    recurrence: Recurrence = Recurrence.none
 
 
 class TaskUpdate(BaseModel):
     title: str = Field(min_length=1, max_length=200)
     assigned_to: int | None = None
+    reminder_at: datetime | None = None
+    recurrence: Recurrence = Recurrence.none
 
 
 class ReorderRequest(BaseModel):
@@ -31,6 +43,8 @@ class TaskResponse(BaseModel):
     assigned_to: int | None
     is_completed: bool
     completed_at: datetime | None
+    reminder_at: datetime | None
+    recurrence: str
     created_at: datetime
     member: MemberSummary | None = None
 

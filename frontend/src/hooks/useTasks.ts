@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { fetchTasks, createTask, updateTask, toggleTask, reorderTasks, deleteTask } from "../api/tasks";
+import { fetchTasks, fetchTasksByDate, createTask, updateTask, toggleTask, reorderTasks, deleteTask } from "../api/tasks";
 import type { CreateTaskPayload, UpdateTaskPayload } from "../api/tasks";
 
 const TASKS_KEY = ["tasks"];
@@ -8,6 +8,14 @@ export function useTasks(assignedTo?: number) {
   return useQuery({
     queryKey: assignedTo !== undefined ? [...TASKS_KEY, assignedTo] : TASKS_KEY,
     queryFn: () => fetchTasks(assignedTo),
+  });
+}
+
+export function useTasksByDate(date: string | null) {
+  return useQuery({
+    queryKey: ["tasks-by-date", date],
+    queryFn: () => fetchTasksByDate(date!),
+    enabled: date !== null,
   });
 }
 

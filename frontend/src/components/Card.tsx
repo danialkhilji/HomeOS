@@ -8,9 +8,9 @@ interface CardProps {
 
 export default function Card({ children, title, onClick }: CardProps) {
   const card = (
-    <div className="rounded-2xl p-4 bg-white border border-border shadow-sm dark:bg-surface-dark-dim dark:border-border-dark dark:shadow-none">
+    <div className="rounded-2xl p-4 bg-white border border-border shadow-sm">
       {title && (
-        <h3 className="text-lg font-semibold mb-3 text-text dark:text-text-dark">
+        <h3 className="text-lg font-semibold mb-3 text-text">
           {title}
         </h3>
       )}

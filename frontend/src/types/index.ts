@@ -17,6 +17,8 @@ export interface Task {
   assigned_to: number | null;
   is_completed: boolean;
   completed_at: string | null;
+  reminder_at: string | null;
+  recurrence: string;
   created_at: string;
   member: MemberSummary | null;
 }
@@ -43,6 +45,13 @@ export interface ShoppingItem {
   store: StoreSummary | null;
 }
 
+export interface QuickAddItem {
+  id: number;
+  name: string;
+  emoji: string;
+  sort_order: number;
+}
+
 export interface Note {
   id: number;
   content: string;
@@ -51,10 +60,37 @@ export interface Note {
   author: MemberSummary | null;
 }
 
+export interface Birthday {
+  id: number;
+  name: string;
+  month: number;
+  day: number;
+  created_at: string;
+}
+
+export interface UpcomingBirthday {
+  id: number;
+  name: string;
+  month: number;
+  day: number;
+  days_until: number;
+}
+
+export interface CalendarDateResponse {
+  date: string;
+  tasks: Task[];
+  birthdays: Birthday[];
+}
+
 export interface Weather {
   temperature: number;
   condition: string;
   icon: string;
+  wind_speed: number;
+  feels_like: number;
+  rain_chance: number;
+  temp_high: number;
+  temp_low: number;
 }
 
 export interface PrayerTime {

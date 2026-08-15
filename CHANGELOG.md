@@ -1,5 +1,36 @@
 # Changelog
 
+## v1.3
+
+### New Features
+- Dashboard calendar with expandable modal, month/year dropdowns, swipe navigation, and date selection
+- Task reminders with date/time picker and overdue highlighting on dashboard
+- Recurring tasks (daily/weekly/monthly) with automatic reset via APScheduler
+- Calendar-task integration — select any date to see its tasks
+- Birthday tracking via calendar — add birthdays for anyone, yearly repeat, upcoming birthdays card on dashboard
+- Calendar as core system — unified /api/v1/calendar/by-date endpoint returning tasks and birthdays
+- Animated weather card backgrounds (sunny, cloudy, rainy, snowy, stormy, windy) with CSS keyframes
+- Enhanced weather data — feels like, rain chance, daily high/low from Open-Meteo
+- Mobile app via PWA + Tailscale — responsive UI, installable on phone, remote access
+- Custom app icon (Figma-designed HomeOS icon)
+- Quick-add shopping items with emoji buttons and custom items in Settings
+
+### Improvements
+- Removed dark mode (unused by family)
+- Auto-scroll focused input into view when keyboard opens in modals
+- Weather card vertically and horizontally centred
+- Responsive font sizes (14px phone, 18px tablet)
+- Calendar grid stays fixed while tasks/birthdays scroll independently
+- Add Birthday and Today buttons always visible at bottom of calendar
+
+### Infrastructure
+- Moved birthdays module into calendar module
+- Moved calendar components to features/calendar/ folder
+- Moved project docs to private KnowledgeBase repo
+- 119 backend tests total
+
+---
+
 ## v1.2
 
 ### New Features

@@ -1,0 +1,56 @@
+import { motion } from "framer-motion";
+import { useQuickAddItems } from "../../hooks/useQuickAdd";
+
+const DEFAULT_ITEMS = [
+  { emoji: "🥛", name: "Milk" },
+  { emoji: "🥚", name: "Eggs" },
+  { emoji: "🍞", name: "Bread" },
+  { emoji: "🍌", name: "Banana" },
+  { emoji: "🍎", name: "Apple" },
+  { emoji: "🥔", name: "Potato" },
+  { emoji: "🧅", name: "Onion" },
+  { emoji: "🍅", name: "Tomato" },
+  { emoji: "🍇", name: "Grapes" },
+  { emoji: "🥣", name: "Yoghurt" },
+];
+
+interface QuickAddBarProps {
+  onAdd: (name: string) => void;
+  existingItems: string[];
+}
+
+export default function QuickAddBar({ onAdd, existingItems }: QuickAddBarProps) {
+  const { data: customItems = [] } = useQuickAddItems();
+  const items = customItems.length > 0
+    ? customItems.map((i) => ({ emoji: i.emoji, name: i.name }))
+    : DEFAULT_ITEMS;
+
+  const existingLower = existingItems.map((n) => n.toLowerCase());
+
+  return (
+    <div className="flex flex-wrap gap-2 mb-4">
+      {items.map((item) => {
+        const exists = existingLower.includes(item.name.toLowerCase());
+
+        return (
+          <motion.button
+            key={item.name}
+            whileTap={{ scale: 0.8 }}
+            transition={{ type: "spring", stiffness: 400, damping: 20 }}
+            onClick={() => {
+              if (!exists) onAdd(item.name);
+            }}
+            className={`flex items-center gap-1.5 px-3 py-2 rounded-xl border text-sm transition-colors ${
+              exists
+                ? "opacity-30 border-border"
+                : "border-border bg-white active:bg-surface-dim"
+            }`}
+          >
+            <span className="text-lg">{item.emoji}</span>
+            <span className="text-text">{item.name}</span>
+          </motion.button>
+        );
+      })}
+    </div>
+  );
+}

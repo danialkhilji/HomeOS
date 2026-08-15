@@ -4,11 +4,15 @@ import type { Task } from "../types";
 export interface CreateTaskPayload {
   title: string;
   assigned_to?: number | null;
+  reminder_at?: string | null;
+  recurrence?: string;
 }
 
 export interface UpdateTaskPayload {
   title: string;
   assigned_to?: number | null;
+  reminder_at?: string | null;
+  recurrence?: string;
 }
 
 export async function fetchTasks(assignedTo?: number): Promise<Task[]> {
@@ -34,6 +38,11 @@ export async function toggleTask(id: number): Promise<Task> {
 
 export async function reorderTasks(ids: number[]): Promise<void> {
   await apiClient.patch("/tasks/reorder", { ids });
+}
+
+export async function fetchTasksByDate(date: string): Promise<Task[]> {
+  const response = await apiClient.get<Task[]>("/tasks/by-date", { params: { date } });
+  return response.data;
 }
 
 export async function deleteTask(id: number): Promise<void> {

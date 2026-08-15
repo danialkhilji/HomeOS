@@ -12,6 +12,7 @@ function CheckIcon() {
 export default function TasksCard() {
   const { data: tasks = [], isLoading } = useTasks();
   const toggleTask = useToggleTask();
+  const now = new Date();
 
   return (
     <Card title="Today's Tasks">
@@ -21,48 +22,70 @@ export default function TasksCard() {
         <EmptyState message="No tasks yet." />
       ) : (
         <div className="space-y-2">
-          {tasks.map((task) => (
-            <div
-              key={task.id}
-              onClick={() => toggleTask.mutate(task.id)}
-              className="flex items-center gap-3 py-1.5 cursor-pointer"
-            >
+          {tasks.map((task) => {
+            const isOverdue = task.reminder_at && new Date(task.reminder_at) < now && !task.is_completed;
+
+            return (
               <div
-                className={`flex items-center justify-center w-6 h-6 rounded-full shrink-0 ${
-                  task.is_completed
-                    ? "bg-success text-white"
-                    : "border-2 border-border dark:border-border-dark"
+                key={task.id}
+                onClick={() => toggleTask.mutate(task.id)}
+                className={`flex items-center gap-3 py-1.5 cursor-pointer rounded-lg px-1 ${
+                  isOverdue ? "bg-danger/10" : ""
                 }`}
               >
-                {task.is_completed && <CheckIcon />}
-              </div>
-
-              <div className="flex-1 min-w-0">
-                <span
-                  className={`text-base ${
+                <div
+                  className={`flex items-center justify-center w-6 h-6 rounded-full shrink-0 ${
                     task.is_completed
-                      ? "line-through text-text-muted dark:text-text-dark-muted"
-                      : "text-text dark:text-text-dark"
+                      ? "bg-success text-white"
+                      : "border-2 border-border"
                   }`}
                 >
-                  {task.member && (
-                    <>
-                      <span className="font-semibold">{task.member.name}</span>
-                      <span className="text-text-muted dark:text-text-dark-muted"> — </span>
-                    </>
-                  )}
-                  {task.title}
-                </span>
-              </div>
+                  {task.is_completed && <CheckIcon />}
+                </div>
 
-              {task.member && (
-                <div
-                  className="w-3 h-3 rounded-full shrink-0"
-                  style={{ backgroundColor: task.member.colour }}
-                />
-              )}
-            </div>
-          ))}
+                <div className="flex-1 min-w-0">
+                  <span
+                    className={`text-base ${
+                      task.is_completed
+                        ? "line-through text-text-muted"
+                        : isOverdue
+                          ? "text-danger font-semibold"
+                          : "text-text"
+                    }`}
+                  >
+                    {task.member && (
+                      <>
+                        <span className="font-semibold">{task.member.name}</span>
+                        <span className={isOverdue ? "text-danger" : "text-text-muted"}> — </span>
+                      </>
+                    )}
+                    {task.title}
+                  </span>
+                  {(task.reminder_at || task.recurrence !== "none") && (
+                    <div className="flex items-center gap-2 mt-0.5">
+                      {task.reminder_at && (
+                        <span className={`text-xs ${isOverdue ? "text-danger font-semibold" : "text-text-muted"}`}>
+                          🔔 {new Date(task.reminder_at).toLocaleDateString("en-GB", { day: "numeric", month: "short" })} {new Date(task.reminder_at).toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" })}
+                        </span>
+                      )}
+                      {task.recurrence !== "none" && (
+                        <span className="text-xs text-text-muted">
+                          🔁 {task.recurrence}
+                        </span>
+                      )}
+                    </div>
+                  )}
+                </div>
+
+                {task.member && (
+                  <div
+                    className="w-3 h-3 rounded-full shrink-0"
+                    style={{ backgroundColor: task.member.colour }}
+                  />
+                )}
+              </div>
+            );
+          })}
         </div>
       )}
     </Card>
