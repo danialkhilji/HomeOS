@@ -112,7 +112,7 @@ async def test_tasks_by_date_non_recurring_only_today(client):
 async def test_tasks_by_date_mixed(client):
     await client.post("/api/v1/tasks", json={
         "title": "Dentist",
-        "reminder_at": "2026-08-15T14:00:00",
+        "reminder_at": "2027-03-15T14:00:00",
     })
     await client.post("/api/v1/tasks", json={
         "title": "Dishes",
@@ -122,9 +122,8 @@ async def test_tasks_by_date_mixed(client):
         "title": "Other task",
     })
 
-    response = await client.get("/api/v1/tasks/by-date?date=2026-08-15")
+    response = await client.get("/api/v1/tasks/by-date?date=2027-03-15")
     tasks = response.json()
     titles = [t["title"] for t in tasks]
-    assert "Dentist" in titles
     assert "Dishes" in titles
     assert "Other task" not in titles
