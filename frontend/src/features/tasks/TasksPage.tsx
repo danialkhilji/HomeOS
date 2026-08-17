@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { DndContext, closestCenter, PointerSensor, TouchSensor, useSensor, useSensors } from "@dnd-kit/core";
 import type { DragEndEvent } from "@dnd-kit/core";
 import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
@@ -18,6 +18,10 @@ export default function TasksPage() {
   const deleteTask = useDeleteTask();
   const [addModalOpen, setAddModalOpen] = useState(false);
   const [editingTask, setEditingTask] = useState<Task | null>(null);
+  const [showCompleted, setShowCompleted] = useState(false);
+
+  const activeTasks = useMemo(() => tasks.filter((t) => !t.is_completed), [tasks]);
+  const completedTasks = useMemo(() => tasks.filter((t) => t.is_completed), [tasks]);
 
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 8 } }),
@@ -43,11 +47,11 @@ export default function TasksPage() {
     const { active, over } = event;
     if (!over || active.id === over.id) return;
 
-    const oldIndex = tasks.findIndex((t) => t.id === active.id);
-    const newIndex = tasks.findIndex((t) => t.id === over.id);
+    const oldIndex = activeTasks.findIndex((t) => t.id === active.id);
+    const newIndex = activeTasks.findIndex((t) => t.id === over.id);
     if (oldIndex === -1 || newIndex === -1) return;
 
-    const reordered = [...tasks];
+    const reordered = [...activeTasks];
     const [moved] = reordered.splice(oldIndex, 1);
     reordered.splice(newIndex, 0, moved!);
 
@@ -67,25 +71,56 @@ export default function TasksPage() {
           action={<Button onClick={() => setAddModalOpen(true)}>Add Task</Button>}
         />
       ) : (
-        <DndContext
-          sensors={sensors}
-          collisionDetection={closestCenter}
-          onDragEnd={handleDragEnd}
-        >
-          <SortableContext items={tasks.map((t) => t.id)} strategy={verticalListSortingStrategy}>
-            <div className="space-y-2">
-              {tasks.map((task) => (
-                <TaskRow
-                  key={task.id}
-                  task={task}
-                  onToggle={() => toggleTask.mutate(task.id)}
-                  onEdit={() => setEditingTask(task)}
-                  onDelete={() => deleteTask.mutate(task.id)}
-                />
-              ))}
+        <>
+          <DndContext
+            sensors={sensors}
+            collisionDetection={closestCenter}
+            onDragEnd={handleDragEnd}
+          >
+            <SortableContext items={activeTasks.map((t) => t.id)} strategy={verticalListSortingStrategy}>
+              <div className="space-y-2">
+                {activeTasks.map((task) => (
+                  <TaskRow
+                    key={task.id}
+                    task={task}
+                    onToggle={() => toggleTask.mutate(task.id)}
+                    onEdit={() => setEditingTask(task)}
+                    onDelete={() => deleteTask.mutate(task.id)}
+                  />
+                ))}
+              </div>
+            </SortableContext>
+          </DndContext>
+
+          {activeTasks.length === 0 && !showCompleted && (
+            <p className="text-center text-text-muted py-8">All tasks completed!</p>
+          )}
+
+          {completedTasks.length > 0 && (
+            <div className="mt-4">
+              <button
+                onClick={() => setShowCompleted(!showCompleted)}
+                className="text-sm text-text-muted active:text-primary transition-colors"
+              >
+                {showCompleted ? "Hide" : "Show"} completed ({completedTasks.length})
+              </button>
+
+              {showCompleted && (
+                <div className="mt-3 pt-3 border-t border-border space-y-2">
+                  {completedTasks.map((task) => (
+                    <TaskRow
+                      key={task.id}
+                      task={task}
+                      onToggle={() => toggleTask.mutate(task.id)}
+                      onEdit={() => setEditingTask(task)}
+                      onDelete={() => deleteTask.mutate(task.id)}
+                    />
+                  ))}
+                </div>
+              )}
             </div>
-          </SortableContext>
-        </DndContext>
+          )}
+        </>
       )}
 
       <AddTaskModal
