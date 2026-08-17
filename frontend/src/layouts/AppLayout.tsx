@@ -49,10 +49,10 @@ export default function AppLayout() {
         <span className="text-lg font-bold text-primary shrink-0">HomeOS</span>
         <div className="flex items-center gap-2 sm:gap-3 text-xs sm:text-sm text-text-muted overflow-hidden">
           {prayerData?.hijri_date && (
-            <span className="hidden sm:inline">{prayerData.hijri_date}</span>
+            <span>{prayerData.hijri_date}</span>
           )}
           {prayerData?.hijri_date && (
-            <span className="hidden sm:inline text-text-muted">|</span>
+            <span className="text-text-muted">|</span>
           )}
           <span className="truncate">{formatDate(now)}</span>
           <span className="font-semibold text-text shrink-0">{formatTime(now)}</span>
