@@ -40,6 +40,9 @@ export default function ShoppingPage() {
     useSensor(TouchSensor, { activationConstraint: { delay: 200, tolerance: 5 } }),
   );
 
+  const activeItems = useMemo(() => items.filter((i) => !i.is_purchased), [items]);
+  const purchasedItems = useMemo(() => items.filter((i) => i.is_purchased), [items]);
+
   const groups = useMemo(() => {
     const groupMap = new Map<number | null, StoreGroup>();
 
@@ -50,7 +53,7 @@ export default function ShoppingPage() {
       items: [],
     });
 
-    for (const item of items) {
+    for (const item of activeItems) {
       const key = item.store_id;
       if (!groupMap.has(key)) {
         groupMap.set(key, {
@@ -74,7 +77,7 @@ export default function ShoppingPage() {
       }
     }
     return result;
-  }, [items]);
+  }, [activeItems]);
 
   function handleAdd(name: string, storeId: number | null) {
     createItem.mutate({ name, store_id: storeId }, {
@@ -94,11 +97,11 @@ export default function ShoppingPage() {
     const { active, over } = event;
     if (!over || active.id === over.id) return;
 
-    const oldIndex = items.findIndex((i) => i.id === active.id);
-    const newIndex = items.findIndex((i) => i.id === over.id);
+    const oldIndex = activeItems.findIndex((i) => i.id === active.id);
+    const newIndex = activeItems.findIndex((i) => i.id === over.id);
     if (oldIndex === -1 || newIndex === -1) return;
 
-    const reordered = [...items];
+    const reordered = [...activeItems];
     const [moved] = reordered.splice(oldIndex, 1);
     reordered.splice(newIndex, 0, moved!);
 
@@ -127,56 +130,68 @@ export default function ShoppingPage() {
           action={<Button onClick={() => setAddModalOpen(true)}>Add Item</Button>}
         />
       ) : (
-        <DndContext
-          sensors={sensors}
-          collisionDetection={closestCenter}
-          onDragEnd={handleDragEnd}
-        >
-          <SortableContext items={items.map((i) => i.id)} strategy={verticalListSortingStrategy}>
-            {hasStores ? (
-              <div className="space-y-6">
-                {groups.map((group) => (
-                  <div key={group.storeId ?? "any"}>
-                    <div className="flex items-center gap-2 mb-2">
-                      {group.storeColour && (
-                        <div
-                          className="w-4 h-4 rounded-full shrink-0"
-                          style={{ backgroundColor: group.storeColour }}
-                        />
-                      )}
-                      <h3 className="text-sm font-semibold uppercase tracking-wide text-text-muted">
-                        {group.storeName}
-                      </h3>
-                    </div>
-                    <div className="space-y-2">
-                      {group.items.map((item) => (
-                        <ShoppingRow
-                          key={item.id}
-                          item={item}
-                          onToggle={() => toggleItem.mutate(item.id)}
-                          onEdit={() => setEditingItem(item)}
-                          onDelete={() => deleteItem.mutate(item.id)}
-                        />
-                      ))}
-                    </div>
+        <>
+          {activeItems.length === 0 ? (
+            <p className="text-center text-text-muted py-8">All items purchased!</p>
+          ) : (
+            <DndContext
+              sensors={sensors}
+              collisionDetection={closestCenter}
+              onDragEnd={handleDragEnd}
+            >
+              <SortableContext items={activeItems.map((i) => i.id)} strategy={verticalListSortingStrategy}>
+                {hasStores ? (
+                  <div className="space-y-6">
+                    {groups.map((group) => (
+                      <div key={group.storeId ?? "any"}>
+                        <div className="flex items-center gap-2 mb-2">
+                          {group.storeColour && (
+                            <div
+                              className="w-4 h-4 rounded-full shrink-0"
+                              style={{ backgroundColor: group.storeColour }}
+                            />
+                          )}
+                          <h3 className="text-sm font-semibold uppercase tracking-wide text-text-muted">
+                            {group.storeName}
+                          </h3>
+                        </div>
+                        <div className="space-y-2">
+                          {group.items.map((item) => (
+                            <ShoppingRow
+                              key={item.id}
+                              item={item}
+                              onToggle={() => toggleItem.mutate(item.id)}
+                              onEdit={() => setEditingItem(item)}
+                              onDelete={() => deleteItem.mutate(item.id)}
+                            />
+                          ))}
+                        </div>
+                      </div>
+                    ))}
                   </div>
-                ))}
-              </div>
-            ) : (
-              <div className="space-y-2">
-                {items.map((item) => (
-                  <ShoppingRow
-                    key={item.id}
-                    item={item}
-                    onToggle={() => toggleItem.mutate(item.id)}
-                    onEdit={() => setEditingItem(item)}
-                    onDelete={() => deleteItem.mutate(item.id)}
-                  />
-                ))}
-              </div>
-            )}
-          </SortableContext>
-        </DndContext>
+                ) : (
+                  <div className="space-y-2">
+                    {activeItems.map((item) => (
+                      <ShoppingRow
+                        key={item.id}
+                        item={item}
+                        onToggle={() => toggleItem.mutate(item.id)}
+                        onEdit={() => setEditingItem(item)}
+                        onDelete={() => deleteItem.mutate(item.id)}
+                      />
+                    ))}
+                  </div>
+                )}
+              </SortableContext>
+            </DndContext>
+          )}
+
+          {purchasedItems.length > 0 && (
+            <p className="text-sm text-text-muted mt-4">
+              {purchasedItems.length} item{purchasedItems.length === 1 ? "" : "s"} purchased
+            </p>
+          )}
+        </>
       )}
 
       <AddItemModal
