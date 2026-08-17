@@ -45,6 +45,19 @@ async def run_rotation() -> None:
             logger.exception("Scheduled rotation failed")
 
 
+async def run_cleanup() -> None:
+    from app.modules.cleanup.service import cleanup_old_records
+
+    logger.info("Scheduled cleanup triggered")
+    async with async_session_factory() as session:
+        try:
+            await cleanup_old_records(session)
+            await session.commit()
+        except Exception:
+            await session.rollback()
+            logger.exception("Scheduled cleanup failed")
+
+
 def setup_scheduler() -> None:
     scheduler.add_job(
         run_rotation,
@@ -64,8 +77,14 @@ def setup_scheduler() -> None:
         id="daily_prayer_refresh",
         replace_existing=True,
     )
+    scheduler.add_job(
+        run_cleanup,
+        trigger=CronTrigger(hour=2, minute=0),
+        id="daily_cleanup",
+        replace_existing=True,
+    )
     scheduler.start()
-    logger.info("Scheduler started: recurrence reset daily at 00:01, task rotation every Monday at midnight, prayer times refresh daily at 1am")
+    logger.info("Scheduler started: recurrence reset daily at 00:01, task rotation every Monday at midnight, prayer times refresh daily at 1am, cleanup daily at 2am")
 
 
 def shutdown_scheduler() -> None:
