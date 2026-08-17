@@ -40,8 +40,16 @@ export default function ShoppingPage() {
     useSensor(TouchSensor, { activationConstraint: { delay: 200, tolerance: 5 } }),
   );
 
+  const now = Date.now();
+  const DAY_MS = 24 * 60 * 60 * 1000;
+
   const activeItems = useMemo(() => items.filter((i) => !i.is_purchased), [items]);
-  const purchasedItems = useMemo(() => items.filter((i) => i.is_purchased), [items]);
+  const recentlyPurchased = useMemo(() => items.filter((i) =>
+    i.is_purchased && i.purchased_at && (now - new Date(i.purchased_at).getTime()) < DAY_MS
+  ), [items, now]);
+  const olderPurchasedCount = useMemo(() => items.filter((i) =>
+    i.is_purchased && (!i.purchased_at || (now - new Date(i.purchased_at).getTime()) >= DAY_MS)
+  ).length, [items, now]);
 
   const groups = useMemo(() => {
     const groupMap = new Map<number | null, StoreGroup>();
@@ -186,9 +194,23 @@ export default function ShoppingPage() {
             </DndContext>
           )}
 
-          {purchasedItems.length > 0 && (
+          {recentlyPurchased.length > 0 && (
+            <div className="mt-3 pt-3 border-t border-border space-y-2">
+              {recentlyPurchased.map((item) => (
+                <ShoppingRow
+                  key={item.id}
+                  item={item}
+                  onToggle={() => toggleItem.mutate(item.id)}
+                  onEdit={() => setEditingItem(item)}
+                  onDelete={() => deleteItem.mutate(item.id)}
+                />
+              ))}
+            </div>
+          )}
+
+          {olderPurchasedCount > 0 && (
             <p className="text-sm text-text-muted mt-4">
-              {purchasedItems.length} item{purchasedItems.length === 1 ? "" : "s"} purchased
+              {olderPurchasedCount} older item{olderPurchasedCount === 1 ? "" : "s"} purchased
             </p>
           )}
         </>

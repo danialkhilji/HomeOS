@@ -20,8 +20,16 @@ export default function TasksPage() {
   const [editingTask, setEditingTask] = useState<Task | null>(null);
   const [showCompleted, setShowCompleted] = useState(false);
 
+  const now = Date.now();
+  const DAY_MS = 24 * 60 * 60 * 1000;
+
   const activeTasks = useMemo(() => tasks.filter((t) => !t.is_completed), [tasks]);
-  const completedTasks = useMemo(() => tasks.filter((t) => t.is_completed), [tasks]);
+  const recentlyCompleted = useMemo(() => tasks.filter((t) =>
+    t.is_completed && t.completed_at && (now - new Date(t.completed_at).getTime()) < DAY_MS
+  ), [tasks, now]);
+  const olderCompleted = useMemo(() => tasks.filter((t) =>
+    t.is_completed && (!t.completed_at || (now - new Date(t.completed_at).getTime()) >= DAY_MS)
+  ), [tasks, now]);
 
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 8 } }),
@@ -92,22 +100,36 @@ export default function TasksPage() {
             </SortableContext>
           </DndContext>
 
-          {activeTasks.length === 0 && !showCompleted && (
+          {activeTasks.length === 0 && recentlyCompleted.length === 0 && (
             <p className="text-center text-text-muted py-8">All tasks completed!</p>
           )}
 
-          {completedTasks.length > 0 && (
+          {recentlyCompleted.length > 0 && (
+            <div className="mt-3 pt-3 border-t border-border space-y-2">
+              {recentlyCompleted.map((task) => (
+                <TaskRow
+                  key={task.id}
+                  task={task}
+                  onToggle={() => toggleTask.mutate(task.id)}
+                  onEdit={() => setEditingTask(task)}
+                  onDelete={() => deleteTask.mutate(task.id)}
+                />
+              ))}
+            </div>
+          )}
+
+          {olderCompleted.length > 0 && (
             <div className="mt-4">
               <button
                 onClick={() => setShowCompleted(!showCompleted)}
                 className="text-sm text-text-muted active:text-primary transition-colors"
               >
-                {showCompleted ? "Hide" : "Show"} completed ({completedTasks.length})
+                {showCompleted ? "Hide" : "Show"} older completed ({olderCompleted.length})
               </button>
 
               {showCompleted && (
                 <div className="mt-3 pt-3 border-t border-border space-y-2">
-                  {completedTasks.map((task) => (
+                  {olderCompleted.map((task) => (
                     <TaskRow
                       key={task.id}
                       task={task}

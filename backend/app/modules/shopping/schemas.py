@@ -44,6 +44,7 @@ class ShoppingItemResponse(BaseModel):
     id: int
     name: str
     is_purchased: bool
+    purchased_at: datetime | None
     store_id: int | None
     created_at: datetime
     store: StoreSummary | None = None

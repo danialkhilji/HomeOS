@@ -1,3 +1,5 @@
+from datetime import datetime, timezone
+
 from sqlalchemy import select, case
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -58,6 +60,7 @@ async def toggle_item(db: AsyncSession, item_id: int) -> ShoppingItem:
         raise NotFoundError("Shopping item", item_id)
 
     item.is_purchased = not item.is_purchased
+    item.purchased_at = datetime.now(timezone.utc) if item.is_purchased else None
     await db.flush()
     await db.refresh(item)
     return item

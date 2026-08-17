@@ -40,6 +40,7 @@ export interface ShoppingItem {
   id: number;
   name: string;
   is_purchased: boolean;
+  purchased_at: string | null;
   store_id: number | null;
   created_at: string;
   store: StoreSummary | null;
