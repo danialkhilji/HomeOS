@@ -1,6 +1,6 @@
-from datetime import date, datetime, timezone
+from datetime import UTC, date, datetime
 
-from sqlalchemy import select, or_, and_, func
+from sqlalchemy import and_, func, or_, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.exceptions import NotFoundError
@@ -90,7 +90,7 @@ async def toggle_task(db: AsyncSession, task_id: int) -> Task:
         raise NotFoundError("Task", task_id)
 
     task.is_completed = not task.is_completed
-    task.completed_at = datetime.now(timezone.utc) if task.is_completed else None
+    task.completed_at = datetime.now(UTC) if task.is_completed else None
     await db.flush()
     await db.refresh(task)
     return task

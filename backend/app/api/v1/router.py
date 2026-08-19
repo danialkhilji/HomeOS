@@ -1,16 +1,16 @@
 from fastapi import APIRouter
 
 from app.api.v1.health import router as health_router
-from app.modules.members.router import router as members_router
-from app.modules.tasks.router import router as tasks_router
-from app.modules.shopping.router import router as shopping_router
-from app.modules.notes.router import router as notes_router
-from app.modules.weather.router import router as weather_router
-from app.modules.prayer.router import router as prayer_router
-from app.modules.shopping.store_router import router as store_router
-from app.modules.shopping.quick_add_router import router as quick_add_router
 from app.modules.calendar.birthday_router import router as birthdays_router
 from app.modules.calendar.calendar_router import router as calendar_router
+from app.modules.members.router import router as members_router
+from app.modules.notes.router import router as notes_router
+from app.modules.prayer.router import router as prayer_router
+from app.modules.shopping.quick_add_router import router as quick_add_router
+from app.modules.shopping.router import router as shopping_router
+from app.modules.shopping.store_router import router as store_router
+from app.modules.tasks.router import router as tasks_router
+from app.modules.weather.router import router as weather_router
 
 v1_router = APIRouter()
 v1_router.include_router(health_router)

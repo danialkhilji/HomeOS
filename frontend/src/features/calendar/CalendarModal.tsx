@@ -1,6 +1,6 @@
 import { useState, useMemo, useRef, useCallback, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Button, LoadingSpinner, IconButton } from "../../components";
+import { Button, LoadingSpinner, IconButton, TrashIcon } from "../../components";
 import { useCalendarDate } from "../../hooks/useCalendar";
 import { useCreateBirthday, useDeleteBirthday } from "../../hooks/useBirthdays";
 import AddBirthdayModal from "./AddBirthdayModal";
@@ -18,18 +18,6 @@ function getDaysInMonth(year: number, month: number) {
 function getFirstDayOfMonth(year: number, month: number) {
   const day = new Date(year, month, 1).getDay();
   return day === 0 ? 6 : day - 1;
-}
-
-function TrashIcon() {
-  return (
-    <svg xmlns="http://www.w3.org/2000/svg" width={16} height={16} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
-      <polyline points="3 6 5 6 21 6" />
-      <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" />
-      <path d="M10 11v6" />
-      <path d="M14 11v6" />
-      <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2" />
-    </svg>
-  );
 }
 
 interface CalendarModalProps {
@@ -355,7 +343,7 @@ export default function CalendarModal({ open, onClose }: CalendarModalProps) {
                           <div key={bday.id} className="flex items-center justify-between py-1">
                             <span className="text-sm text-text">{bday.name}</span>
                             <IconButton
-                              icon={<TrashIcon />}
+                              icon={<TrashIcon size={16} />}
                               variant="danger"
                               label={`Delete ${bday.name}`}
                               onClick={() => deleteBirthday.mutate(bday.id)}

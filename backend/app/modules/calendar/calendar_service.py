@@ -2,9 +2,9 @@ from datetime import date
 
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.modules.tasks.service import get_tasks_by_date
 from app.modules.calendar.birthday_service import get_birthdays_by_date
 from app.modules.calendar.calendar_schemas import CalendarDateResponse
+from app.modules.tasks.service import get_tasks_by_date
 
 
 async def get_calendar_by_date(db: AsyncSession, target_date: date) -> CalendarDateResponse:

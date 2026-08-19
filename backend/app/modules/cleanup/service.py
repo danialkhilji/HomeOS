@@ -1,12 +1,12 @@
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
 
 from sqlalchemy import delete
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.logging import get_logger
-from app.modules.tasks.models import Task
-from app.modules.shopping.models import ShoppingItem
 from app.modules.notes.models import Note
+from app.modules.shopping.models import ShoppingItem
+from app.modules.tasks.models import Task
 
 logger = get_logger(__name__)
 
@@ -14,15 +14,15 @@ RETENTION_DAYS = 365
 
 
 async def cleanup_old_records(db: AsyncSession) -> None:
-    cutoff = datetime.now(timezone.utc).replace(tzinfo=None) - timedelta(days=RETENTION_DAYS)
+    cutoff = datetime.now(UTC).replace(tzinfo=None) - timedelta(days=RETENTION_DAYS)
 
     tasks_result = await db.execute(
-        delete(Task).where(Task.is_completed == True, Task.completed_at < cutoff)  # noqa: E712
+        delete(Task).where(Task.is_completed == True, Task.completed_at < cutoff)
     )
     tasks_deleted = tasks_result.rowcount
 
     shopping_result = await db.execute(
-        delete(ShoppingItem).where(ShoppingItem.is_purchased == True, ShoppingItem.purchased_at < cutoff)  # noqa: E712
+        delete(ShoppingItem).where(ShoppingItem.is_purchased == True, ShoppingItem.purchased_at < cutoff)
     )
     shopping_deleted = shopping_result.rowcount
 

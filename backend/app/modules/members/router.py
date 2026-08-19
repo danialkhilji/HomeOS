@@ -2,8 +2,8 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.database import get_db
-from app.modules.members.schemas import MemberCreate, MemberUpdate, MemberResponse
 from app.modules.members import service
+from app.modules.members.schemas import MemberCreate, MemberResponse, MemberUpdate
 
 router = APIRouter(prefix="/members", tags=["members"])
 

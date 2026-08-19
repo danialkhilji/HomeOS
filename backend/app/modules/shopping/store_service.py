@@ -2,9 +2,9 @@ from sqlalchemy import select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.exceptions import NotFoundError, ValidationError
-from app.modules.shopping.store_models import Store
 from app.modules.shopping.models import ShoppingItem
 from app.modules.shopping.schemas import StoreCreate, StoreUpdate
+from app.modules.shopping.store_models import Store
 
 
 async def get_all_stores(db: AsyncSession) -> list[Store]:

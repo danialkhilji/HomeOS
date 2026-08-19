@@ -2,8 +2,8 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.database import get_db
-from app.modules.shopping.schemas import StoreCreate, StoreUpdate, StoreResponse
 from app.modules.shopping import store_service as service
+from app.modules.shopping.schemas import StoreCreate, StoreResponse, StoreUpdate
 
 router = APIRouter(prefix="/stores", tags=["stores"])
 

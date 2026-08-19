@@ -1,6 +1,6 @@
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
-from sqlalchemy import select, and_
+from sqlalchemy import and_, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.logging import get_logger
@@ -10,13 +10,13 @@ logger = get_logger(__name__)
 
 
 async def reset_recurring_tasks(db: AsyncSession) -> None:
-    now = datetime.now(timezone.utc)
+    now = datetime.now(UTC)
     weekday = now.weekday()
     day_of_month = now.day
 
     daily_result = await db.execute(
         select(Task).where(
-            and_(Task.recurrence == "daily", Task.is_completed == True)  # noqa: E712
+            and_(Task.recurrence == "daily", Task.is_completed == True)
         )
     )
     daily_tasks = list(daily_result.scalars().all())
@@ -25,7 +25,7 @@ async def reset_recurring_tasks(db: AsyncSession) -> None:
     if weekday == 0:
         weekly_result = await db.execute(
             select(Task).where(
-                and_(Task.recurrence == "weekly", Task.is_completed == True)  # noqa: E712
+                and_(Task.recurrence == "weekly", Task.is_completed == True)
             )
         )
         weekly_tasks = list(weekly_result.scalars().all())
@@ -34,7 +34,7 @@ async def reset_recurring_tasks(db: AsyncSession) -> None:
     if day_of_month == 1:
         monthly_result = await db.execute(
             select(Task).where(
-                and_(Task.recurrence == "monthly", Task.is_completed == True)  # noqa: E712
+                and_(Task.recurrence == "monthly", Task.is_completed == True)
             )
         )
         monthly_tasks = list(monthly_result.scalars().all())

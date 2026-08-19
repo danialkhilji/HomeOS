@@ -1,17 +1,7 @@
 import { useState, useEffect } from "react";
 import { Modal, Button } from "../../components";
+import { PRESET_COLOURS } from "../../constants";
 import type { Member } from "../../types";
-
-const PRESET_COLOURS = [
-  "#2563eb",
-  "#16a34a",
-  "#dc2626",
-  "#f97316",
-  "#8b5cf6",
-  "#0891b2",
-  "#db2777",
-  "#ca8a04",
-];
 
 interface EditMemberModalProps {
   open: boolean;

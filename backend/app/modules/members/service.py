@@ -4,8 +4,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.core.exceptions import NotFoundError, ValidationError
 from app.modules.members.models import Member
 from app.modules.members.schemas import MemberCreate, MemberUpdate
-from app.modules.tasks.models import Task
 from app.modules.notes.models import Note
+from app.modules.tasks.models import Task
 
 
 async def get_all_members(db: AsyncSession) -> list[Member]:
