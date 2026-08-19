@@ -80,7 +80,7 @@ async def test_cleanup_deletes_old_purchased_shopping(client):
         from sqlalchemy import select
         result = await session.execute(select(ShoppingItem).where(ShoppingItem.id == item["id"]))
         si = result.scalar_one()
-        si.created_at = datetime.now(timezone.utc).replace(tzinfo=None) - timedelta(days=366)
+        si.purchased_at = datetime.now(timezone.utc).replace(tzinfo=None) - timedelta(days=366)
         await session.commit()
 
     async with async_session_factory() as session:

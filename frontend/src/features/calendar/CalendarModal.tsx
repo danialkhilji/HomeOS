@@ -181,7 +181,7 @@ export default function CalendarModal({ open, onClose }: CalendarModalProps) {
 
   function formatSelectedDate() {
     if (selectedDay === null) return "";
-    return `${selectedDay} ${MONTHS[viewMonth]?.slice(0, 3)}`;
+    return `${selectedDay} ${MONTHS[selectedMonth]?.slice(0, 3)}`;
   }
 
   return (

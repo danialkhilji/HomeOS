@@ -66,14 +66,14 @@ async def test_rotation_resets_completion(client):
 
 
 @pytest.mark.asyncio
-async def test_rotation_assigns_unassigned_tasks(client):
-    danial = await create_member(client, "Danial", "#2563eb")
+async def test_rotation_skips_unassigned_tasks(client):
+    await create_member(client, "Danial", "#2563eb")
     await create_task(client, "Dishes")
 
     await client.post("/api/v1/tasks/rotate")
 
     tasks = (await client.get("/api/v1/tasks")).json()
-    assert tasks[0]["assigned_to"] == danial["id"]
+    assert tasks[0]["assigned_to"] is None
 
 
 @pytest.mark.asyncio
@@ -135,7 +135,7 @@ async def test_rotation_after_member_deletion(client):
     assert response.status_code == 200
 
     tasks = (await client.get("/api/v1/tasks")).json()
-    assert tasks[0]["assigned_to"] == ali["id"]
+    assert tasks[0]["assigned_to"] is None
 
 
 @pytest.mark.asyncio

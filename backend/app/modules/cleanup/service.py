@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta, timezone
 
-from sqlalchemy import select, delete
+from sqlalchemy import delete
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.logging import get_logger
@@ -22,7 +22,7 @@ async def cleanup_old_records(db: AsyncSession) -> None:
     tasks_deleted = tasks_result.rowcount
 
     shopping_result = await db.execute(
-        delete(ShoppingItem).where(ShoppingItem.is_purchased == True, ShoppingItem.created_at < cutoff)  # noqa: E712
+        delete(ShoppingItem).where(ShoppingItem.is_purchased == True, ShoppingItem.purchased_at < cutoff)  # noqa: E712
     )
     shopping_deleted = shopping_result.rowcount
 
