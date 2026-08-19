@@ -33,6 +33,7 @@ export function useCreateBirthday() {
     mutationFn: (data: CreateBirthdayPayload) => createBirthday(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: BIRTHDAYS_KEY });
+      queryClient.invalidateQueries({ queryKey: ["calendar"] });
     },
   });
 }
@@ -44,6 +45,7 @@ export function useDeleteBirthday() {
     mutationFn: (id: number) => deleteBirthday(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: BIRTHDAYS_KEY });
+      queryClient.invalidateQueries({ queryKey: ["calendar"] });
     },
   });
 }
