@@ -91,22 +91,24 @@ export default function CalendarModal({ open, onClose }: CalendarModalProps) {
 
   function prevMonth() {
     setDirection(-1);
-    if (viewMonth === 0) {
-      setViewMonth(11);
-      setViewYear(viewYear - 1);
-    } else {
-      setViewMonth(viewMonth - 1);
-    }
+    setViewMonth(prev => {
+      if (prev === 0) {
+        setViewYear(y => y - 1);
+        return 11;
+      }
+      return prev - 1;
+    });
   }
 
   function nextMonth() {
     setDirection(1);
-    if (viewMonth === 11) {
-      setViewMonth(0);
-      setViewYear(viewYear + 1);
-    } else {
-      setViewMonth(viewMonth + 1);
-    }
+    setViewMonth(prev => {
+      if (prev === 11) {
+        setViewYear(y => y + 1);
+        return 0;
+      }
+      return prev + 1;
+    });
   }
 
   function goToday() {
@@ -160,7 +162,7 @@ export default function CalendarModal({ open, onClose }: CalendarModalProps) {
     } else if (diff < -50) {
       nextMonth();
     }
-  }, [viewMonth, viewYear]);
+  }, []);
 
   const slideVariants = {
     enter: (dir: number) => ({

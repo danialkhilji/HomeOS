@@ -25,7 +25,6 @@ async def get_all_tasks(db: AsyncSession, assigned_to: int | None = None) -> lis
 
 async def get_tasks_by_date(db: AsyncSession, target_date: date) -> list[Task]:
     today = date.today()
-    weekday = target_date.weekday()
     day_of_month = target_date.day
 
     start_of_day = datetime(target_date.year, target_date.month, target_date.day)
@@ -36,10 +35,9 @@ async def get_tasks_by_date(db: AsyncSession, target_date: date) -> list[Task]:
         Task.recurrence == "daily",
     ]
 
-    if weekday == target_date.weekday():
-        conditions.append(
-            and_(Task.recurrence == "weekly", func.strftime("%w", Task.created_at) == str(target_date.isoweekday() % 7))
-        )
+    conditions.append(
+        and_(Task.recurrence == "weekly", func.strftime("%w", Task.created_at) == str(target_date.isoweekday() % 7))
+    )
 
     conditions.append(
         and_(Task.recurrence == "monthly", func.strftime("%d", Task.created_at) == f"{day_of_month:02d}")
