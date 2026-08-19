@@ -18,13 +18,13 @@ export default function PrayerTimesBar() {
 
   return (
     <Card>
-      <div className="flex justify-between">
+      <div className="grid grid-cols-5">
         {data.prayers.map((prayer) => {
           const isCurrent = data.current_prayer === prayer.name;
           return (
             <div
               key={prayer.name}
-              className={`flex flex-col items-center gap-1 px-2 py-1 rounded-xl transition-colors ${
+              className={`flex flex-col items-center gap-1 px-1 py-1 rounded-xl transition-colors ${
                 isCurrent
                   ? "bg-primary/10"
                   : ""
@@ -40,7 +40,7 @@ export default function PrayerTimesBar() {
                 {prayer.name}
               </span>
               <span
-                className={`text-base font-bold ${
+                className={`text-base font-bold whitespace-nowrap ${
                   isCurrent
                     ? "text-primary"
                     : "text-text"
