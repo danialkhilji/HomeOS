@@ -44,7 +44,7 @@ export default function AppLayout() {
   }, []);
 
   return (
-    <div className="flex flex-col h-dvh bg-surface text-text transition-colors">
+    <div className="flex flex-col h-dvh bg-background text-text transition-colors">
       <header className="flex items-center justify-between px-4 py-3 shrink-0 border-b border-border">
         <span className="text-lg font-bold text-primary shrink-0">HomeOS</span>
         <div className="flex items-center gap-2 sm:gap-3 text-xs sm:text-sm text-text-muted overflow-hidden">
@@ -85,9 +85,9 @@ export default function AppLayout() {
               to={item.to}
               end={item.to === "/"}
               className={({ isActive }) =>
-                `flex flex-col items-center gap-0.5 sm:gap-1 py-2 sm:py-3 text-xs transition-colors ${
+                `flex flex-col items-center gap-0.5 sm:gap-1 py-2 sm:py-3 text-xs transition-colors rounded-xl mx-1 ${
                   isActive
-                    ? "text-primary font-semibold"
+                    ? "text-primary font-semibold bg-accent-pale"
                     : "text-text-muted"
                 }`
               }

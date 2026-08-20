@@ -8,7 +8,7 @@ interface CardProps {
 
 export default function Card({ children, title, onClick }: CardProps) {
   const card = (
-    <div className="rounded-2xl p-4 bg-white border border-border shadow-sm">
+    <div className="rounded-2xl p-4 bg-surface border border-border shadow-sm">
       {title && (
         <h3 className="text-lg font-semibold mb-3 text-text">
           {title}
