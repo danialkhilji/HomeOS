@@ -2,6 +2,7 @@ export interface Member {
   id: number;
   name: string;
   colour: string;
+  avatar_url: string | null;
   created_at: string;
 }
 
@@ -9,6 +10,7 @@ export interface MemberSummary {
   id: number;
   name: string;
   colour: string;
+  avatar_url: string | null;
 }
 
 export interface Task {

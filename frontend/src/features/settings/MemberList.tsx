@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { IconButton, TrashIcon } from "../../components";
+import { IconButton, TrashIcon, MemberDot } from "../../components";
 import { useLongPress } from "../../hooks/useLongPress";
 import type { Member } from "../../types";
 
@@ -20,10 +20,7 @@ function MemberRow({ member, onEdit, onDelete }: { member: Member; onEdit: () =>
       {...longPress}
     >
       <div className="flex items-center gap-3">
-        <div
-          className="w-8 h-8 rounded-full shrink-0"
-          style={{ backgroundColor: member.colour }}
-        />
+        <MemberDot avatarUrl={member.avatar_url} colour={member.colour} name={member.name} size={32} />
         <span className="text-lg">{member.name}</span>
       </div>
       <IconButton

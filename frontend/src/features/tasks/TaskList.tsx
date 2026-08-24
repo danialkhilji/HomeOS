@@ -1,4 +1,4 @@
-import { IconButton, TrashIcon } from "../../components";
+import { IconButton, TrashIcon, MemberDot } from "../../components";
 import { useLongPress } from "../../hooks/useLongPress";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
@@ -100,10 +100,7 @@ export function TaskRow({ task, onToggle, onEdit, onDelete }: { task: Task; onTo
         </p>
         {task.member && (
           <div className="flex items-center gap-1.5 mt-0.5">
-            <div
-              className="w-3 h-3 rounded-full shrink-0"
-              style={{ backgroundColor: task.member.colour }}
-            />
+            <MemberDot avatarUrl={task.member.avatar_url} colour={task.member.colour} name={task.member.name} size={12} />
             <span className="text-sm text-text-muted">
               {task.member.name}
             </span>

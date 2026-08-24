@@ -1,4 +1,4 @@
-import { Card, EmptyState, LoadingSpinner } from "../../components";
+import { Card, EmptyState, LoadingSpinner, MemberDot } from "../../components";
 import { useTasks, useToggleTask } from "../../hooks/useTasks";
 
 export default function TasksCard() {
@@ -63,10 +63,7 @@ export default function TasksCard() {
                 </div>
 
                 {task.member && (
-                  <div
-                    className="w-3 h-3 rounded-full shrink-0"
-                    style={{ backgroundColor: task.member.colour }}
-                  />
+                  <MemberDot avatarUrl={task.member.avatar_url} colour={task.member.colour} name={task.member.name} size={12} />
                 )}
               </div>
             );

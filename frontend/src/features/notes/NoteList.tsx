@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { IconButton, TrashIcon } from "../../components";
+import { IconButton, TrashIcon, MemberDot } from "../../components";
 import { useLongPress } from "../../hooks/useLongPress";
 import type { Note } from "../../types";
 
@@ -23,10 +23,7 @@ function NoteCard({ note, onEdit, onDelete }: { note: Note; onEdit: () => void; 
         <div className="flex-1 min-w-0">
           {note.author && (
             <div className="flex items-center gap-2 mb-2">
-              <div
-                className="w-5 h-5 rounded-full shrink-0"
-                style={{ backgroundColor: note.author.colour }}
-              />
+              <MemberDot avatarUrl={note.author.avatar_url} colour={note.author.colour} name={note.author.name} size={20} />
               <span className="text-sm font-semibold text-text">
                 {note.author.name}
               </span>

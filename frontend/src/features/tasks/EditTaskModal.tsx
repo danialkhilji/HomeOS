@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Modal, Button } from "../../components";
+import { Modal, Button, MemberDot } from "../../components";
 import { useMembers } from "../../hooks/useMembers";
 import type { Task } from "../../types";
 
@@ -90,10 +90,7 @@ export default function EditTaskModal({ open, onClose, onSave, task }: EditTaskM
                     : "border-border text-text-muted"
                 }`}
               >
-                <div
-                  className="w-5 h-5 rounded-full shrink-0"
-                  style={{ backgroundColor: member.colour }}
-                />
+                <MemberDot avatarUrl={member.avatar_url} colour={member.colour} name={member.name} size={20} />
                 {member.name}
               </button>
             ))}
