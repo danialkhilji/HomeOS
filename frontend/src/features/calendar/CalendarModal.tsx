@@ -195,7 +195,7 @@ export default function CalendarModal({ open, onClose }: CalendarModalProps) {
             className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 pointer-events-none"
           >
             <div
-              className="w-full max-w-lg rounded-2xl sm:rounded-2xl bg-white shadow-xl pointer-events-auto overflow-hidden max-h-[90dvh] sm:max-h-[85dvh] flex flex-col"
+              className="w-full max-w-lg rounded-2xl sm:rounded-2xl bg-surface shadow-xl pointer-events-auto overflow-hidden max-h-[90dvh] sm:max-h-[85dvh] flex flex-col"
             >
               <div className="shrink-0 px-6 pt-4">
               <div className="flex items-center justify-center gap-3 mb-4">

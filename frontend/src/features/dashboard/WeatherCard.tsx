@@ -35,7 +35,7 @@ export default function WeatherCard() {
 
   if (isLoading) {
     return (
-      <div className="rounded-2xl p-4 bg-white border border-border shadow-sm">
+      <div className="rounded-2xl p-4 bg-surface border border-border shadow-sm">
         <p className="text-text-muted">Loading...</p>
       </div>
     );
@@ -43,7 +43,7 @@ export default function WeatherCard() {
 
   if (!weather) {
     return (
-      <div className="rounded-2xl p-4 bg-white border border-border shadow-sm">
+      <div className="rounded-2xl p-4 bg-surface border border-border shadow-sm">
         <p className="text-text-muted">Weather unavailable</p>
       </div>
     );

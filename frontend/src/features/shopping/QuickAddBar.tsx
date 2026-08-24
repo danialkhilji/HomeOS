@@ -43,7 +43,7 @@ export default function QuickAddBar({ onAdd, existingItems }: QuickAddBarProps) 
             className={`flex items-center gap-1.5 px-3 py-2 rounded-xl border text-sm transition-colors ${
               exists
                 ? "opacity-30 border-border"
-                : "border-border bg-white active:bg-surface-dim"
+                : "border-border bg-surface active:bg-surface-dim"
             }`}
           >
             <span className="text-lg">{item.emoji}</span>

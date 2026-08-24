@@ -61,7 +61,7 @@ export function ShoppingRow({ item, onToggle, onEdit, onDelete }: { item: Shoppi
     <div
       ref={setNodeRef}
       style={style}
-      className="flex items-center gap-2 py-3 px-3 rounded-xl bg-white border border-border"
+      className="flex items-center gap-2 py-3 px-3 rounded-xl bg-surface border border-border"
     >
       <div
         {...attributes}

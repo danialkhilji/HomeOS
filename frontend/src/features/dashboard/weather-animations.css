@@ -16,7 +16,7 @@
 
 /* Sunny — warm gradient + sun glow pulse */
 .weather-sunny {
-  background: linear-gradient(135deg, #f59e0b, #3b82f6);
+  background: linear-gradient(135deg, #D4944C, #B9783E);
   position: relative;
   overflow: hidden;
 }
@@ -40,7 +40,7 @@
 
 /* Partly Cloudy — blue to grey */
 .weather-partly-cloudy {
-  background: linear-gradient(135deg, #60a5fa, #9ca3af);
+  background: linear-gradient(135deg, #C4A882, #9A8C7D);
   position: relative;
   overflow: hidden;
 }
@@ -59,7 +59,7 @@
 
 /* Cloudy — grey gradient + drifting clouds */
 .weather-cloudy {
-  background: linear-gradient(135deg, #9ca3af, #6b7280);
+  background: linear-gradient(135deg, #9A8C7D, #75695D);
   position: relative;
   overflow: hidden;
 }
@@ -96,7 +96,7 @@
 
 /* Rainy — dark blue gradient + falling rain */
 .weather-rainy {
-  background: linear-gradient(135deg, #1e3a5f, #374151);
+  background: linear-gradient(135deg, #5C4A3A, #3D2E22);
   position: relative;
   overflow: hidden;
 }
@@ -130,7 +130,7 @@
 
 /* Snowy — ice blue gradient + floating snowflakes */
 .weather-snowy {
-  background: linear-gradient(135deg, #e0f2fe, #93c5fd);
+  background: linear-gradient(135deg, #F3DFC2, #E3D2BA);
   position: relative;
   overflow: hidden;
 }
@@ -168,7 +168,7 @@
 
 /* Stormy — dark purple gradient + lightning flash */
 .weather-stormy {
-  background: linear-gradient(135deg, #4c1d95, #1f2937);
+  background: linear-gradient(135deg, #4A3228, #2B2118);
   position: relative;
   overflow: hidden;
 }
@@ -189,7 +189,7 @@
 
 /* Windy — teal gradient + horizontal streaks */
 .weather-windy {
-  background: linear-gradient(135deg, #0d9488, #6b7280);
+  background: linear-gradient(135deg, #8B7355, #6B5D4D);
   position: relative;
   overflow: hidden;
 }
