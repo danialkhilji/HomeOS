@@ -14,8 +14,8 @@ interface ButtonProps {
 const variantStyles: Record<ButtonVariant, string> = {
   primary: "bg-primary text-white active:bg-primary-dark",
   secondary:
-    "bg-transparent border border-border text-text active:bg-surface-dim",
-  danger: "bg-danger text-white active:bg-red-700",
+    "bg-accent-pale border border-border text-primary active:bg-primary-light",
+  danger: "bg-danger text-white active:brightness-90",
 };
 
 export default function Button({

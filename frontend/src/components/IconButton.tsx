@@ -12,7 +12,7 @@ interface IconButtonProps {
 const variantStyles: Record<IconButtonVariant, string> = {
   default:
     "text-text-muted active:bg-surface-dim",
-  danger: "text-danger active:bg-red-100",
+  danger: "text-danger active:bg-danger/10",
 };
 
 export default function IconButton({
