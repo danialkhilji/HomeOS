@@ -6,7 +6,7 @@ export default function NotesCard() {
   const recent = notes.slice(0, 3);
 
   return (
-    <Card title="Family Notes">
+    <Card title="Notes">
       {isLoading ? (
         <LoadingSpinner />
       ) : recent.length === 0 ? (

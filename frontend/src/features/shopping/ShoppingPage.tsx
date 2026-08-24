@@ -34,6 +34,7 @@ export default function ShoppingPage() {
 
   const [addModalOpen, setAddModalOpen] = useState(false);
   const [editingItem, setEditingItem] = useState<ShoppingItem | null>(null);
+  const [showPurchased, setShowPurchased] = useState(false);
 
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 8 } }),
@@ -47,9 +48,9 @@ export default function ShoppingPage() {
   const recentlyPurchased = useMemo(() => items.filter((i) =>
     i.is_purchased && i.purchased_at && (now - new Date(i.purchased_at).getTime()) < DAY_MS
   ), [items, now]);
-  const olderPurchasedCount = useMemo(() => items.filter((i) =>
+  const olderPurchased = useMemo(() => items.filter((i) =>
     i.is_purchased && (!i.purchased_at || (now - new Date(i.purchased_at).getTime()) >= DAY_MS)
-  ).length, [items, now]);
+  ), [items, now]);
 
   const groups = useMemo(() => {
     const groupMap = new Map<number | null, StoreGroup>();
@@ -208,10 +209,29 @@ export default function ShoppingPage() {
             </div>
           )}
 
-          {olderPurchasedCount > 0 && (
-            <p className="text-sm text-text-muted mt-4">
-              {olderPurchasedCount} older item{olderPurchasedCount === 1 ? "" : "s"} purchased
-            </p>
+          {olderPurchased.length > 0 && (
+            <div className="mt-4">
+              <button
+                onClick={() => setShowPurchased(!showPurchased)}
+                className="text-sm text-text-muted active:text-primary transition-colors"
+              >
+                {showPurchased ? "Hide" : "Show"} older purchased ({olderPurchased.length})
+              </button>
+
+              {showPurchased && (
+                <div className="mt-3 pt-3 border-t border-border space-y-2">
+                  {olderPurchased.map((item) => (
+                    <ShoppingRow
+                      key={item.id}
+                      item={item}
+                      onToggle={() => toggleItem.mutate(item.id)}
+                      onEdit={() => setEditingItem(item)}
+                      onDelete={() => deleteItem.mutate(item.id)}
+                    />
+                  ))}
+                </div>
+              )}
+            </div>
           )}
         </>
       )}
