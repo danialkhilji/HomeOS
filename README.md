@@ -1,6 +1,22 @@
 # HomeOS
 
-A self-hosted family operating system for a kitchen touchscreen. Manages household tasks, shopping lists, and family notes from a single shared display.
+A self-hosted family operating system for a kitchen touchscreen. Manages household tasks, shopping lists, notes, prayer times, and birthdays from a single shared display.
+
+## Screenshots
+
+<p align="center">
+  <img src="docs/screenshots/dashboard.jpeg" width="380" alt="Dashboard" />
+  <img src="docs/screenshots/calendar.jpeg" width="380" alt="Calendar" />
+</p>
+
+<p align="center">
+  <img src="docs/screenshots/tasks.jpeg" width="380" alt="Tasks" />
+  <img src="docs/screenshots/shopping.jpeg" width="380" alt="Shopping" />
+</p>
+
+<p align="center">
+  <img src="docs/screenshots/settings.jpeg" width="380" alt="Settings" />
+</p>
 
 ## Tech Stack
 
@@ -248,17 +264,17 @@ HomeOS/
 ├── backend/          # FastAPI application
 │   ├── app/
 │   │   ├── api/v1/   # Versioned API routes
-│   │   ├── core/     # Config, database, logging, exceptions
-│   │   └── modules/  # Feature modules (members, tasks, shopping, notes)
+│   │   ├── core/     # Config, database, scheduler, logging, exceptions
+│   │   └── modules/  # Feature modules (members, tasks, shopping, notes, calendar, prayer, weather, cleanup)
 │   ├── migrations/   # Alembic database migrations
 │   └── tests/
 ├── frontend/         # React application
 │   └── src/
-│       ├── api/       # Axios client
-│       ├── components/# Shared UI components
-│       ├── features/  # Feature pages (dashboard, tasks, shopping, notes, settings)
+│       ├── api/       # API client functions
+│       ├── components/# Shared UI components (Button, Card, Modal, icons)
+│       ├── features/  # Feature pages (dashboard, tasks, shopping, notes, calendar, settings)
+│       ├── hooks/     # TanStack Query hooks
 │       ├── layouts/   # App shell and navigation
-│       ├── stores/    # Zustand state management
 │       └── types/     # Shared TypeScript types
 ├── scripts/          # Backup and utility scripts
 └── CHANGELOG.md      # Release history
