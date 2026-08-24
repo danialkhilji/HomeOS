@@ -92,6 +92,7 @@ export interface Weather {
   rain_chance: number;
   temp_high: number;
   temp_low: number;
+  is_day: boolean;
 }
 
 export interface PrayerTime {

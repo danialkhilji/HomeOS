@@ -9,6 +9,8 @@ const WEATHER_ICONS: Record<string, string> = {
   snowy: "❄️",
   stormy: "⛈️",
   windy: "💨",
+  "night-clear": "🌙",
+  "night-cloudy": "☁️",
 };
 
 const WEATHER_CLASSES: Record<string, string> = {
@@ -19,13 +21,19 @@ const WEATHER_CLASSES: Record<string, string> = {
   snowy: "weather-snowy",
   stormy: "weather-stormy",
   windy: "weather-windy",
+  "night-clear": "weather-night-clear",
+  "night-cloudy": "weather-night-cloudy",
 };
 
 const LIGHT_BACKGROUNDS = new Set(["snowy"]);
 
-function getEffectiveWeather(icon: string, windSpeed: number): string {
+function getEffectiveWeather(icon: string, windSpeed: number, isDay: boolean): string {
   if (windSpeed >= 40 && !["stormy", "rainy", "snowy"].includes(icon)) {
     return "windy";
+  }
+  if (!isDay) {
+    if (icon === "sunny") return "night-clear";
+    if (icon === "partly-cloudy") return "night-cloudy";
   }
   return icon;
 }
@@ -49,7 +57,7 @@ export default function WeatherCard() {
     );
   }
 
-  const effectiveWeather = getEffectiveWeather(weather.icon, weather.wind_speed);
+  const effectiveWeather = getEffectiveWeather(weather.icon, weather.wind_speed, weather.is_day);
   const bgClass = WEATHER_CLASSES[effectiveWeather] ?? "weather-cloudy";
   const icon = WEATHER_ICONS[effectiveWeather] ?? "🌤️";
   const isLight = LIGHT_BACKGROUNDS.has(effectiveWeather);
@@ -70,7 +78,7 @@ export default function WeatherCard() {
 
         <div className={`flex items-center justify-center gap-3 mt-2 text-xs sm:text-sm ${subtextColor}`}>
           <span>Feels {weather.feels_like}°</span>
-          <span>🌧 {weather.rain_chance}%</span>
+          {weather.rain_chance > 0 && <span>🌧 {weather.rain_chance}%</span>}
         </div>
 
         <div className={`flex items-center justify-center gap-3 mt-1 text-xs sm:text-sm ${subtextColor}`}>
