@@ -17,6 +17,7 @@ class MemberResponse(BaseModel):
     id: int
     name: str
     colour: str
+    avatar_url: str | None = None
     created_at: datetime
 
     model_config = {"from_attributes": True}
