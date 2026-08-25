@@ -23,7 +23,7 @@ function NoteCard({ note, onEdit, onDelete }: { note: Note; onEdit: () => void; 
         <div className="flex-1 min-w-0">
           {note.author && (
             <div className="flex items-center gap-2 mb-2">
-              <MemberDot avatarUrl={note.author.avatar_url} colour={note.author.colour} name={note.author.name} size={20} />
+              <MemberDot avatarUrl={note.author.avatar_url} colour={note.author.colour} name={note.author.name} size={30} />
               <span className="text-sm font-semibold text-text">
                 {note.author.name}
               </span>

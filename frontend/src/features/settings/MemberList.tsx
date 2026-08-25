@@ -20,7 +20,7 @@ function MemberRow({ member, onEdit, onDelete }: { member: Member; onEdit: () =>
       {...longPress}
     >
       <div className="flex items-center gap-3">
-        <MemberDot avatarUrl={member.avatar_url} colour={member.colour} name={member.name} size={32} />
+        <MemberDot avatarUrl={member.avatar_url} colour={member.colour} name={member.name} size={30} />
         <span className="text-lg">{member.name}</span>
       </div>
       <IconButton

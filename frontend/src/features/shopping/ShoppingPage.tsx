@@ -12,8 +12,7 @@ import {
 } from "../../hooks/useShopping";
 import { PageHeader, Button, EmptyState } from "../../components";
 import QuickAddBar from "./QuickAddBar";
-import AddItemModal from "./AddItemModal";
-import EditItemModal from "./EditItemModal";
+import ShoppingItemModal from "./ShoppingItemModal";
 import { ShoppingRow } from "./ShoppingList";
 import type { ShoppingItem } from "../../types";
 
@@ -236,16 +235,13 @@ export default function ShoppingPage() {
         </>
       )}
 
-      <AddItemModal
-        open={addModalOpen}
-        onClose={() => setAddModalOpen(false)}
-        onSave={handleAdd}
-      />
-
-      <EditItemModal
-        open={editingItem !== null}
-        onClose={() => setEditingItem(null)}
-        onSave={handleEdit}
+      <ShoppingItemModal
+        open={addModalOpen || editingItem !== null}
+        onClose={() => {
+          setAddModalOpen(false);
+          setEditingItem(null);
+        }}
+        onSave={editingItem ? handleEdit : handleAdd}
         item={editingItem}
       />
     </div>

@@ -17,7 +17,7 @@ export default function NotesCard() {
             <div key={note.id}>
               {note.author && (
                 <div className="flex items-center gap-2 mb-0.5">
-                  <MemberDot avatarUrl={note.author.avatar_url} colour={note.author.colour} name={note.author.name} size={16} />
+                  <MemberDot avatarUrl={note.author.avatar_url} colour={note.author.colour} name={note.author.name} size={30} />
                   <span className="text-sm font-semibold text-text">
                     {note.author.name}
                   </span>

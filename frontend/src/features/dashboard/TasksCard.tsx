@@ -63,7 +63,7 @@ export default function TasksCard() {
                 </div>
 
                 {task.member && (
-                  <MemberDot avatarUrl={task.member.avatar_url} colour={task.member.colour} name={task.member.name} size={12} />
+                  <MemberDot avatarUrl={task.member.avatar_url} colour={task.member.colour} name={task.member.name} size={30} />
                 )}
               </div>
             );

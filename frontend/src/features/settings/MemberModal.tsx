@@ -4,14 +4,15 @@ import { PRESET_COLOURS } from "../../constants";
 import { useUploadAvatar, useDeleteAvatar } from "../../hooks/useMembers";
 import type { Member } from "../../types";
 
-interface EditMemberModalProps {
+interface MemberModalProps {
   open: boolean;
   onClose: () => void;
-  onSave: (name: string, colour: string) => void;
+  onSave: (name: string, colour: string, avatar?: File) => void;
   member: Member | null;
 }
 
-export default function EditMemberModal({ open, onClose, onSave, member }: EditMemberModalProps) {
+export default function MemberModal({ open, onClose, onSave, member }: MemberModalProps) {
+  const isEdit = member !== null;
   const [name, setName] = useState("");
   const [colour, setColour] = useState(PRESET_COLOURS[0]!);
   const [preview, setPreview] = useState<string | null>(null);
@@ -26,6 +27,7 @@ export default function EditMemberModal({ open, onClose, onSave, member }: EditM
       setColour(member.colour);
       setPreview(member.avatar_url);
       setPendingFile(null);
+      if (fileRef.current) fileRef.current.value = "";
     }
   }, [member]);
 
@@ -36,7 +38,7 @@ export default function EditMemberModal({ open, onClose, onSave, member }: EditM
     setPreview(URL.createObjectURL(file));
   }
 
-  function handleRemoveAvatar() {
+  function handleRemovePhoto() {
     setPreview(null);
     setPendingFile(null);
     if (fileRef.current) fileRef.current.value = "";
@@ -44,18 +46,36 @@ export default function EditMemberModal({ open, onClose, onSave, member }: EditM
 
   function handleSave() {
     const trimmed = name.trim();
-    if (!trimmed || !member) return;
-    onSave(trimmed, colour);
+    if (!trimmed) return;
 
-    if (pendingFile) {
-      uploadAvatar.mutate({ id: member.id, file: pendingFile });
-    } else if (!preview && member.avatar_url) {
-      deleteAvatar.mutate(member.id);
+    if (isEdit && member) {
+      onSave(trimmed, colour);
+      if (pendingFile) {
+        uploadAvatar.mutate({ id: member.id, file: pendingFile });
+      } else if (!preview && member.avatar_url) {
+        deleteAvatar.mutate(member.id);
+      }
+    } else {
+      onSave(trimmed, colour, pendingFile ?? undefined);
+      resetForm();
     }
   }
 
+  function handleClose() {
+    resetForm();
+    onClose();
+  }
+
+  function resetForm() {
+    setName("");
+    setColour(PRESET_COLOURS[0]!);
+    setPreview(null);
+    setPendingFile(null);
+    if (fileRef.current) fileRef.current.value = "";
+  }
+
   return (
-    <Modal open={open} onClose={onClose} title="Edit Member">
+    <Modal open={open} onClose={handleClose} title={isEdit ? "Edit Member" : "Add Member"}>
       <div className="space-y-6">
         <div className="flex flex-col items-center gap-3">
           {preview ? (
@@ -81,7 +101,7 @@ export default function EditMemberModal({ open, onClose, onSave, member }: EditM
             {preview && (
               <button
                 type="button"
-                onClick={handleRemoveAvatar}
+                onClick={handleRemovePhoto}
                 className="text-sm text-danger font-semibold active:text-danger/70 transition-colors"
               >
                 Remove
@@ -105,6 +125,7 @@ export default function EditMemberModal({ open, onClose, onSave, member }: EditM
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
+            placeholder={isEdit ? undefined : "Enter name"}
             autoFocus
             className="w-full min-h-[48px] px-4 rounded-xl border border-border bg-surface text-text text-lg focus:outline-none focus:ring-2 focus:ring-primary"
           />
@@ -129,7 +150,7 @@ export default function EditMemberModal({ open, onClose, onSave, member }: EditM
         </div>
 
         <div className="flex gap-3 pt-2">
-          <Button variant="secondary" fullWidth onClick={onClose}>
+          <Button variant="secondary" fullWidth onClick={handleClose}>
             Cancel
           </Button>
           <Button fullWidth onClick={handleSave} disabled={!name.trim()}>

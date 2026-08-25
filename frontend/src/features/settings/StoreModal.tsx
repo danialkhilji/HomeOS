@@ -1,43 +1,56 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Modal, Button } from "../../components";
 import { PRESET_COLOURS } from "../../constants";
+import type { Store } from "../../types";
 
-interface AddMemberModalProps {
+interface StoreModalProps {
   open: boolean;
   onClose: () => void;
   onSave: (name: string, colour: string) => void;
+  store: Store | null;
 }
 
-export default function AddMemberModal({ open, onClose, onSave }: AddMemberModalProps) {
+export default function StoreModal({ open, onClose, onSave, store }: StoreModalProps) {
+  const isEdit = store !== null;
   const [name, setName] = useState("");
   const [colour, setColour] = useState(PRESET_COLOURS[0]!);
+
+  useEffect(() => {
+    if (store) {
+      setName(store.name);
+      setColour(store.colour);
+    }
+  }, [store]);
 
   function handleSave() {
     const trimmed = name.trim();
     if (!trimmed) return;
     onSave(trimmed, colour);
-    setName("");
-    setColour(PRESET_COLOURS[0]!);
+    if (!isEdit) resetForm();
   }
 
   function handleClose() {
-    setName("");
-    setColour(PRESET_COLOURS[0]!);
+    resetForm();
     onClose();
   }
 
+  function resetForm() {
+    setName("");
+    setColour(PRESET_COLOURS[0]!);
+  }
+
   return (
-    <Modal open={open} onClose={handleClose} title="Add Member">
+    <Modal open={open} onClose={handleClose} title={isEdit ? "Edit Store" : "Add Store"}>
       <div className="space-y-6">
         <div>
           <label className="block text-sm font-medium mb-2 text-text-muted">
-            Name
+            Store Name
           </label>
           <input
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            placeholder="Enter name"
+            placeholder={isEdit ? undefined : "Enter store name"}
             autoFocus
             className="w-full min-h-[48px] px-4 rounded-xl border border-border bg-surface text-text text-lg focus:outline-none focus:ring-2 focus:ring-primary"
           />

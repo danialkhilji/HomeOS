@@ -1,14 +1,12 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { useMembers, useCreateMember, useUpdateMember, useDeleteMember } from "../../hooks/useMembers";
+import { useMembers, useCreateMember, useUpdateMember, useDeleteMember, useUploadAvatar } from "../../hooks/useMembers";
 import { useStores, useCreateStore, useUpdateStore, useDeleteStore } from "../../hooks/useStores";
 import { useQuickAddItems, useCreateQuickAddItem, useDeleteQuickAddItem } from "../../hooks/useQuickAdd";
 import { PageHeader, Card, Button, EmptyState, IconButton, TrashIcon } from "../../components";
-import AddMemberModal from "./AddMemberModal";
-import EditMemberModal from "./EditMemberModal";
+import MemberModal from "./MemberModal";
 import MemberList from "./MemberList";
-import AddStoreModal from "./AddStoreModal";
-import EditStoreModal from "./EditStoreModal";
+import StoreModal from "./StoreModal";
 import StoreList from "./StoreList";
 import AddQuickAddModal from "./AddQuickAddModal";
 import type { Member, Store } from "../../types";
@@ -18,6 +16,7 @@ export default function SettingsPage() {
   const createMember = useCreateMember();
   const updateMember = useUpdateMember();
   const deleteMember = useDeleteMember();
+  const uploadAvatar = useUploadAvatar();
   const [addMemberOpen, setAddMemberOpen] = useState(false);
   const [editingMember, setEditingMember] = useState<Member | null>(null);
 
@@ -33,9 +32,14 @@ export default function SettingsPage() {
   const deleteQuickAdd = useDeleteQuickAddItem();
   const [addQuickAddOpen, setAddQuickAddOpen] = useState(false);
 
-  function handleCreateMember(name: string, colour: string) {
+  function handleCreateMember(name: string, colour: string, avatar?: File) {
     createMember.mutate({ name, colour }, {
-      onSuccess: () => setAddMemberOpen(false),
+      onSuccess: (member) => {
+        if (avatar) {
+          uploadAvatar.mutate({ id: member.id, file: avatar });
+        }
+        setAddMemberOpen(false);
+      },
     });
   }
 
@@ -147,30 +151,18 @@ export default function SettingsPage() {
         HomeOS v1.3
       </p>
 
-      <AddMemberModal
-        open={addMemberOpen}
-        onClose={() => setAddMemberOpen(false)}
-        onSave={handleCreateMember}
-      />
-
-      <EditMemberModal
-        open={editingMember !== null}
-        onClose={() => setEditingMember(null)}
-        onSave={handleEditMember}
+      <MemberModal
+        open={addMemberOpen || editingMember !== null}
         member={editingMember}
+        onClose={() => { setAddMemberOpen(false); setEditingMember(null); }}
+        onSave={editingMember ? handleEditMember : handleCreateMember}
       />
 
-      <AddStoreModal
-        open={addStoreOpen}
-        onClose={() => setAddStoreOpen(false)}
-        onSave={handleCreateStore}
-      />
-
-      <EditStoreModal
-        open={editingStore !== null}
-        onClose={() => setEditingStore(null)}
-        onSave={handleEditStore}
+      <StoreModal
+        open={addStoreOpen || editingStore !== null}
         store={editingStore}
+        onClose={() => { setAddStoreOpen(false); setEditingStore(null); }}
+        onSave={editingStore ? handleEditStore : handleCreateStore}
       />
 
       <AddQuickAddModal

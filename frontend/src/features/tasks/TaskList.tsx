@@ -100,7 +100,7 @@ export function TaskRow({ task, onToggle, onEdit, onDelete }: { task: Task; onTo
         </p>
         {task.member && (
           <div className="flex items-center gap-1.5 mt-0.5">
-            <MemberDot avatarUrl={task.member.avatar_url} colour={task.member.colour} name={task.member.name} size={12} />
+            <MemberDot avatarUrl={task.member.avatar_url} colour={task.member.colour} name={task.member.name} size={30} />
             <span className="text-sm text-text-muted">
               {task.member.name}
             </span>

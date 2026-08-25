@@ -4,8 +4,7 @@ import type { DragEndEvent } from "@dnd-kit/core";
 import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
 import { useTasks, useCreateTask, useUpdateTask, useToggleTask, useReorderTasks, useDeleteTask } from "../../hooks/useTasks";
 import { PageHeader, Button, EmptyState } from "../../components";
-import AddTaskModal from "./AddTaskModal";
-import EditTaskModal from "./EditTaskModal";
+import TaskModal from "./TaskModal";
 import { TaskRow } from "./TaskList";
 import type { Task } from "../../types";
 
@@ -16,8 +15,8 @@ export default function TasksPage() {
   const toggleTask = useToggleTask();
   const reorderTasks = useReorderTasks();
   const deleteTask = useDeleteTask();
-  const [addModalOpen, setAddModalOpen] = useState(false);
-  const [editingTask, setEditingTask] = useState<Task | null>(null);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalTask, setModalTask] = useState<Task | null>(null);
   const [showCompleted, setShowCompleted] = useState(false);
 
   const now = Date.now();
@@ -36,19 +35,23 @@ export default function TasksPage() {
     useSensor(TouchSensor, { activationConstraint: { delay: 200, tolerance: 5 } }),
   );
 
-  function handleCreate(title: string, assignedTo: number | null, reminderAt: string | null, recurrence: string) {
-    createTask.mutate(
-      { title, assigned_to: assignedTo, reminder_at: reminderAt, recurrence },
-      { onSuccess: () => setAddModalOpen(false) },
-    );
+  function closeModal() {
+    setModalOpen(false);
+    setModalTask(null);
   }
 
-  function handleEdit(title: string, assignedTo: number | null, reminderAt: string | null, recurrence: string) {
-    if (!editingTask) return;
-    updateTask.mutate(
-      { id: editingTask.id, data: { title, assigned_to: assignedTo, reminder_at: reminderAt, recurrence } },
-      { onSuccess: () => setEditingTask(null) },
-    );
+  function handleSave(title: string, assignedTo: number | null, reminderAt: string | null, recurrence: string) {
+    if (modalTask) {
+      updateTask.mutate(
+        { id: modalTask.id, data: { title, assigned_to: assignedTo, reminder_at: reminderAt, recurrence } },
+        { onSuccess: closeModal },
+      );
+    } else {
+      createTask.mutate(
+        { title, assigned_to: assignedTo, reminder_at: reminderAt, recurrence },
+        { onSuccess: closeModal },
+      );
+    }
   }
 
   function handleDragEnd(event: DragEndEvent) {
@@ -70,13 +73,13 @@ export default function TasksPage() {
     <div>
       <PageHeader
         title="Tasks"
-        action={<Button onClick={() => setAddModalOpen(true)}>Add Task</Button>}
+        action={<Button onClick={() => setModalOpen(true)}>Add Task</Button>}
       />
 
       {tasks.length === 0 ? (
         <EmptyState
           message="No tasks yet. Add your first task."
-          action={<Button onClick={() => setAddModalOpen(true)}>Add Task</Button>}
+          action={<Button onClick={() => setModalOpen(true)}>Add Task</Button>}
         />
       ) : (
         <>
@@ -92,7 +95,7 @@ export default function TasksPage() {
                     key={task.id}
                     task={task}
                     onToggle={() => toggleTask.mutate(task.id)}
-                    onEdit={() => setEditingTask(task)}
+                    onEdit={() => { setModalTask(task); setModalOpen(true); }}
                     onDelete={() => deleteTask.mutate(task.id)}
                   />
                 ))}
@@ -111,7 +114,7 @@ export default function TasksPage() {
                   key={task.id}
                   task={task}
                   onToggle={() => toggleTask.mutate(task.id)}
-                  onEdit={() => setEditingTask(task)}
+                  onEdit={() => { setModalTask(task); setModalOpen(true); }}
                   onDelete={() => deleteTask.mutate(task.id)}
                 />
               ))}
@@ -134,7 +137,7 @@ export default function TasksPage() {
                       key={task.id}
                       task={task}
                       onToggle={() => toggleTask.mutate(task.id)}
-                      onEdit={() => setEditingTask(task)}
+                      onEdit={() => { setModalTask(task); setModalOpen(true); }}
                       onDelete={() => deleteTask.mutate(task.id)}
                     />
                   ))}
@@ -145,17 +148,11 @@ export default function TasksPage() {
         </>
       )}
 
-      <AddTaskModal
-        open={addModalOpen}
-        onClose={() => setAddModalOpen(false)}
-        onSave={handleCreate}
-      />
-
-      <EditTaskModal
-        open={editingTask !== null}
-        onClose={() => setEditingTask(null)}
-        onSave={handleEdit}
-        task={editingTask}
+      <TaskModal
+        open={modalOpen}
+        onClose={closeModal}
+        onSave={handleSave}
+        task={modalTask}
       />
     </div>
   );
