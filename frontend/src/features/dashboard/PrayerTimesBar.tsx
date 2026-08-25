@@ -120,7 +120,7 @@ export default function PrayerTimesBar() {
                 return <Icon />;
               })()}
               <span
-                className={`text-base font-bold whitespace-nowrap ${
+                className={`text-xs sm:text-base font-bold whitespace-nowrap ${
                   isCurrent
                     ? "text-primary"
                     : "text-text"

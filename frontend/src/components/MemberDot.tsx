@@ -6,15 +6,13 @@ interface MemberDotProps {
 }
 
 export default function MemberDot({ avatarUrl, colour, name, size = 12 }: MemberDotProps) {
-  const px = `${size / 4}rem`;
-
   if (avatarUrl) {
     return (
       <img
         src={avatarUrl}
         alt={name}
         className="rounded-full shrink-0 object-cover"
-        style={{ width: px, height: px }}
+        style={{ width: size, height: size }}
       />
     );
   }
@@ -22,7 +20,7 @@ export default function MemberDot({ avatarUrl, colour, name, size = 12 }: Member
   return (
     <div
       className="rounded-full shrink-0"
-      style={{ backgroundColor: colour, width: px, height: px }}
+      style={{ backgroundColor: colour, width: size, height: size }}
     />
   );
 }
