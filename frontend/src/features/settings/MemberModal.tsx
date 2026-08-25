@@ -90,7 +90,7 @@ export default function MemberModal({ open, onClose, onSave, member }: MemberMod
               style={{ backgroundColor: colour }}
             />
           )}
-          <div className="flex gap-2">
+          <div className="flex flex-col items-center gap-1">
             <button
               type="button"
               onClick={() => fileRef.current?.click()}
