@@ -75,23 +75,26 @@ These checks also run automatically on every `git push`. If any check fails, the
 
 When you're ready to release a new version:
 
-1. Update the version number in two files:
-   - `backend/app/core/config.py` — change `VERSION`
-   - `frontend/package.json` — change `version`
+1. Update the version number in all 5 places:
+   - `backend/app/core/config.py` — `VERSION` (e.g. `"1.4"`)
+   - `backend/pyproject.toml` — `version` (e.g. `"1.4.0"`)
+   - `backend/tests/test_health.py` — version assertion (e.g. `"1.4"`)
+   - `frontend/package.json` — `version` (e.g. `"1.4.0"`)
+   - `frontend/src/features/settings/SettingsPage.tsx` — display text (e.g. `HomeOS v1.4`)
 
-2. Commit, push, and merge to main
+2. Update `CHANGELOG.md` with what changed in this version
 
-3. Tag the release on main:
+3. Commit, push, and merge to main
+
+4. Tag the release on main:
 ```bash
 git checkout main
 git pull
-git tag v1.2
-git push origin v1.2
+git tag v1.4
+git push origin v1.4
 ```
 
-4. Update CHANGELOG.md with what changed in this version
-
-Version format is two numbers (e.g. v1.0, v1.1, v1.2). Bump the second number for new features, use a third number for bug fixes if needed (e.g. v1.2.1).
+Version format is two numbers (e.g. v1.0, v1.1, v1.4). Bump the second number for new features, use a third number for bug fixes if needed (e.g. v1.4.1).
 
 ## Project Structure
 

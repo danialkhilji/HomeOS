@@ -23,6 +23,6 @@ async def test_health_response_structure(client):
     data = response.json()
 
     assert data["app"] == "HomeOS"
-    assert data["version"] == "1.3"
+    assert data["version"] == "1.4"
     assert data["status"] == "healthy"
     assert data["database"] == "connected"
