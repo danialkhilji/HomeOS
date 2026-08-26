@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Modal, Button } from "../../components";
-import { PRESET_COLOURS } from "../../constants";
+import { INPUT_STYLE, PRESET_COLOURS } from "../../constants";
 import type { Store } from "../../types";
 
 interface StoreModalProps {
@@ -52,7 +52,7 @@ export default function StoreModal({ open, onClose, onSave, store }: StoreModalP
             onChange={(e) => setName(e.target.value)}
             placeholder={isEdit ? undefined : "Enter store name"}
             autoFocus
-            className="w-full min-h-[48px] px-4 rounded-xl border border-border bg-surface text-text text-lg focus:outline-none focus:ring-2 focus:ring-primary"
+            className={INPUT_STYLE}
           />
         </div>
 

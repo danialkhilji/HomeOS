@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Modal, Button, MemberDot } from "../../components";
 import { useMembers } from "../../hooks/useMembers";
+import { INPUT_STYLE } from "../../constants";
 import type { Task } from "../../types";
 
 const RECURRENCE_OPTIONS = [
@@ -66,7 +67,7 @@ export default function TaskModal({ open, onClose, onSave, task = null }: TaskMo
     onClose();
   }
 
-  const inputStyle = "w-full min-h-[48px] px-4 rounded-xl border border-border bg-surface text-text text-lg focus:outline-none focus:ring-2 focus:ring-primary";
+  const inputStyle = INPUT_STYLE;
 
   return (
     <Modal open={open} onClose={handleClose} title={isEditMode ? "Edit Task" : "Add Task"}>

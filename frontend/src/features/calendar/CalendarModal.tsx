@@ -4,21 +4,7 @@ import { Button, LoadingSpinner, IconButton, TrashIcon } from "../../components"
 import { useCalendarDate } from "../../hooks/useCalendar";
 import { useCreateBirthday, useDeleteBirthday } from "../../hooks/useBirthdays";
 import AddBirthdayModal from "./AddBirthdayModal";
-
-const DAYS = ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"];
-const MONTHS = [
-  "January", "February", "March", "April", "May", "June",
-  "July", "August", "September", "October", "November", "December",
-];
-
-function getDaysInMonth(year: number, month: number) {
-  return new Date(year, month + 1, 0).getDate();
-}
-
-function getFirstDayOfMonth(year: number, month: number) {
-  const day = new Date(year, month, 1).getDay();
-  return day === 0 ? 6 : day - 1;
-}
+import { DAYS, MONTHS, getDaysInMonth, getFirstDayOfMonth } from "./calendarUtils";
 
 interface CalendarModalProps {
   open: boolean;

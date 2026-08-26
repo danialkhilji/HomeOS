@@ -1,20 +1,6 @@
 import { useState, useMemo } from "react";
 import { Card } from "../../components";
-
-const DAYS = ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"];
-const MONTHS = [
-  "January", "February", "March", "April", "May", "June",
-  "July", "August", "September", "October", "November", "December",
-];
-
-function getDaysInMonth(year: number, month: number) {
-  return new Date(year, month + 1, 0).getDate();
-}
-
-function getFirstDayOfMonth(year: number, month: number) {
-  const day = new Date(year, month, 1).getDay();
-  return day === 0 ? 6 : day - 1;
-}
+import { DAYS, MONTHS, getDaysInMonth, getFirstDayOfMonth } from "./calendarUtils";
 
 export default function CalendarWidget({ onExpand }: { onExpand?: () => void }) {
   const today = new Date();

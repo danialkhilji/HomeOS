@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Modal, Button } from "../../components";
+import { INPUT_STYLE } from "../../constants";
 import { useStores } from "../../hooks/useStores";
 import type { ShoppingItem } from "../../types";
 
@@ -57,7 +58,7 @@ export default function ShoppingItemModal({ open, onClose, onSave, item = null }
             onChange={(e) => setName(e.target.value)}
             placeholder={isEditMode ? undefined : "Enter item name"}
             autoFocus
-            className="w-full min-h-[48px] px-4 rounded-xl border border-border bg-surface text-text text-lg focus:outline-none focus:ring-2 focus:ring-primary"
+            className={INPUT_STYLE}
           />
         </div>
 

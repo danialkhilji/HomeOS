@@ -2,15 +2,9 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.exceptions import NotFoundError
-from app.modules.members.models import Member
+from app.core.utils import verify_member_exists
 from app.modules.notes.models import Note
 from app.modules.notes.schemas import NoteCreate, NoteUpdate
-
-
-async def _verify_member_exists(db: AsyncSession, member_id: int) -> None:
-    result = await db.execute(select(Member).where(Member.id == member_id))
-    if not result.scalar_one_or_none():
-        raise NotFoundError("Member", member_id)
 
 
 async def get_all_notes(db: AsyncSession) -> list[Note]:
@@ -20,7 +14,7 @@ async def get_all_notes(db: AsyncSession) -> list[Note]:
 
 async def create_note(db: AsyncSession, data: NoteCreate) -> Note:
     if data.author_id is not None:
-        await _verify_member_exists(db, data.author_id)
+        await verify_member_exists(db, data.author_id)
 
     note = Note(content=data.content, author_id=data.author_id)
     db.add(note)

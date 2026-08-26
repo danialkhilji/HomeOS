@@ -13,5 +13,6 @@ export {
   ShoppingCartIcon,
   NotepadIcon,
   SettingsIcon,
+  GripIcon,
   TrashIcon,
 } from "./icons";

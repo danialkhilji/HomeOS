@@ -1,3 +1,4 @@
+import io
 from pathlib import Path
 
 from PIL import Image
@@ -80,7 +81,7 @@ async def save_avatar(member_id: int, file_data: bytes) -> str:
     AVATAR_DIR.mkdir(parents=True, exist_ok=True)
     path = get_avatar_path(member_id)
 
-    img = Image.open(__import__("io").BytesIO(file_data))
+    img = Image.open(io.BytesIO(file_data))
     img = img.convert("RGB")
 
     width, height = img.size

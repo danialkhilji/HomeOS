@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Modal, Button } from "../../components";
+import { INPUT_STYLE } from "../../constants";
 
 interface AddQuickAddModalProps {
   open: boolean;
@@ -53,7 +54,7 @@ export default function AddQuickAddModal({ open, onClose, onSave }: AddQuickAddM
             onChange={(e) => setValue(e.target.value)}
             placeholder="e.g. 🥛 Milk"
             autoFocus
-            className="w-full min-h-[48px] px-4 rounded-xl border border-border bg-surface text-text text-lg focus:outline-none focus:ring-2 focus:ring-primary"
+            className={INPUT_STYLE}
           />
           <p className="text-xs text-text-muted mt-1">
             Start with an emoji, or just type the name

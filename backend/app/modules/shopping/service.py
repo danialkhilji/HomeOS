@@ -4,6 +4,7 @@ from sqlalchemy import case, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.exceptions import NotFoundError
+from app.core.utils import reorder_items as reorder_items_generic
 from app.modules.shopping.models import ShoppingItem
 from app.modules.shopping.schemas import ShoppingItemCreate, ShoppingItemUpdate
 from app.modules.shopping.store_models import Store
@@ -67,12 +68,7 @@ async def toggle_item(db: AsyncSession, item_id: int) -> ShoppingItem:
 
 
 async def reorder_items(db: AsyncSession, ids: list[int]) -> None:
-    for index, item_id in enumerate(ids):
-        result = await db.execute(select(ShoppingItem).where(ShoppingItem.id == item_id))
-        item = result.scalar_one_or_none()
-        if item:
-            item.sort_order = index
-    await db.flush()
+    await reorder_items_generic(db, ShoppingItem, ids)
 
 
 async def delete_item(db: AsyncSession, item_id: int) -> None:

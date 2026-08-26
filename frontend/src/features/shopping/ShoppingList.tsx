@@ -1,4 +1,4 @@
-import { IconButton, TrashIcon } from "../../components";
+import { IconButton, TrashIcon, GripIcon } from "../../components";
 import { useLongPress } from "../../hooks/useLongPress";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
@@ -9,19 +9,6 @@ interface ShoppingListProps {
   onToggle: (id: number) => void;
   onEdit: (item: ShoppingItem) => void;
   onDelete: (id: number) => void;
-}
-
-function GripIcon() {
-  return (
-    <svg xmlns="http://www.w3.org/2000/svg" width={20} height={20} viewBox="0 0 24 24" fill="currentColor">
-      <circle cx="9" cy="6" r="1.5" />
-      <circle cx="15" cy="6" r="1.5" />
-      <circle cx="9" cy="12" r="1.5" />
-      <circle cx="15" cy="12" r="1.5" />
-      <circle cx="9" cy="18" r="1.5" />
-      <circle cx="15" cy="18" r="1.5" />
-    </svg>
-  );
 }
 
 function CheckBox({ checked }: { checked: boolean }) {

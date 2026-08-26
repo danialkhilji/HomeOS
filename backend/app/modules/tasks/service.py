@@ -4,15 +4,9 @@ from sqlalchemy import and_, func, or_, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.exceptions import NotFoundError
-from app.modules.members.models import Member
+from app.core.utils import reorder_items, verify_member_exists
 from app.modules.tasks.models import Task
 from app.modules.tasks.schemas import TaskCreate, TaskUpdate
-
-
-async def _verify_member_exists(db: AsyncSession, member_id: int) -> None:
-    result = await db.execute(select(Member).where(Member.id == member_id))
-    if not result.scalar_one_or_none():
-        raise NotFoundError("Member", member_id)
 
 
 async def get_all_tasks(db: AsyncSession, assigned_to: int | None = None) -> list[Task]:
@@ -56,7 +50,7 @@ async def get_tasks_by_date(db: AsyncSession, target_date: date) -> list[Task]:
 
 async def create_task(db: AsyncSession, data: TaskCreate) -> Task:
     if data.assigned_to is not None:
-        await _verify_member_exists(db, data.assigned_to)
+        await verify_member_exists(db, data.assigned_to)
 
     task = Task(title=data.title, assigned_to=data.assigned_to, reminder_at=data.reminder_at, recurrence=data.recurrence.value)
     db.add(task)
@@ -72,7 +66,7 @@ async def update_task(db: AsyncSession, task_id: int, data: TaskUpdate) -> Task:
         raise NotFoundError("Task", task_id)
 
     if data.assigned_to is not None:
-        await _verify_member_exists(db, data.assigned_to)
+        await verify_member_exists(db, data.assigned_to)
 
     task.title = data.title
     task.assigned_to = data.assigned_to
@@ -97,12 +91,7 @@ async def toggle_task(db: AsyncSession, task_id: int) -> Task:
 
 
 async def reorder_tasks(db: AsyncSession, ids: list[int]) -> None:
-    for index, task_id in enumerate(ids):
-        result = await db.execute(select(Task).where(Task.id == task_id))
-        task = result.scalar_one_or_none()
-        if task:
-            task.sort_order = index
-    await db.flush()
+    await reorder_items(db, Task, ids)
 
 
 async def delete_task(db: AsyncSession, task_id: int) -> None:

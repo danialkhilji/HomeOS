@@ -61,20 +61,12 @@ function MaghribIcon() {
   );
 }
 
-function IshaIcon() {
-  return (
-    <svg width={S} height={S} viewBox="2 4 20 20" fill="none">
-      <path d="M15.5 8.5a6.5 6.5 0 1 1-9.19 9.19A8 8 0 0 0 15.5 8.5z" fill={MOON} stroke={MOON_STROKE} strokeWidth={1} />
-    </svg>
-  );
-}
-
 const PRAYER_ICONS: Record<string, React.FC> = {
   Fajr: FajrIcon,
   Dhuhr: DhuhrIcon,
   Asr: AsrIcon,
   Maghrib: MaghribIcon,
-  Isha: IshaIcon,
+  Isha: FajrIcon,
 };
 
 export default function PrayerTimesBar() {
