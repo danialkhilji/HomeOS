@@ -1,5 +1,54 @@
 # Changelog
 
+## v1.4
+
+### New Features
+- Warm ivory theme — beige/cream/espresso/caramel palette across all pages
+- Dark floating nav bar with rounded corners and caramel active state
+- Custom SVG prayer time icons (orange sun, brown moon) replacing emoji
+- Day/night weather detection with night sky variants (stars and dark gradients)
+- Member avatars — upload profile photos via Settings, displayed across all pages
+- Reusable MemberDot component with avatar/colour-dot fallback
+- Toggle for older purchased items on shopping page (matching tasks page)
+- Contributing guide with branch workflow and code conventions
+
+### Improvements
+- Unified add/edit modals — merged 10 modals into 5 (TaskModal, ShoppingItemModal, NoteModal, MemberModal, StoreModal)
+- Extracted shared components: GripIcon, ColourPicker, calendarUtils, MemberDot
+- Extracted shared constants: INPUT_STYLE, TAP_SPRING, PRESET_COLOURS
+- Extracted backend utilities: verify_member_exists, reorder_items, ReorderRequest, scheduler job helper
+- Deduplicated Create/Update schemas using type aliases
+- Fixed members router to use service layer instead of raw queries
+- Simplified quick-add modal to single input with emoji auto-detection
+- Split README into concise landing page + deployment/development guides
+- Standardized modal state naming across all pages
+- Warm weather animation gradients replacing cool blue/grey tones
+- Reduced prayer time text size on mobile for cleaner layout
+- Hide 0% rain chance from weather card
+- Renamed "Family Notes" to "Notes" on dashboard
+- Added pip/npm caching and ruff lint job to CI pipeline
+
+### Bug Fixes
+- Fixed rotation resetting non-recurring completed tasks
+- Fixed cleanup using created_at instead of purchased_at for shopping items
+- Fixed calendar showing wrong month name for selected date
+- Fixed Feb 29 birthday crash in non-leap years
+- Fixed stale closure in calendar swipe navigation
+- Fixed always-true condition in tasks-by-date weekly filter
+- Fixed birthday create/delete not refreshing calendar view
+- Tuned Isha prayer time (+24 min) to match Masjid-e-Salaam timetable
+
+### Tests
+- 135 backend tests (up from 126)
+- Added 9 avatar tests (upload, serve, delete, cascade, resize, invalid type, not found)
+
+### Infrastructure
+- Added tsbuildinfo to gitignore
+- Updated pyproject.toml version to 1.4.0
+- Zero ruff lint errors
+
+---
+
 ## v1.3
 
 ### New Features

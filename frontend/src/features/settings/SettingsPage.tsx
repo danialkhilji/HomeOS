@@ -149,7 +149,7 @@ export default function SettingsPage() {
       </div>
 
       <p className="text-center text-sm text-text-muted mt-8">
-        HomeOS v1.3
+        HomeOS v1.4
       </p>
 
       <MemberModal
