@@ -4,9 +4,10 @@ from fastapi import APIRouter, Depends, Query
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.database import get_db
-from app.modules.tasks.schemas import TaskCreate, TaskUpdate, TaskResponse, ReorderRequest
+from app.core.schemas import ReorderRequest
 from app.modules.tasks import service
 from app.modules.tasks.rotation import rotate_tasks
+from app.modules.tasks.schemas import TaskCreate, TaskResponse, TaskUpdate
 
 router = APIRouter(prefix="/tasks", tags=["tasks"])
 

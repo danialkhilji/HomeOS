@@ -1,40 +1,8 @@
-import { IconButton } from "../../components";
+import { IconButton, TrashIcon, MemberDot, GripIcon } from "../../components";
 import { useLongPress } from "../../hooks/useLongPress";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import type { Task } from "../../types";
-
-interface TaskListProps {
-  tasks: Task[];
-  onToggle: (id: number) => void;
-  onEdit: (task: Task) => void;
-  onDelete: (id: number) => void;
-}
-
-function GripIcon() {
-  return (
-    <svg xmlns="http://www.w3.org/2000/svg" width={20} height={20} viewBox="0 0 24 24" fill="currentColor">
-      <circle cx="9" cy="6" r="1.5" />
-      <circle cx="15" cy="6" r="1.5" />
-      <circle cx="9" cy="12" r="1.5" />
-      <circle cx="15" cy="12" r="1.5" />
-      <circle cx="9" cy="18" r="1.5" />
-      <circle cx="15" cy="18" r="1.5" />
-    </svg>
-  );
-}
-
-function TrashIcon() {
-  return (
-    <svg xmlns="http://www.w3.org/2000/svg" width={20} height={20} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
-      <polyline points="3 6 5 6 21 6" />
-      <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" />
-      <path d="M10 11v6" />
-      <path d="M14 11v6" />
-      <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2" />
-    </svg>
-  );
-}
 
 function CheckCircle({ filled }: { filled: boolean }) {
   if (filled) {
@@ -73,7 +41,7 @@ export function TaskRow({ task, onToggle, onEdit, onDelete }: { task: Task; onTo
     <div
       ref={setNodeRef}
       style={style}
-      className="flex items-center gap-2 py-3 px-3 rounded-xl bg-white border border-border"
+      className="flex items-center gap-2 py-3 px-3 rounded-xl bg-surface border border-border"
     >
       <div
         {...attributes}
@@ -112,10 +80,7 @@ export function TaskRow({ task, onToggle, onEdit, onDelete }: { task: Task; onTo
         </p>
         {task.member && (
           <div className="flex items-center gap-1.5 mt-0.5">
-            <div
-              className="w-3 h-3 rounded-full shrink-0"
-              style={{ backgroundColor: task.member.colour }}
-            />
+            <MemberDot avatarUrl={task.member.avatar_url} colour={task.member.colour} name={task.member.name} size={30} />
             <span className="text-sm text-text-muted">
               {task.member.name}
             </span>
@@ -147,22 +112,6 @@ export function TaskRow({ task, onToggle, onEdit, onDelete }: { task: Task; onTo
         label={`Delete ${task.title}`}
         onClick={onDelete}
       />
-    </div>
-  );
-}
-
-export default function TaskList({ tasks, onToggle, onEdit, onDelete }: TaskListProps) {
-  return (
-    <div className="space-y-2">
-      {tasks.map((task) => (
-        <TaskRow
-          key={task.id}
-          task={task}
-          onToggle={() => onToggle(task.id)}
-          onEdit={() => onEdit(task)}
-          onDelete={() => onDelete(task.id)}
-        />
-      ))}
     </div>
   );
 }

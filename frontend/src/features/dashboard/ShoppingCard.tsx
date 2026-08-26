@@ -2,14 +2,6 @@ import { useMemo } from "react";
 import { Card, EmptyState, LoadingSpinner } from "../../components";
 import { useShoppingItems, useToggleShoppingItem } from "../../hooks/useShopping";
 
-function CheckIcon() {
-  return (
-    <svg xmlns="http://www.w3.org/2000/svg" width={16} height={16} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={3} strokeLinecap="round" strokeLinejoin="round">
-      <polyline points="20 6 9 17 4 12" />
-    </svg>
-  );
-}
-
 export default function ShoppingCard() {
   const { data: items = [], isLoading } = useShoppingItems();
   const toggleItem = useToggleShoppingItem();
@@ -56,6 +48,8 @@ export default function ShoppingCard() {
         <LoadingSpinner />
       ) : items.length === 0 ? (
         <EmptyState message="No items yet." />
+      ) : unpurchased.length === 0 ? (
+        <p className="text-center text-text-muted py-4">All items purchased!</p>
       ) : hasStores ? (
         <div className="space-y-2">
           {storeCounts.map((group) => (
@@ -76,30 +70,14 @@ export default function ShoppingCard() {
         </div>
       ) : (
         <div className="space-y-2">
-          {items.map((item) => (
+          {unpurchased.map((item) => (
             <div
               key={item.id}
               onClick={() => toggleItem.mutate(item.id)}
               className="flex items-center gap-3 py-1.5 cursor-pointer"
             >
-              <div
-                className={`flex items-center justify-center w-5 h-5 rounded shrink-0 ${
-                  item.is_purchased
-                    ? "bg-success text-white"
-                    : "border-2 border-border"
-                }`}
-              >
-                {item.is_purchased && <CheckIcon />}
-              </div>
-              <span
-                className={`text-base ${
-                  item.is_purchased
-                    ? "line-through text-text-muted"
-                    : "text-text"
-                }`}
-              >
-                {item.name}
-              </span>
+              <div className="w-5 h-5 rounded border-2 border-border shrink-0" />
+              <span className="text-base text-text">{item.name}</span>
             </div>
           ))}
         </div>

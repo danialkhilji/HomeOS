@@ -2,8 +2,8 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.database import get_db
-from app.modules.shopping.quick_add_schemas import QuickAddItemCreate, QuickAddItemResponse
 from app.modules.shopping import quick_add_service as service
+from app.modules.shopping.quick_add_schemas import QuickAddItemCreate, QuickAddItemResponse
 
 router = APIRouter(prefix="/quick-add", tags=["quick-add"])
 

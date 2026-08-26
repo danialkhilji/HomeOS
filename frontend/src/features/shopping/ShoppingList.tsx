@@ -1,40 +1,8 @@
-import { IconButton } from "../../components";
+import { IconButton, TrashIcon, GripIcon } from "../../components";
 import { useLongPress } from "../../hooks/useLongPress";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import type { ShoppingItem } from "../../types";
-
-interface ShoppingListProps {
-  items: ShoppingItem[];
-  onToggle: (id: number) => void;
-  onEdit: (item: ShoppingItem) => void;
-  onDelete: (id: number) => void;
-}
-
-function GripIcon() {
-  return (
-    <svg xmlns="http://www.w3.org/2000/svg" width={20} height={20} viewBox="0 0 24 24" fill="currentColor">
-      <circle cx="9" cy="6" r="1.5" />
-      <circle cx="15" cy="6" r="1.5" />
-      <circle cx="9" cy="12" r="1.5" />
-      <circle cx="15" cy="12" r="1.5" />
-      <circle cx="9" cy="18" r="1.5" />
-      <circle cx="15" cy="18" r="1.5" />
-    </svg>
-  );
-}
-
-function TrashIcon() {
-  return (
-    <svg xmlns="http://www.w3.org/2000/svg" width={20} height={20} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
-      <polyline points="3 6 5 6 21 6" />
-      <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" />
-      <path d="M10 11v6" />
-      <path d="M14 11v6" />
-      <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2" />
-    </svg>
-  );
-}
 
 function CheckBox({ checked }: { checked: boolean }) {
   if (checked) {
@@ -73,7 +41,7 @@ export function ShoppingRow({ item, onToggle, onEdit, onDelete }: { item: Shoppi
     <div
       ref={setNodeRef}
       style={style}
-      className="flex items-center gap-2 py-3 px-3 rounded-xl bg-white border border-border"
+      className="flex items-center gap-2 py-3 px-3 rounded-xl bg-surface border border-border"
     >
       <div
         {...attributes}
@@ -129,22 +97,6 @@ export function ShoppingRow({ item, onToggle, onEdit, onDelete }: { item: Shoppi
         label={`Delete ${item.name}`}
         onClick={onDelete}
       />
-    </div>
-  );
-}
-
-export default function ShoppingList({ items, onToggle, onEdit, onDelete }: ShoppingListProps) {
-  return (
-    <div className="space-y-2">
-      {items.map((item) => (
-        <ShoppingRow
-          key={item.id}
-          item={item}
-          onToggle={() => onToggle(item.id)}
-          onEdit={() => onEdit(item)}
-          onDelete={() => onDelete(item.id)}
-        />
-      ))}
     </div>
   );
 }

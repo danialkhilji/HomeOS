@@ -12,8 +12,7 @@ import {
 } from "../../hooks/useShopping";
 import { PageHeader, Button, EmptyState } from "../../components";
 import QuickAddBar from "./QuickAddBar";
-import AddItemModal from "./AddItemModal";
-import EditItemModal from "./EditItemModal";
+import ShoppingItemModal from "./ShoppingItemModal";
 import { ShoppingRow } from "./ShoppingList";
 import type { ShoppingItem } from "../../types";
 
@@ -32,13 +31,25 @@ export default function ShoppingPage() {
   const reorderItems = useReorderShoppingItems();
   const deleteItem = useDeleteShoppingItem();
 
-  const [addModalOpen, setAddModalOpen] = useState(false);
-  const [editingItem, setEditingItem] = useState<ShoppingItem | null>(null);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalItem, setModalItem] = useState<ShoppingItem | null>(null);
+  const [showPurchased, setShowPurchased] = useState(false);
 
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 8 } }),
     useSensor(TouchSensor, { activationConstraint: { delay: 200, tolerance: 5 } }),
   );
+
+  const now = Date.now();
+  const DAY_MS = 24 * 60 * 60 * 1000;
+
+  const activeItems = useMemo(() => items.filter((i) => !i.is_purchased), [items]);
+  const recentlyPurchased = useMemo(() => items.filter((i) =>
+    i.is_purchased && i.purchased_at && (now - new Date(i.purchased_at).getTime()) < DAY_MS
+  ), [items, now]);
+  const olderPurchased = useMemo(() => items.filter((i) =>
+    i.is_purchased && (!i.purchased_at || (now - new Date(i.purchased_at).getTime()) >= DAY_MS)
+  ), [items, now]);
 
   const groups = useMemo(() => {
     const groupMap = new Map<number | null, StoreGroup>();
@@ -50,7 +61,7 @@ export default function ShoppingPage() {
       items: [],
     });
 
-    for (const item of items) {
+    for (const item of activeItems) {
       const key = item.store_id;
       if (!groupMap.has(key)) {
         groupMap.set(key, {
@@ -74,31 +85,36 @@ export default function ShoppingPage() {
       }
     }
     return result;
-  }, [items]);
+  }, [activeItems]);
 
-  function handleAdd(name: string, storeId: number | null) {
-    createItem.mutate({ name, store_id: storeId }, {
-      onSuccess: () => setAddModalOpen(false),
-    });
+  function closeModal() {
+    setModalOpen(false);
+    setModalItem(null);
   }
 
-  function handleEdit(name: string, storeId: number | null) {
-    if (!editingItem) return;
-    updateItem.mutate(
-      { id: editingItem.id, data: { name, store_id: storeId } },
-      { onSuccess: () => setEditingItem(null) },
-    );
+  function handleSave(name: string, storeId: number | null) {
+    if (modalItem) {
+      updateItem.mutate(
+        { id: modalItem.id, data: { name, store_id: storeId } },
+        { onSuccess: closeModal },
+      );
+    } else {
+      createItem.mutate(
+        { name, store_id: storeId },
+        { onSuccess: closeModal },
+      );
+    }
   }
 
   function handleDragEnd(event: DragEndEvent) {
     const { active, over } = event;
     if (!over || active.id === over.id) return;
 
-    const oldIndex = items.findIndex((i) => i.id === active.id);
-    const newIndex = items.findIndex((i) => i.id === over.id);
+    const oldIndex = activeItems.findIndex((i) => i.id === active.id);
+    const newIndex = activeItems.findIndex((i) => i.id === over.id);
     if (oldIndex === -1 || newIndex === -1) return;
 
-    const reordered = [...items];
+    const reordered = [...activeItems];
     const [moved] = reordered.splice(oldIndex, 1);
     reordered.splice(newIndex, 0, moved!);
 
@@ -116,7 +132,7 @@ export default function ShoppingPage() {
     <div>
       <PageHeader
         title="Shopping"
-        action={<Button onClick={() => setAddModalOpen(true)}>Add Item</Button>}
+        action={<Button onClick={() => setModalOpen(true)}>Add Item</Button>}
       />
 
       <QuickAddBar onAdd={handleQuickAdd} existingItems={existingNames} />
@@ -124,72 +140,111 @@ export default function ShoppingPage() {
       {items.length === 0 ? (
         <EmptyState
           message="No items yet. Tap an item above or add your own."
-          action={<Button onClick={() => setAddModalOpen(true)}>Add Item</Button>}
+          action={<Button onClick={() => setModalOpen(true)}>Add Item</Button>}
         />
       ) : (
-        <DndContext
-          sensors={sensors}
-          collisionDetection={closestCenter}
-          onDragEnd={handleDragEnd}
-        >
-          <SortableContext items={items.map((i) => i.id)} strategy={verticalListSortingStrategy}>
-            {hasStores ? (
-              <div className="space-y-6">
-                {groups.map((group) => (
-                  <div key={group.storeId ?? "any"}>
-                    <div className="flex items-center gap-2 mb-2">
-                      {group.storeColour && (
-                        <div
-                          className="w-4 h-4 rounded-full shrink-0"
-                          style={{ backgroundColor: group.storeColour }}
-                        />
-                      )}
-                      <h3 className="text-sm font-semibold uppercase tracking-wide text-text-muted">
-                        {group.storeName}
-                      </h3>
-                    </div>
-                    <div className="space-y-2">
-                      {group.items.map((item) => (
-                        <ShoppingRow
-                          key={item.id}
-                          item={item}
-                          onToggle={() => toggleItem.mutate(item.id)}
-                          onEdit={() => setEditingItem(item)}
-                          onDelete={() => deleteItem.mutate(item.id)}
-                        />
-                      ))}
-                    </div>
+        <>
+          {activeItems.length === 0 ? (
+            <p className="text-center text-text-muted py-8">All items purchased!</p>
+          ) : (
+            <DndContext
+              sensors={sensors}
+              collisionDetection={closestCenter}
+              onDragEnd={handleDragEnd}
+            >
+              <SortableContext items={activeItems.map((i) => i.id)} strategy={verticalListSortingStrategy}>
+                {hasStores ? (
+                  <div className="space-y-6">
+                    {groups.map((group) => (
+                      <div key={group.storeId ?? "any"}>
+                        <div className="flex items-center gap-2 mb-2">
+                          {group.storeColour && (
+                            <div
+                              className="w-4 h-4 rounded-full shrink-0"
+                              style={{ backgroundColor: group.storeColour }}
+                            />
+                          )}
+                          <h3 className="text-sm font-semibold uppercase tracking-wide text-text-muted">
+                            {group.storeName}
+                          </h3>
+                        </div>
+                        <div className="space-y-2">
+                          {group.items.map((item) => (
+                            <ShoppingRow
+                              key={item.id}
+                              item={item}
+                              onToggle={() => toggleItem.mutate(item.id)}
+                              onEdit={() => { setModalItem(item); setModalOpen(true); }}
+                              onDelete={() => deleteItem.mutate(item.id)}
+                            />
+                          ))}
+                        </div>
+                      </div>
+                    ))}
                   </div>
-                ))}
-              </div>
-            ) : (
-              <div className="space-y-2">
-                {items.map((item) => (
-                  <ShoppingRow
-                    key={item.id}
-                    item={item}
-                    onToggle={() => toggleItem.mutate(item.id)}
-                    onEdit={() => setEditingItem(item)}
-                    onDelete={() => deleteItem.mutate(item.id)}
-                  />
-                ))}
-              </div>
-            )}
-          </SortableContext>
-        </DndContext>
+                ) : (
+                  <div className="space-y-2">
+                    {activeItems.map((item) => (
+                      <ShoppingRow
+                        key={item.id}
+                        item={item}
+                        onToggle={() => toggleItem.mutate(item.id)}
+                        onEdit={() => { setModalItem(item); setModalOpen(true); }}
+                        onDelete={() => deleteItem.mutate(item.id)}
+                      />
+                    ))}
+                  </div>
+                )}
+              </SortableContext>
+            </DndContext>
+          )}
+
+          {recentlyPurchased.length > 0 && (
+            <div className="mt-3 pt-3 border-t border-border space-y-2">
+              {recentlyPurchased.map((item) => (
+                <ShoppingRow
+                  key={item.id}
+                  item={item}
+                  onToggle={() => toggleItem.mutate(item.id)}
+                  onEdit={() => { setModalItem(item); setModalOpen(true); }}
+                  onDelete={() => deleteItem.mutate(item.id)}
+                />
+              ))}
+            </div>
+          )}
+
+          {olderPurchased.length > 0 && (
+            <div className="mt-4">
+              <button
+                onClick={() => setShowPurchased(!showPurchased)}
+                className="text-sm text-text-muted active:text-primary transition-colors"
+              >
+                {showPurchased ? "Hide" : "Show"} older purchased ({olderPurchased.length})
+              </button>
+
+              {showPurchased && (
+                <div className="mt-3 pt-3 border-t border-border space-y-2">
+                  {olderPurchased.map((item) => (
+                    <ShoppingRow
+                      key={item.id}
+                      item={item}
+                      onToggle={() => toggleItem.mutate(item.id)}
+                      onEdit={() => { setModalItem(item); setModalOpen(true); }}
+                      onDelete={() => deleteItem.mutate(item.id)}
+                    />
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
+        </>
       )}
 
-      <AddItemModal
-        open={addModalOpen}
-        onClose={() => setAddModalOpen(false)}
-        onSave={handleAdd}
-      />
-
-      <EditItemModal
-        open={editingItem !== null}
-        onClose={() => setEditingItem(null)}
-        onSave={handleEdit}
-        item={editingItem}
+      <ShoppingItemModal
+        open={modalOpen}
+        onClose={closeModal}
+        onSave={handleSave}
+        item={modalItem}
       />
     </div>
   );

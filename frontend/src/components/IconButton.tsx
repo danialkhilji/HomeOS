@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { TAP_SPRING } from "../constants";
 
 type IconButtonVariant = "default" | "danger";
 
@@ -12,7 +13,7 @@ interface IconButtonProps {
 const variantStyles: Record<IconButtonVariant, string> = {
   default:
     "text-text-muted active:bg-surface-dim",
-  danger: "text-danger active:bg-red-100",
+  danger: "text-danger active:bg-danger/10",
 };
 
 export default function IconButton({
@@ -25,7 +26,7 @@ export default function IconButton({
     <motion.button
       onClick={onClick}
       whileTap={{ scale: 0.9 }}
-      transition={{ type: "spring", stiffness: 400, damping: 20 }}
+      transition={TAP_SPRING}
       aria-label={label}
       className={`flex items-center justify-center w-12 h-12 rounded-full transition-colors ${variantStyles[variant]}`}
     >

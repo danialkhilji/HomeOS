@@ -57,7 +57,7 @@ async def get_weather() -> WeatherResponse:
     params = {
         "latitude": settings.WEATHER_LATITUDE,
         "longitude": settings.WEATHER_LONGITUDE,
-        "current": "temperature_2m,apparent_temperature,weather_code,wind_speed_10m",
+        "current": "temperature_2m,apparent_temperature,weather_code,wind_speed_10m,is_day",
         "daily": "temperature_2m_max,temperature_2m_min,precipitation_probability_max",
         "timezone": "auto",
         "forecast_days": 1,
@@ -84,6 +84,7 @@ async def get_weather() -> WeatherResponse:
             rain_chance=daily.get("precipitation_probability_max", [0])[0],
             temp_high=round(daily.get("temperature_2m_max", [0])[0], 1),
             temp_low=round(daily.get("temperature_2m_min", [0])[0], 1),
+            is_day=bool(current.get("is_day", 1)),
         )
 
         _cache["data"] = result

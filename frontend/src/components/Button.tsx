@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { TAP_SPRING } from "../constants";
 
 type ButtonVariant = "primary" | "secondary" | "danger";
 
@@ -14,8 +15,8 @@ interface ButtonProps {
 const variantStyles: Record<ButtonVariant, string> = {
   primary: "bg-primary text-white active:bg-primary-dark",
   secondary:
-    "bg-transparent border border-border text-text active:bg-surface-dim",
-  danger: "bg-danger text-white active:bg-red-700",
+    "bg-accent-pale border border-border text-primary active:bg-primary-light",
+  danger: "bg-danger text-white active:brightness-90",
 };
 
 export default function Button({
@@ -32,7 +33,7 @@ export default function Button({
       onClick={onClick}
       disabled={disabled}
       whileTap={{ scale: 0.8 }}
-      transition={{ type: "spring", stiffness: 400, damping: 20 }}
+      transition={TAP_SPRING}
       className={`min-h-[48px] px-6 rounded-xl font-semibold text-base transition-colors ${variantStyles[variant]} ${
         fullWidth ? "w-full" : ""
       } ${disabled ? "opacity-40 pointer-events-none" : ""}`}

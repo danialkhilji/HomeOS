@@ -2,8 +2,12 @@ from fastapi import APIRouter, Depends, Query
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.database import get_db
-from app.modules.calendar.birthday_schemas import BirthdayCreate, BirthdayResponse, UpcomingBirthdayResponse
 from app.modules.calendar import birthday_service as service
+from app.modules.calendar.birthday_schemas import (
+    BirthdayCreate,
+    BirthdayResponse,
+    UpcomingBirthdayResponse,
+)
 
 router = APIRouter(prefix="/birthdays", tags=["birthdays"])
 

@@ -10,3 +10,4 @@ class WeatherResponse(BaseModel):
     rain_chance: int = 0
     temp_high: float = 0
     temp_low: float = 0
+    is_day: bool = True

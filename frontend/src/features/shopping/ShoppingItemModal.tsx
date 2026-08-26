@@ -1,34 +1,52 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Modal, Button } from "../../components";
+import { INPUT_STYLE } from "../../constants";
 import { useStores } from "../../hooks/useStores";
+import type { ShoppingItem } from "../../types";
 
-interface AddItemModalProps {
+interface ShoppingItemModalProps {
   open: boolean;
   onClose: () => void;
   onSave: (name: string, storeId: number | null) => void;
+  item?: ShoppingItem | null;
 }
 
-export default function AddItemModal({ open, onClose, onSave }: AddItemModalProps) {
+export default function ShoppingItemModal({ open, onClose, onSave, item = null }: ShoppingItemModalProps) {
+  const isEditMode = item !== null;
   const [name, setName] = useState("");
   const [storeId, setStoreId] = useState<number | null>(null);
   const { data: stores = [] } = useStores();
+
+  useEffect(() => {
+    if (item) {
+      setName(item.name);
+      setStoreId(item.store_id);
+    } else {
+      setName("");
+      setStoreId(null);
+    }
+  }, [item]);
 
   function handleSave() {
     const trimmed = name.trim();
     if (!trimmed) return;
     onSave(trimmed, storeId);
-    setName("");
-    setStoreId(null);
+    if (!isEditMode) {
+      setName("");
+      setStoreId(null);
+    }
   }
 
   function handleClose() {
-    setName("");
-    setStoreId(null);
+    if (!isEditMode) {
+      setName("");
+      setStoreId(null);
+    }
     onClose();
   }
 
   return (
-    <Modal open={open} onClose={handleClose} title="Add Item">
+    <Modal open={open} onClose={handleClose} title={isEditMode ? "Edit Item" : "Add Item"}>
       <div className="space-y-6">
         <div>
           <label className="block text-sm font-medium mb-2 text-text-muted">
@@ -38,9 +56,9 @@ export default function AddItemModal({ open, onClose, onSave }: AddItemModalProp
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            placeholder="Enter item name"
+            placeholder={isEditMode ? undefined : "Enter item name"}
             autoFocus
-            className="w-full min-h-[48px] px-4 rounded-xl border border-border bg-surface text-text text-lg focus:outline-none focus:ring-2 focus:ring-primary"
+            className={INPUT_STYLE}
           />
         </div>
 

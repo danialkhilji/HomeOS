@@ -1,4 +1,4 @@
-import { Card, EmptyState, LoadingSpinner } from "../../components";
+import { Card, EmptyState, LoadingSpinner, MemberDot } from "../../components";
 import { useNotes } from "../../hooks/useNotes";
 
 export default function NotesCard() {
@@ -6,7 +6,7 @@ export default function NotesCard() {
   const recent = notes.slice(0, 3);
 
   return (
-    <Card title="Family Notes">
+    <Card title="Notes">
       {isLoading ? (
         <LoadingSpinner />
       ) : recent.length === 0 ? (
@@ -17,10 +17,7 @@ export default function NotesCard() {
             <div key={note.id}>
               {note.author && (
                 <div className="flex items-center gap-2 mb-0.5">
-                  <div
-                    className="w-4 h-4 rounded-full shrink-0"
-                    style={{ backgroundColor: note.author.colour }}
-                  />
+                  <MemberDot avatarUrl={note.author.avatar_url} colour={note.author.colour} name={note.author.name} size={30} />
                   <span className="text-sm font-semibold text-text">
                     {note.author.name}
                   </span>

@@ -1,6 +1,8 @@
-import { useState } from "react";
-import { Modal, Button } from "../../components";
+import { useState, useEffect } from "react";
+import { Modal, Button, MemberDot } from "../../components";
 import { useMembers } from "../../hooks/useMembers";
+import { INPUT_STYLE } from "../../constants";
+import type { Task } from "../../types";
 
 const RECURRENCE_OPTIONS = [
   { value: "none", label: "None" },
@@ -9,41 +11,66 @@ const RECURRENCE_OPTIONS = [
   { value: "monthly", label: "Monthly" },
 ];
 
-interface AddTaskModalProps {
+function toLocalDatetime(iso: string | null): string {
+  if (!iso) return "";
+  const date = new Date(iso);
+  const offset = date.getTimezoneOffset();
+  const local = new Date(date.getTime() - offset * 60000);
+  return local.toISOString().slice(0, 16);
+}
+
+interface TaskModalProps {
   open: boolean;
   onClose: () => void;
   onSave: (title: string, assignedTo: number | null, reminderAt: string | null, recurrence: string) => void;
+  task?: Task | null;
 }
 
-export default function AddTaskModal({ open, onClose, onSave }: AddTaskModalProps) {
+export default function TaskModal({ open, onClose, onSave, task = null }: TaskModalProps) {
   const [title, setTitle] = useState("");
   const [assignedTo, setAssignedTo] = useState<number | null>(null);
   const [reminderAt, setReminderAt] = useState("");
   const [recurrence, setRecurrence] = useState("none");
   const { data: members = [] } = useMembers();
 
+  const isEditMode = task !== null;
+
+  useEffect(() => {
+    if (task) {
+      setTitle(task.title);
+      setAssignedTo(task.assigned_to);
+      setReminderAt(toLocalDatetime(task.reminder_at));
+      setRecurrence(task.recurrence);
+    } else {
+      resetForm();
+    }
+  }, [task]);
+
+  function resetForm() {
+    setTitle("");
+    setAssignedTo(null);
+    setReminderAt("");
+    setRecurrence("none");
+  }
+
   function handleSave() {
     const trimmed = title.trim();
     if (!trimmed) return;
     onSave(trimmed, assignedTo, reminderAt || null, recurrence);
-    setTitle("");
-    setAssignedTo(null);
-    setReminderAt("");
-    setRecurrence("none");
+    if (!isEditMode) {
+      resetForm();
+    }
   }
 
   function handleClose() {
-    setTitle("");
-    setAssignedTo(null);
-    setReminderAt("");
-    setRecurrence("none");
+    resetForm();
     onClose();
   }
 
-  const inputStyle = "w-full min-h-[48px] px-4 rounded-xl border border-border bg-surface text-text text-lg focus:outline-none focus:ring-2 focus:ring-primary";
+  const inputStyle = INPUT_STYLE;
 
   return (
-    <Modal open={open} onClose={handleClose} title="Add Task">
+    <Modal open={open} onClose={handleClose} title={isEditMode ? "Edit Task" : "Add Task"}>
       <div className="space-y-6">
         <div>
           <label className="block text-sm font-medium mb-2 text-text-muted">
@@ -84,10 +111,7 @@ export default function AddTaskModal({ open, onClose, onSave }: AddTaskModalProp
                     : "border-border text-text-muted"
                 }`}
               >
-                <div
-                  className="w-5 h-5 rounded-full shrink-0"
-                  style={{ backgroundColor: member.colour }}
-                />
+                <MemberDot avatarUrl={member.avatar_url} colour={member.colour} name={member.name} size={30} />
                 {member.name}
               </button>
             ))}

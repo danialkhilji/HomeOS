@@ -2,6 +2,7 @@ export interface Member {
   id: number;
   name: string;
   colour: string;
+  avatar_url: string | null;
   created_at: string;
 }
 
@@ -9,6 +10,7 @@ export interface MemberSummary {
   id: number;
   name: string;
   colour: string;
+  avatar_url: string | null;
 }
 
 export interface Task {
@@ -40,6 +42,7 @@ export interface ShoppingItem {
   id: number;
   name: string;
   is_purchased: boolean;
+  purchased_at: string | null;
   store_id: number | null;
   created_at: string;
   store: StoreSummary | null;
@@ -91,6 +94,7 @@ export interface Weather {
   rain_chance: number;
   temp_high: number;
   temp_low: number;
+  is_day: boolean;
 }
 
 export interface PrayerTime {
@@ -102,11 +106,4 @@ export interface PrayerTimes {
   prayers: PrayerTime[];
   current_prayer: string | null;
   hijri_date: string | null;
-}
-
-export interface HealthResponse {
-  app: string;
-  version: string;
-  status: string;
-  database: string;
 }

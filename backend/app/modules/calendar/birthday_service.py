@@ -33,7 +33,10 @@ async def get_upcoming_birthdays(db: AsyncSession, days: int = 7) -> list[Upcomi
             continue
 
         if this_year < today:
-            this_year = date(today.year + 1, bday.month, bday.day)
+            try:
+                this_year = date(today.year + 1, bday.month, bday.day)
+            except ValueError:
+                continue
 
         days_until = (this_year - today).days
         if 0 <= days_until <= days:

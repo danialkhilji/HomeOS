@@ -16,9 +16,7 @@ class StoreCreate(BaseModel):
     colour: str = Field(min_length=7, max_length=7, pattern=r"^#[0-9a-fA-F]{6}$")
 
 
-class StoreUpdate(BaseModel):
-    name: str = Field(min_length=1, max_length=100)
-    colour: str = Field(min_length=7, max_length=7, pattern=r"^#[0-9a-fA-F]{6}$")
+StoreUpdate = StoreCreate
 
 
 class StoreResponse(BaseModel):
@@ -35,15 +33,14 @@ class ShoppingItemCreate(BaseModel):
     store_id: int | None = None
 
 
-class ShoppingItemUpdate(BaseModel):
-    name: str = Field(min_length=1, max_length=200)
-    store_id: int | None = None
+ShoppingItemUpdate = ShoppingItemCreate
 
 
 class ShoppingItemResponse(BaseModel):
     id: int
     name: str
     is_purchased: bool
+    purchased_at: datetime | None
     store_id: int | None
     created_at: datetime
     store: StoreSummary | None = None

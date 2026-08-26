@@ -1,34 +1,52 @@
-import { useState } from "react";
-import { Modal, Button } from "../../components";
+import { useState, useEffect } from "react";
+import { Modal, Button, MemberDot } from "../../components";
 import { useMembers } from "../../hooks/useMembers";
+import type { Note } from "../../types";
 
-interface AddNoteModalProps {
+interface NoteModalProps {
   open: boolean;
   onClose: () => void;
   onSave: (content: string, authorId: number | null) => void;
+  note?: Note | null;
 }
 
-export default function AddNoteModal({ open, onClose, onSave }: AddNoteModalProps) {
+export default function NoteModal({ open, onClose, onSave, note = null }: NoteModalProps) {
   const [content, setContent] = useState("");
   const [authorId, setAuthorId] = useState<number | null>(null);
   const { data: members = [] } = useMembers();
+
+  const isEditMode = note !== null;
+
+  useEffect(() => {
+    if (note) {
+      setContent(note.content);
+      setAuthorId(note.author_id);
+    } else {
+      setContent("");
+      setAuthorId(null);
+    }
+  }, [note]);
 
   function handleSave() {
     const trimmed = content.trim();
     if (!trimmed) return;
     onSave(trimmed, authorId);
-    setContent("");
-    setAuthorId(null);
+    if (!isEditMode) {
+      setContent("");
+      setAuthorId(null);
+    }
   }
 
   function handleClose() {
-    setContent("");
-    setAuthorId(null);
+    if (!isEditMode) {
+      setContent("");
+      setAuthorId(null);
+    }
     onClose();
   }
 
   return (
-    <Modal open={open} onClose={handleClose} title="Add Note">
+    <Modal open={open} onClose={handleClose} title={isEditMode ? "Edit Note" : "Add Note"}>
       <div className="space-y-6">
         <div>
           <label className="block text-sm font-medium mb-2 text-text-muted">
@@ -55,10 +73,7 @@ export default function AddNoteModal({ open, onClose, onSave }: AddNoteModalProp
                     : "border-border text-text-muted"
                 }`}
               >
-                <div
-                  className="w-5 h-5 rounded-full shrink-0"
-                  style={{ backgroundColor: member.colour }}
-                />
+                <MemberDot avatarUrl={member.avatar_url} colour={member.colour} name={member.name} size={30} />
                 {member.name}
               </button>
             ))}
@@ -74,6 +89,7 @@ export default function AddNoteModal({ open, onClose, onSave }: AddNoteModalProp
             onChange={(e) => setContent(e.target.value)}
             placeholder="Write a note..."
             rows={4}
+            autoFocus={isEditMode}
             className="w-full min-h-[120px] px-4 py-3 rounded-xl border border-border bg-surface text-text text-lg resize-none focus:outline-none focus:ring-2 focus:ring-primary"
           />
         </div>

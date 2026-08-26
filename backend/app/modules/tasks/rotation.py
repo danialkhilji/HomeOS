@@ -16,7 +16,9 @@ async def rotate_tasks(db: AsyncSession) -> None:
         logger.info("Rotation skipped: no members")
         return
 
-    tasks_result = await db.execute(select(Task).order_by(Task.id))
+    tasks_result = await db.execute(
+        select(Task).where(Task.assigned_to.isnot(None)).order_by(Task.id)
+    )
     tasks = list(tasks_result.scalars().all())
 
     if not tasks:

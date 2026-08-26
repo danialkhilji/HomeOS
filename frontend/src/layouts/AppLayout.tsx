@@ -8,7 +8,8 @@ import {
   ShoppingCartIcon,
   NotepadIcon,
   SettingsIcon,
-} from "../components/icons";
+} from "../components";
+import { TAP_SPRING } from "../constants";
 
 const navItems = [
   { to: "/", label: "Dashboard", icon: HomeIcon },
@@ -44,15 +45,15 @@ export default function AppLayout() {
   }, []);
 
   return (
-    <div className="flex flex-col h-dvh bg-surface text-text transition-colors">
+    <div className="flex flex-col h-dvh bg-background text-text transition-colors">
       <header className="flex items-center justify-between px-4 py-3 shrink-0 border-b border-border">
-        <span className="text-lg font-bold text-primary shrink-0">HomeOS</span>
+        <span className="text-lg font-bold text-text shrink-0">HomeOS</span>
         <div className="flex items-center gap-2 sm:gap-3 text-xs sm:text-sm text-text-muted overflow-hidden">
           {prayerData?.hijri_date && (
-            <span className="hidden sm:inline">{prayerData.hijri_date}</span>
+            <span>{prayerData.hijri_date}</span>
           )}
           {prayerData?.hijri_date && (
-            <span className="hidden sm:inline text-text-muted">|</span>
+            <span className="text-text-muted">|</span>
           )}
           <span className="truncate">{formatDate(now)}</span>
           <span className="font-semibold text-text shrink-0">{formatTime(now)}</span>
@@ -73,31 +74,33 @@ export default function AppLayout() {
         </AnimatePresence>
       </main>
 
-      <nav className="flex shrink-0 border-t border-border bg-surface">
-        {navItems.map((item) => (
-          <motion.div
-            key={item.to}
-            whileTap={{ scale: 0.8 }}
-            transition={{ type: "spring", stiffness: 400, damping: 20 }}
-            className="flex-1"
-          >
-            <NavLink
-              to={item.to}
-              end={item.to === "/"}
-              className={({ isActive }) =>
-                `flex flex-col items-center gap-0.5 sm:gap-1 py-2 sm:py-3 text-xs transition-colors ${
-                  isActive
-                    ? "text-primary font-semibold"
-                    : "text-text-muted"
-                }`
-              }
+      <div className="shrink-0 px-1 pb-1 pt-1">
+        <nav className="flex rounded-2xl bg-nav px-2 py-1 shadow-lg">
+          {navItems.map((item) => (
+            <motion.div
+              key={item.to}
+              whileTap={{ scale: 0.8 }}
+              transition={TAP_SPRING}
+              className="flex-1"
             >
-              <item.icon size={22} />
-              <span>{item.label}</span>
-            </NavLink>
-          </motion.div>
-        ))}
-      </nav>
+              <NavLink
+                to={item.to}
+                end={item.to === "/"}
+                className={({ isActive }) =>
+                  `flex flex-col items-center gap-0.5 sm:gap-1 py-2 sm:py-3 text-xs transition-colors rounded-xl mx-1 ${
+                    isActive
+                      ? "text-primary font-semibold"
+                      : "text-surface/60"
+                  }`
+                }
+              >
+                <item.icon size={22} />
+                <span>{item.label}</span>
+              </NavLink>
+            </motion.div>
+          ))}
+        </nav>
+      </div>
     </div>
   );
 }

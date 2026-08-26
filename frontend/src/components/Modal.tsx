@@ -46,7 +46,7 @@ export default function Modal({ open, onClose, title, children }: ModalProps) {
             animate={{ y: 0 }}
             exit={{ y: "100%" }}
             transition={{ type: "spring", stiffness: 300, damping: 30 }}
-            className="fixed bottom-0 left-0 right-0 z-50 rounded-t-2xl bg-white max-h-[85dvh] flex flex-col"
+            className="fixed bottom-0 left-0 right-0 z-50 rounded-t-2xl bg-surface max-h-[85dvh] flex flex-col"
           >
             <div className="shrink-0 px-6 pt-4 pb-2">
               <div className="flex justify-center mb-4">

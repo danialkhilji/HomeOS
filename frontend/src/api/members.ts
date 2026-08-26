@@ -29,3 +29,16 @@ export async function updateMember(id: number, data: UpdateMemberPayload): Promi
 export async function deleteMember(id: number): Promise<void> {
   await apiClient.delete(`/members/${id}`);
 }
+
+export async function uploadAvatar(id: number, file: File): Promise<{ avatar_url: string }> {
+  const formData = new FormData();
+  formData.append("file", file);
+  const response = await apiClient.post<{ avatar_url: string }>(`/members/${id}/avatar`, formData, {
+    headers: { "Content-Type": "multipart/form-data" },
+  });
+  return response.data;
+}
+
+export async function deleteAvatar(id: number): Promise<void> {
+  await apiClient.delete(`/members/${id}/avatar`);
+}

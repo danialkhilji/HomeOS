@@ -1,35 +1,23 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { useMembers, useCreateMember, useUpdateMember, useDeleteMember } from "../../hooks/useMembers";
+import { TAP_SPRING } from "../../constants";
+import { useMembers, useCreateMember, useUpdateMember, useDeleteMember, useUploadAvatar } from "../../hooks/useMembers";
 import { useStores, useCreateStore, useUpdateStore, useDeleteStore } from "../../hooks/useStores";
 import { useQuickAddItems, useCreateQuickAddItem, useDeleteQuickAddItem } from "../../hooks/useQuickAdd";
-import { PageHeader, Card, Button, EmptyState, IconButton } from "../../components";
-import AddMemberModal from "./AddMemberModal";
-import EditMemberModal from "./EditMemberModal";
+import { PageHeader, Card, Button, EmptyState, IconButton, TrashIcon } from "../../components";
+import MemberModal from "./MemberModal";
 import MemberList from "./MemberList";
-import AddStoreModal from "./AddStoreModal";
-import EditStoreModal from "./EditStoreModal";
+import StoreModal from "./StoreModal";
 import StoreList from "./StoreList";
 import AddQuickAddModal from "./AddQuickAddModal";
 import type { Member, Store } from "../../types";
-
-function TrashIcon() {
-  return (
-    <svg xmlns="http://www.w3.org/2000/svg" width={20} height={20} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
-      <polyline points="3 6 5 6 21 6" />
-      <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" />
-      <path d="M10 11v6" />
-      <path d="M14 11v6" />
-      <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2" />
-    </svg>
-  );
-}
 
 export default function SettingsPage() {
   const { data: members = [] } = useMembers();
   const createMember = useCreateMember();
   const updateMember = useUpdateMember();
   const deleteMember = useDeleteMember();
+  const uploadAvatar = useUploadAvatar();
   const [addMemberOpen, setAddMemberOpen] = useState(false);
   const [editingMember, setEditingMember] = useState<Member | null>(null);
 
@@ -45,9 +33,14 @@ export default function SettingsPage() {
   const deleteQuickAdd = useDeleteQuickAddItem();
   const [addQuickAddOpen, setAddQuickAddOpen] = useState(false);
 
-  function handleCreateMember(name: string, colour: string) {
+  function handleCreateMember(name: string, colour: string, avatar?: File) {
     createMember.mutate({ name, colour }, {
-      onSuccess: () => setAddMemberOpen(false),
+      onSuccess: (member) => {
+        if (avatar) {
+          uploadAvatar.mutate({ id: member.id, file: avatar });
+        }
+        setAddMemberOpen(false);
+      },
     });
   }
 
@@ -133,7 +126,7 @@ export default function SettingsPage() {
                   <motion.div
                     key={item.id}
                     whileTap={{ scale: 0.98 }}
-                    transition={{ type: "spring", stiffness: 400, damping: 20 }}
+                    transition={TAP_SPRING}
                     className="flex items-center justify-between py-2"
                   >
                     <div className="flex items-center gap-3">
@@ -159,30 +152,18 @@ export default function SettingsPage() {
         HomeOS v1.3
       </p>
 
-      <AddMemberModal
-        open={addMemberOpen}
-        onClose={() => setAddMemberOpen(false)}
-        onSave={handleCreateMember}
-      />
-
-      <EditMemberModal
-        open={editingMember !== null}
-        onClose={() => setEditingMember(null)}
-        onSave={handleEditMember}
+      <MemberModal
+        open={addMemberOpen || editingMember !== null}
         member={editingMember}
+        onClose={() => { setAddMemberOpen(false); setEditingMember(null); }}
+        onSave={editingMember ? handleEditMember : handleCreateMember}
       />
 
-      <AddStoreModal
-        open={addStoreOpen}
-        onClose={() => setAddStoreOpen(false)}
-        onSave={handleCreateStore}
-      />
-
-      <EditStoreModal
-        open={editingStore !== null}
-        onClose={() => setEditingStore(null)}
-        onSave={handleEditStore}
+      <StoreModal
+        open={addStoreOpen || editingStore !== null}
         store={editingStore}
+        onClose={() => { setAddStoreOpen(false); setEditingStore(null); }}
+        onSave={editingStore ? handleEditStore : handleCreateStore}
       />
 
       <AddQuickAddModal

@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { useQuickAddItems } from "../../hooks/useQuickAdd";
+import { TAP_SPRING } from "../../constants";
 
 const DEFAULT_ITEMS = [
   { emoji: "🥛", name: "Milk" },
@@ -36,14 +37,14 @@ export default function QuickAddBar({ onAdd, existingItems }: QuickAddBarProps) 
           <motion.button
             key={item.name}
             whileTap={{ scale: 0.8 }}
-            transition={{ type: "spring", stiffness: 400, damping: 20 }}
+            transition={TAP_SPRING}
             onClick={() => {
               if (!exists) onAdd(item.name);
             }}
             className={`flex items-center gap-1.5 px-3 py-2 rounded-xl border text-sm transition-colors ${
               exists
                 ? "opacity-30 border-border"
-                : "border-border bg-white active:bg-surface-dim"
+                : "border-border bg-surface active:bg-surface-dim"
             }`}
           >
             <span className="text-lg">{item.emoji}</span>

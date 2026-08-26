@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { fetchMembers, createMember, updateMember, deleteMember } from "../api/members";
+import { fetchMembers, createMember, updateMember, deleteMember, uploadAvatar, deleteAvatar } from "../api/members";
 import type { CreateMemberPayload, UpdateMemberPayload } from "../api/members";
 
 const MEMBERS_KEY = ["members"];
@@ -38,6 +38,28 @@ export function useDeleteMember() {
 
   return useMutation({
     mutationFn: (id: number) => deleteMember(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: MEMBERS_KEY });
+    },
+  });
+}
+
+export function useUploadAvatar() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ id, file }: { id: number; file: File }) => uploadAvatar(id, file),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: MEMBERS_KEY });
+    },
+  });
+}
+
+export function useDeleteAvatar() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (id: number) => deleteAvatar(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: MEMBERS_KEY });
     },

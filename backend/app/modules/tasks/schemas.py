@@ -15,8 +15,14 @@ class MemberSummary(BaseModel):
     id: int
     name: str
     colour: str
+    avatar_url: str | None = None
 
     model_config = {"from_attributes": True}
+
+    def model_post_init(self, __context, /):
+        from app.modules.members.service import get_avatar_url
+        if self.avatar_url is None:
+            self.avatar_url = get_avatar_url(self.id)
 
 
 class TaskCreate(BaseModel):
@@ -26,15 +32,7 @@ class TaskCreate(BaseModel):
     recurrence: Recurrence = Recurrence.none
 
 
-class TaskUpdate(BaseModel):
-    title: str = Field(min_length=1, max_length=200)
-    assigned_to: int | None = None
-    reminder_at: datetime | None = None
-    recurrence: Recurrence = Recurrence.none
-
-
-class ReorderRequest(BaseModel):
-    ids: list[int] = Field(min_length=1)
+TaskUpdate = TaskCreate
 
 
 class TaskResponse(BaseModel):
