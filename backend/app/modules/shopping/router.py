@@ -2,13 +2,13 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.database import get_db
+from app.core.schemas import ReorderRequest
 from app.modules.shopping import service
 from app.modules.shopping.schemas import (
     ShoppingItemCreate,
     ShoppingItemResponse,
     ShoppingItemUpdate,
 )
-from app.core.schemas import ReorderRequest
 
 router = APIRouter(prefix="/shopping", tags=["shopping"])
 

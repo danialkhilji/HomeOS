@@ -19,7 +19,7 @@ class MemberSummary(BaseModel):
 
     model_config = {"from_attributes": True}
 
-    def model_post_init(self, __context):
+    def model_post_init(self, __context, /):
         from app.modules.members.service import get_avatar_url
         if self.avatar_url is None:
             self.avatar_url = get_avatar_url(self.id)
