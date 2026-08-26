@@ -9,6 +9,7 @@ import {
   NotepadIcon,
   SettingsIcon,
 } from "../components/icons";
+import { TAP_SPRING } from "../constants";
 
 const navItems = [
   { to: "/", label: "Dashboard", icon: HomeIcon },
@@ -79,7 +80,7 @@ export default function AppLayout() {
             <motion.div
               key={item.to}
               whileTap={{ scale: 0.8 }}
-              transition={{ type: "spring", stiffness: 400, damping: 20 }}
+              transition={TAP_SPRING}
               className="flex-1"
             >
               <NavLink

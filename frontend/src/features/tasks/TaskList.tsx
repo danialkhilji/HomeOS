@@ -4,13 +4,6 @@ import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import type { Task } from "../../types";
 
-interface TaskListProps {
-  tasks: Task[];
-  onToggle: (id: number) => void;
-  onEdit: (task: Task) => void;
-  onDelete: (id: number) => void;
-}
-
 function CheckCircle({ filled }: { filled: boolean }) {
   if (filled) {
     return (
@@ -119,22 +112,6 @@ export function TaskRow({ task, onToggle, onEdit, onDelete }: { task: Task; onTo
         label={`Delete ${task.title}`}
         onClick={onDelete}
       />
-    </div>
-  );
-}
-
-export default function TaskList({ tasks, onToggle, onEdit, onDelete }: TaskListProps) {
-  return (
-    <div className="space-y-2">
-      {tasks.map((task) => (
-        <TaskRow
-          key={task.id}
-          task={task}
-          onToggle={() => onToggle(task.id)}
-          onEdit={() => onEdit(task)}
-          onDelete={() => onDelete(task.id)}
-        />
-      ))}
     </div>
   );
 }

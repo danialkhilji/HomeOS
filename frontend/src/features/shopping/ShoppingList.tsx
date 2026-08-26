@@ -4,13 +4,6 @@ import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import type { ShoppingItem } from "../../types";
 
-interface ShoppingListProps {
-  items: ShoppingItem[];
-  onToggle: (id: number) => void;
-  onEdit: (item: ShoppingItem) => void;
-  onDelete: (id: number) => void;
-}
-
 function CheckBox({ checked }: { checked: boolean }) {
   if (checked) {
     return (
@@ -104,22 +97,6 @@ export function ShoppingRow({ item, onToggle, onEdit, onDelete }: { item: Shoppi
         label={`Delete ${item.name}`}
         onClick={onDelete}
       />
-    </div>
-  );
-}
-
-export default function ShoppingList({ items, onToggle, onEdit, onDelete }: ShoppingListProps) {
-  return (
-    <div className="space-y-2">
-      {items.map((item) => (
-        <ShoppingRow
-          key={item.id}
-          item={item}
-          onToggle={() => onToggle(item.id)}
-          onEdit={() => onEdit(item)}
-          onDelete={() => onDelete(item.id)}
-        />
-      ))}
     </div>
   );
 }

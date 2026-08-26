@@ -7,6 +7,7 @@ export { default as Modal } from "./Modal";
 export { default as LoadingSpinner } from "./LoadingSpinner";
 export { default as PullToRefresh } from "./PullToRefresh";
 export { default as MemberDot } from "./MemberDot";
+export { default as ColourPicker } from "./ColourPicker";
 export {
   HomeIcon,
   CheckCircleIcon,

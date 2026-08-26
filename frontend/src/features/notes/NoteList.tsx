@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { IconButton, TrashIcon, MemberDot } from "../../components";
+import { TAP_SPRING } from "../../constants";
 import { useLongPress } from "../../hooks/useLongPress";
 import type { Note } from "../../types";
 
@@ -15,7 +16,7 @@ function NoteCard({ note, onEdit, onDelete }: { note: Note; onEdit: () => void; 
   return (
     <motion.div
       whileTap={{ scale: 0.98 }}
-      transition={{ type: "spring", stiffness: 400, damping: 20 }}
+      transition={TAP_SPRING}
       className="rounded-xl p-4 bg-surface border border-border"
       {...longPress}
     >

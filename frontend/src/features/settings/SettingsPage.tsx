@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
+import { TAP_SPRING } from "../../constants";
 import { useMembers, useCreateMember, useUpdateMember, useDeleteMember, useUploadAvatar } from "../../hooks/useMembers";
 import { useStores, useCreateStore, useUpdateStore, useDeleteStore } from "../../hooks/useStores";
 import { useQuickAddItems, useCreateQuickAddItem, useDeleteQuickAddItem } from "../../hooks/useQuickAdd";
@@ -125,7 +126,7 @@ export default function SettingsPage() {
                   <motion.div
                     key={item.id}
                     whileTap={{ scale: 0.98 }}
-                    transition={{ type: "spring", stiffness: 400, damping: 20 }}
+                    transition={TAP_SPRING}
                     className="flex items-center justify-between py-2"
                   >
                     <div className="flex items-center gap-3">

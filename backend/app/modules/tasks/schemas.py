@@ -32,11 +32,7 @@ class TaskCreate(BaseModel):
     recurrence: Recurrence = Recurrence.none
 
 
-class TaskUpdate(BaseModel):
-    title: str = Field(min_length=1, max_length=200)
-    assigned_to: int | None = None
-    reminder_at: datetime | None = None
-    recurrence: Recurrence = Recurrence.none
+TaskUpdate = TaskCreate
 
 
 class ReorderRequest(BaseModel):

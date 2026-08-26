@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { Modal, Button } from "../../components";
+import { Modal, Button, ColourPicker } from "../../components";
 import { INPUT_STYLE, PRESET_COLOURS } from "../../constants";
 import { useUploadAvatar, useDeleteAvatar } from "../../hooks/useMembers";
 import type { Member } from "../../types";
@@ -135,18 +135,7 @@ export default function MemberModal({ open, onClose, onSave, member }: MemberMod
           <label className="block text-sm font-medium mb-2 text-text-muted">
             Colour
           </label>
-          <div className="flex gap-3 flex-wrap">
-            {PRESET_COLOURS.map((c) => (
-              <button
-                key={c}
-                onClick={() => setColour(c)}
-                className={`w-12 h-12 rounded-full transition-transform ${
-                  colour === c ? "ring-3 ring-offset-2 ring-primary scale-110" : ""
-                }`}
-                style={{ backgroundColor: c }}
-              />
-            ))}
-          </div>
+          <ColourPicker colours={PRESET_COLOURS} selected={colour} onSelect={setColour} />
         </div>
 
         <div className="flex gap-3 pt-2">

@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { TAP_SPRING } from "../constants";
 
 interface CardProps {
   children: React.ReactNode;
@@ -22,7 +23,7 @@ export default function Card({ children, title, onClick }: CardProps) {
     return (
       <motion.div
         whileTap={{ scale: 0.98 }}
-        transition={{ type: "spring", stiffness: 400, damping: 20 }}
+        transition={TAP_SPRING}
         onClick={onClick}
         className="cursor-pointer"
       >

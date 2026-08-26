@@ -15,6 +15,14 @@ AVATAR_DIR = Path("data/avatars")
 AVATAR_MAX_SIZE = 256
 
 
+async def get_member(db: AsyncSession, member_id: int) -> Member:
+    result = await db.execute(select(Member).where(Member.id == member_id))
+    member = result.scalar_one_or_none()
+    if not member:
+        raise NotFoundError("Member", member_id)
+    return member
+
+
 async def get_all_members(db: AsyncSession) -> list[Member]:
     result = await db.execute(select(Member).order_by(Member.name))
     return list(result.scalars().all())
@@ -33,10 +41,7 @@ async def create_member(db: AsyncSession, data: MemberCreate) -> Member:
 
 
 async def update_member(db: AsyncSession, member_id: int, data: MemberUpdate) -> Member:
-    result = await db.execute(select(Member).where(Member.id == member_id))
-    member = result.scalar_one_or_none()
-    if not member:
-        raise NotFoundError("Member", member_id)
+    member = await get_member(db, member_id)
 
     if data.name != member.name:
         existing = await db.execute(select(Member).where(Member.name == data.name))
@@ -51,10 +56,7 @@ async def update_member(db: AsyncSession, member_id: int, data: MemberUpdate) ->
 
 
 async def delete_member(db: AsyncSession, member_id: int) -> None:
-    result = await db.execute(select(Member).where(Member.id == member_id))
-    member = result.scalar_one_or_none()
-    if not member:
-        raise NotFoundError("Member", member_id)
+    member = await get_member(db, member_id)
 
     await db.execute(update(Task).where(Task.assigned_to == member_id).values(assigned_to=None))
     await db.execute(update(Note).where(Note.author_id == member_id).values(author_id=None))

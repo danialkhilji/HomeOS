@@ -1,12 +1,10 @@
 from fastapi import APIRouter, Depends, UploadFile
 from fastapi.responses import FileResponse
-from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.database import get_db
 from app.core.exceptions import NotFoundError, ValidationError
 from app.modules.members import service
-from app.modules.members.models import Member
 from app.modules.members.schemas import MemberCreate, MemberResponse, MemberUpdate
 
 router = APIRouter(prefix="/members", tags=["members"])
@@ -47,9 +45,7 @@ async def delete_member(member_id: int, db: AsyncSession = Depends(get_db)):
 
 @router.post("/{member_id}/avatar")
 async def upload_avatar(member_id: int, file: UploadFile, db: AsyncSession = Depends(get_db)):
-    result = await db.execute(select(Member).where(Member.id == member_id))
-    if not result.scalar_one_or_none():
-        raise NotFoundError("Member", member_id)
+    await service.get_member(db, member_id)
 
     if file.content_type not in ALLOWED_TYPES:
         raise ValidationError("File must be JPEG, PNG, or WebP")
@@ -72,9 +68,7 @@ async def get_avatar(member_id: int):
 
 @router.delete("/{member_id}/avatar")
 async def delete_avatar(member_id: int, db: AsyncSession = Depends(get_db)):
-    result = await db.execute(select(Member).where(Member.id == member_id))
-    if not result.scalar_one_or_none():
-        raise NotFoundError("Member", member_id)
+    await service.get_member(db, member_id)
 
     service.delete_avatar(member_id)
     return {"message": "Avatar deleted"}

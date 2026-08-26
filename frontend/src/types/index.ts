@@ -107,10 +107,3 @@ export interface PrayerTimes {
   current_prayer: string | null;
   hijri_date: string | null;
 }
-
-export interface HealthResponse {
-  app: string;
-  version: string;
-  status: string;
-  database: string;
-}
