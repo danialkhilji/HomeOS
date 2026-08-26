@@ -1,5 +1,8 @@
+from typing import Awaitable, Callable
+
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from apscheduler.triggers.cron import CronTrigger
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.database import async_session_factory
 from app.core.logging import get_logger
@@ -7,6 +10,20 @@ from app.core.logging import get_logger
 logger = get_logger(__name__)
 
 scheduler = AsyncIOScheduler()
+
+
+async def _run_job(
+    name: str, work_fn: Callable[[AsyncSession], Awaitable[None]]
+) -> None:
+    """Run *work_fn* inside a session with automatic commit / rollback."""
+    logger.info("Scheduled %s triggered", name)
+    async with async_session_factory() as session:
+        try:
+            await work_fn(session)
+            await session.commit()
+        except Exception:
+            await session.rollback()
+            logger.exception("Scheduled %s failed", name)
 
 
 async def run_prayer_refresh() -> None:
@@ -22,40 +39,19 @@ async def run_prayer_refresh() -> None:
 async def run_recurrence_reset() -> None:
     from app.modules.tasks.recurrence import reset_recurring_tasks
 
-    logger.info("Scheduled recurring task reset triggered")
-    async with async_session_factory() as session:
-        try:
-            await reset_recurring_tasks(session)
-            await session.commit()
-        except Exception:
-            await session.rollback()
-            logger.exception("Scheduled recurring task reset failed")
+    await _run_job("recurring task reset", reset_recurring_tasks)
 
 
 async def run_rotation() -> None:
     from app.modules.tasks.rotation import rotate_tasks
 
-    logger.info("Scheduled rotation triggered")
-    async with async_session_factory() as session:
-        try:
-            await rotate_tasks(session)
-            await session.commit()
-        except Exception:
-            await session.rollback()
-            logger.exception("Scheduled rotation failed")
+    await _run_job("rotation", rotate_tasks)
 
 
 async def run_cleanup() -> None:
     from app.modules.cleanup.service import cleanup_old_records
 
-    logger.info("Scheduled cleanup triggered")
-    async with async_session_factory() as session:
-        try:
-            await cleanup_old_records(session)
-            await session.commit()
-        except Exception:
-            await session.rollback()
-            logger.exception("Scheduled cleanup failed")
+    await _run_job("cleanup", cleanup_old_records)
 
 
 def setup_scheduler() -> None:

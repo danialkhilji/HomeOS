@@ -8,7 +8,7 @@ import {
   ShoppingCartIcon,
   NotepadIcon,
   SettingsIcon,
-} from "../components/icons";
+} from "../components";
 import { TAP_SPRING } from "../constants";
 
 const navItems = [

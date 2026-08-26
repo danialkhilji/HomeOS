@@ -8,7 +8,7 @@ from app.modules.shopping.schemas import (
     ShoppingItemResponse,
     ShoppingItemUpdate,
 )
-from app.modules.tasks.schemas import ReorderRequest
+from app.core.schemas import ReorderRequest
 
 router = APIRouter(prefix="/shopping", tags=["shopping"])
 

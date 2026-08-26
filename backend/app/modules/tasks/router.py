@@ -6,7 +6,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.core.database import get_db
 from app.modules.tasks import service
 from app.modules.tasks.rotation import rotate_tasks
-from app.modules.tasks.schemas import ReorderRequest, TaskCreate, TaskResponse, TaskUpdate
+from app.core.schemas import ReorderRequest
+from app.modules.tasks.schemas import TaskCreate, TaskResponse, TaskUpdate
 
 router = APIRouter(prefix="/tasks", tags=["tasks"])
 

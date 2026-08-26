@@ -35,10 +35,6 @@ class TaskCreate(BaseModel):
 TaskUpdate = TaskCreate
 
 
-class ReorderRequest(BaseModel):
-    ids: list[int] = Field(min_length=1)
-
-
 class TaskResponse(BaseModel):
     id: int
     title: str

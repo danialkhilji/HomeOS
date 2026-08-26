@@ -11,27 +11,27 @@ export default function NotesPage() {
   const updateNote = useUpdateNote();
   const deleteNote = useDeleteNote();
   const [modalOpen, setModalOpen] = useState(false);
-  const [editingNote, setEditingNote] = useState<Note | null>(null);
+  const [modalNote, setModalNote] = useState<Note | null>(null);
 
   function handleOpenAdd() {
-    setEditingNote(null);
+    setModalNote(null);
     setModalOpen(true);
   }
 
   function handleOpenEdit(note: Note) {
-    setEditingNote(note);
+    setModalNote(note);
     setModalOpen(true);
   }
 
   function handleCloseModal() {
     setModalOpen(false);
-    setEditingNote(null);
+    setModalNote(null);
   }
 
   function handleSave(content: string, authorId: number | null) {
-    if (editingNote) {
+    if (modalNote) {
       updateNote.mutate(
-        { id: editingNote.id, data: { content } },
+        { id: modalNote.id, data: { content } },
         { onSuccess: handleCloseModal },
       );
     } else {
@@ -66,7 +66,7 @@ export default function NotesPage() {
         open={modalOpen}
         onClose={handleCloseModal}
         onSave={handleSave}
-        note={editingNote}
+        note={modalNote}
       />
     </div>
   );

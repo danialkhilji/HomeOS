@@ -31,8 +31,8 @@ export default function ShoppingPage() {
   const reorderItems = useReorderShoppingItems();
   const deleteItem = useDeleteShoppingItem();
 
-  const [addModalOpen, setAddModalOpen] = useState(false);
-  const [editingItem, setEditingItem] = useState<ShoppingItem | null>(null);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalItem, setModalItem] = useState<ShoppingItem | null>(null);
   const [showPurchased, setShowPurchased] = useState(false);
 
   const sensors = useSensors(
@@ -87,18 +87,23 @@ export default function ShoppingPage() {
     return result;
   }, [activeItems]);
 
-  function handleAdd(name: string, storeId: number | null) {
-    createItem.mutate({ name, store_id: storeId }, {
-      onSuccess: () => setAddModalOpen(false),
-    });
+  function closeModal() {
+    setModalOpen(false);
+    setModalItem(null);
   }
 
-  function handleEdit(name: string, storeId: number | null) {
-    if (!editingItem) return;
-    updateItem.mutate(
-      { id: editingItem.id, data: { name, store_id: storeId } },
-      { onSuccess: () => setEditingItem(null) },
-    );
+  function handleSave(name: string, storeId: number | null) {
+    if (modalItem) {
+      updateItem.mutate(
+        { id: modalItem.id, data: { name, store_id: storeId } },
+        { onSuccess: closeModal },
+      );
+    } else {
+      createItem.mutate(
+        { name, store_id: storeId },
+        { onSuccess: closeModal },
+      );
+    }
   }
 
   function handleDragEnd(event: DragEndEvent) {
@@ -127,7 +132,7 @@ export default function ShoppingPage() {
     <div>
       <PageHeader
         title="Shopping"
-        action={<Button onClick={() => setAddModalOpen(true)}>Add Item</Button>}
+        action={<Button onClick={() => setModalOpen(true)}>Add Item</Button>}
       />
 
       <QuickAddBar onAdd={handleQuickAdd} existingItems={existingNames} />
@@ -135,7 +140,7 @@ export default function ShoppingPage() {
       {items.length === 0 ? (
         <EmptyState
           message="No items yet. Tap an item above or add your own."
-          action={<Button onClick={() => setAddModalOpen(true)}>Add Item</Button>}
+          action={<Button onClick={() => setModalOpen(true)}>Add Item</Button>}
         />
       ) : (
         <>
@@ -169,7 +174,7 @@ export default function ShoppingPage() {
                               key={item.id}
                               item={item}
                               onToggle={() => toggleItem.mutate(item.id)}
-                              onEdit={() => setEditingItem(item)}
+                              onEdit={() => { setModalItem(item); setModalOpen(true); }}
                               onDelete={() => deleteItem.mutate(item.id)}
                             />
                           ))}
@@ -184,7 +189,7 @@ export default function ShoppingPage() {
                         key={item.id}
                         item={item}
                         onToggle={() => toggleItem.mutate(item.id)}
-                        onEdit={() => setEditingItem(item)}
+                        onEdit={() => { setModalItem(item); setModalOpen(true); }}
                         onDelete={() => deleteItem.mutate(item.id)}
                       />
                     ))}
@@ -201,7 +206,7 @@ export default function ShoppingPage() {
                   key={item.id}
                   item={item}
                   onToggle={() => toggleItem.mutate(item.id)}
-                  onEdit={() => setEditingItem(item)}
+                  onEdit={() => { setModalItem(item); setModalOpen(true); }}
                   onDelete={() => deleteItem.mutate(item.id)}
                 />
               ))}
@@ -224,7 +229,7 @@ export default function ShoppingPage() {
                       key={item.id}
                       item={item}
                       onToggle={() => toggleItem.mutate(item.id)}
-                      onEdit={() => setEditingItem(item)}
+                      onEdit={() => { setModalItem(item); setModalOpen(true); }}
                       onDelete={() => deleteItem.mutate(item.id)}
                     />
                   ))}
@@ -236,13 +241,10 @@ export default function ShoppingPage() {
       )}
 
       <ShoppingItemModal
-        open={addModalOpen || editingItem !== null}
-        onClose={() => {
-          setAddModalOpen(false);
-          setEditingItem(null);
-        }}
-        onSave={editingItem ? handleEdit : handleAdd}
-        item={editingItem}
+        open={modalOpen}
+        onClose={closeModal}
+        onSave={handleSave}
+        item={modalItem}
       />
     </div>
   );
