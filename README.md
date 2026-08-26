@@ -38,6 +38,7 @@ docker compose up --build
 
 - [Deployment Guide](docs/DEPLOYMENT.md)
 - [Development Guide](docs/DEVELOPMENT.md)
+- [Contributing](CONTRIBUTING.md)
 - [Changelog](CHANGELOG.md)
 
 ## License
