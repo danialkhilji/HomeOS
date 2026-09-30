@@ -28,7 +28,7 @@ A self-hosted family operating system for a kitchen touchscreen. Manages househo
 ## Quick Start
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/HomeOS.git
+git clone https://github.com/danialkhilji/HomeOS.git
 cd HomeOS
 cp .env.example .env
 docker compose up --build

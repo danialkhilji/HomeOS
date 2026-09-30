@@ -10,7 +10,7 @@ Deploy HomeOS on a dedicated Linux machine (Mini PC, old laptop, etc.).
 ## First-time setup
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/HomeOS.git
+git clone https://github.com/danialkhilji/HomeOS.git
 cd HomeOS
 cp .env.example .env
 ```
