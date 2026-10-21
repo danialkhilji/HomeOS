@@ -4,14 +4,13 @@ import {
   BinIcon,
   CalendarIcon,
   Card,
-  CheckCircleFilledIcon,
   ChevronRightIcon,
   WheelieBinIcon,
 } from "../../components";
 import { TAP_SPRING } from "../../constants";
 import { useBinSchedule, useToggleBinPutOut } from "../../hooks/useBins";
 import BinScheduleModal from "./BinScheduleModal";
-import { daysBetween, formatLongDate, formatShortDate, formatWeekday } from "./binDates";
+import { daysBetween, formatLongDate, formatShortDate } from "./binDates";
 
 // Static class names so Tailwind can see them. 4 bins sit in a 2x2 grid, 5+ wrap in rows of 3
 const TILE_COLS: Record<number, string> = {
@@ -20,18 +19,6 @@ const TILE_COLS: Record<number, string> = {
   3: "sm:grid-cols-3",
   4: "sm:grid-cols-2",
 };
-
-function nextCollectionLabel(daysUntil: number, date: string) {
-  if (daysUntil === 0) return "Today";
-  if (daysUntil === 1) return "Tomorrow";
-  return daysUntil < 7 ? formatWeekday(date) : formatLongDate(date);
-}
-
-function statusLabel(daysUntil: number, date: string) {
-  if (daysUntil === 0) return "Collection today";
-  if (daysUntil === 1) return "Put out tonight";
-  return formatShortDate(date);
-}
 
 function shortName(name: string) {
   return name.trim().split(/\s+/)[0] ?? name;
@@ -48,7 +35,6 @@ export default function BinCollectionCard() {
   const { alternating, collections } = data;
   const following = collections[1];
   const weekBin = next.bins.find((bin) => bin.schedule !== "weekly");
-  const status = statusLabel(next.days_until, next.date);
 
   return (
     <div>
@@ -62,11 +48,8 @@ export default function BinCollectionCard() {
               <h3 className="text-lg font-semibold text-text leading-tight">
                 Bin Collection
               </h3>
-              <p className="text-sm text-text-muted">
-                Next collection ·{" "}
-                <span className="font-medium text-primary">
-                  {nextCollectionLabel(next.days_until, next.date)}
-                </span>
+              <p className="text-sm font-medium text-primary">
+                {formatLongDate(next.date)}
               </p>
             </div>
           </div>
@@ -101,19 +84,9 @@ export default function BinCollectionCard() {
               <div className={`shrink-0 transition ${bin.put_out ? "grayscale opacity-50" : ""}`}>
                 <BinIcon icon={bin.icon} colour={bin.colour} size={56} />
               </div>
-              <div className="min-w-0">
-                <p className={`text-base font-semibold leading-tight ${bin.put_out ? "text-text-muted" : "text-text"}`}>
-                  {bin.name}
-                </p>
-                <p className="mt-1 flex items-center gap-1.5 text-sm text-text-muted">
-                  {bin.put_out ? (
-                    <CheckCircleFilledIcon size={16} className="text-success shrink-0" />
-                  ) : (
-                    <span className="w-4 h-4 rounded-full border-2 border-text-faint shrink-0" />
-                  )}
-                  {bin.put_out ? "Outside" : status}
-                </p>
-              </div>
+              <p className={`min-w-0 text-base font-semibold leading-tight ${bin.put_out ? "text-text-muted" : "text-text"}`}>
+                {bin.name}
+              </p>
             </motion.button>
           ))}
         </div>

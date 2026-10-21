@@ -17,7 +17,6 @@ export {
   SettingsIcon,
   GripIcon,
   TrashIcon,
-  CheckCircleFilledIcon,
   CalendarIcon,
   ChevronRightIcon,
   WheelieBinIcon,

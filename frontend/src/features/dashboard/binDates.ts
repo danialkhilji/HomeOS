@@ -64,10 +64,6 @@ export function toBinSchedule(week: BinWeek, upcoming: "A" | "B"): BinScheduleTy
   return (week === "this_week") === (upcoming === "A") ? "week_a" : "week_b";
 }
 
-export function formatWeekday(value: string): string {
-  return parseLocalDate(value).toLocaleDateString("en-GB", { weekday: "long" });
-}
-
 export function formatShortDate(value: string): string {
   return parseLocalDate(value).toLocaleDateString("en-GB", { weekday: "short", day: "numeric", month: "short" });
 }
