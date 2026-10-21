@@ -5,6 +5,7 @@ import WeatherCard from "./WeatherCard";
 import CalendarWidget from "../calendar/CalendarWidget";
 import CalendarModal from "../calendar/CalendarModal";
 import PrayerTimesBar from "./PrayerTimesBar";
+import BinCollectionCard from "./BinCollectionCard";
 import TasksCard from "./TasksCard";
 import ShoppingCard from "./ShoppingCard";
 import NotesCard from "./NotesCard";
@@ -20,6 +21,7 @@ export default function DashboardPage() {
       queryClient.invalidateQueries({ queryKey: ["shopping"] });
       queryClient.invalidateQueries({ queryKey: ["notes"] });
       queryClient.invalidateQueries({ queryKey: ["birthdays"] });
+      queryClient.invalidateQueries({ queryKey: ["bins"] });
     }, 5 * 60 * 1000);
     return () => clearInterval(interval);
   }, [queryClient]);
@@ -32,6 +34,7 @@ export default function DashboardPage() {
       queryClient.invalidateQueries({ queryKey: ["shopping"] }),
       queryClient.invalidateQueries({ queryKey: ["notes"] }),
       queryClient.invalidateQueries({ queryKey: ["birthdays"] }),
+      queryClient.invalidateQueries({ queryKey: ["bins"] }),
     ]);
   }, [queryClient]);
 
@@ -43,6 +46,7 @@ export default function DashboardPage() {
           <CalendarWidget onExpand={() => setCalendarOpen(true)} />
         </div>
         <PrayerTimesBar />
+        <BinCollectionCard />
         <BirthdayCard />
         <TasksCard />
         <ShoppingCard />

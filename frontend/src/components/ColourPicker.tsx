@@ -13,7 +13,7 @@ export default function ColourPicker({ colours, selected, onSelect }: ColourPick
           type="button"
           onClick={() => onSelect(c)}
           className={`w-12 h-12 rounded-full transition-transform ${
-            selected === c ? "ring-3 ring-offset-2 ring-primary scale-110" : ""
+            selected.toLowerCase() === c.toLowerCase() ? "ring-3 ring-offset-2 ring-primary scale-110" : ""
           }`}
           style={{ backgroundColor: c }}
         />

@@ -107,3 +107,41 @@ export interface PrayerTimes {
   current_prayer: string | null;
   hijri_date: string | null;
 }
+
+export type BinIconType = "general" | "garden" | "food" | "cardboard" | "plastic" | "glass";
+
+export type BinScheduleType = "weekly" | "week_a" | "week_b";
+
+export interface Bin {
+  id: number;
+  name: string;
+  colour: string;
+  icon: BinIconType;
+  schedule: BinScheduleType;
+  created_at: string;
+}
+
+export interface BinSummary {
+  id: number;
+  name: string;
+  colour: string;
+  icon: BinIconType;
+  schedule: BinScheduleType;
+}
+
+export interface BinSettings {
+  collection_weekday: number;
+  week_a_date: string;
+}
+
+export interface BinCollection {
+  date: string;
+  days_until: number;
+  week_label: "A" | "B";
+  bins: BinSummary[];
+}
+
+export interface BinScheduleResponse {
+  alternating: boolean;
+  collections: BinCollection[];
+}

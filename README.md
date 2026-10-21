@@ -1,6 +1,6 @@
 # HomeOS
 
-A self-hosted family operating system for a kitchen touchscreen. Manages household tasks, shopping lists, notes, prayer times, and birthdays from a single shared display.
+A self-hosted family operating system for a kitchen touchscreen. Manages household tasks, shopping lists, notes, prayer times, bin collections, and birthdays from a single shared display.
 
 ## Screenshots
 

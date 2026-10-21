@@ -8,6 +8,7 @@ export { default as LoadingSpinner } from "./LoadingSpinner";
 export { default as PullToRefresh } from "./PullToRefresh";
 export { default as MemberDot } from "./MemberDot";
 export { default as ColourPicker } from "./ColourPicker";
+export { default as BinIcon } from "./BinIcon";
 export {
   HomeIcon,
   CheckCircleIcon,
@@ -16,4 +17,8 @@ export {
   SettingsIcon,
   GripIcon,
   TrashIcon,
+  CheckCircleFilledIcon,
+  CalendarIcon,
+  ChevronRightIcon,
+  WheelieBinIcon,
 } from "./icons";
