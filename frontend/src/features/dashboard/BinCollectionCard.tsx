@@ -20,10 +20,6 @@ const TILE_COLS: Record<number, string> = {
   4: "sm:grid-cols-2",
 };
 
-function shortName(name: string) {
-  return name.trim().split(/\s+/)[0] ?? name;
-}
-
 export default function BinCollectionCard() {
   const { data } = useBinSchedule(6);
   const togglePutOut = useToggleBinPutOut();
@@ -97,32 +93,23 @@ export default function BinCollectionCard() {
             whileTap={{ scale: 0.98 }}
             transition={TAP_SPRING}
             onClick={() => setScheduleOpen(true)}
-            className="mt-3 w-full min-h-[56px] flex items-center gap-3 rounded-xl border border-border bg-surface-dim px-3 py-2.5 text-left"
+            className="mt-3 w-full min-h-[44px] flex items-center gap-2.5 rounded-xl border border-border bg-surface-dim px-3 py-1.5 text-left"
           >
-            <CalendarIcon size={24} className="text-primary shrink-0" />
-            <div className="flex-1 min-w-0">
-              <p className="text-base text-text">
-                <span className="font-semibold">
-                  {daysBetween(next.date, following.date) === 7
-                    ? "Next week"
-                    : formatShortDate(following.date)}
-                </span>
-              </p>
-              <p className="text-sm text-text-muted sm:truncate">
-                {following.bins.map((bin) => bin.name).join(" · ")}
-              </p>
-            </div>
-            <div className="hidden sm:flex items-end divide-x divide-border shrink-0">
+            <CalendarIcon size={18} className="text-primary shrink-0" />
+            <p className="flex-1 min-w-0 truncate text-sm text-text-muted">
+              <span className="font-semibold text-text">
+                {daysBetween(next.date, following.date) === 7
+                  ? "Next week"
+                  : formatShortDate(following.date)}
+              </span>
+              <span className="hidden sm:inline"> · {following.bins.map((bin) => bin.name).join(" · ")}</span>
+            </p>
+            <div className="flex items-center gap-1 shrink-0">
               {following.bins.map((bin) => (
-                <div key={bin.id} className="flex flex-col items-center gap-0.5 min-w-16 max-w-28 px-2">
-                  <BinIcon icon={bin.icon} colour={bin.colour} size={32} />
-                  <span className="text-xs text-text-muted truncate max-w-full">
-                    {shortName(bin.name)}
-                  </span>
-                </div>
+                <BinIcon key={bin.id} icon={bin.icon} colour={bin.colour} size={24} />
               ))}
             </div>
-            <ChevronRightIcon size={20} className="text-text-faint shrink-0" />
+            <ChevronRightIcon size={18} className="text-text-faint shrink-0" />
           </motion.button>
         )}
       </Card>
