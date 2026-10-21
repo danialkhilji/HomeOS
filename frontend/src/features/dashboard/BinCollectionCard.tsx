@@ -80,7 +80,7 @@ export default function BinCollectionCard() {
               <div className={`shrink-0 transition ${bin.put_out ? "grayscale opacity-50" : ""}`}>
                 <BinIcon icon={bin.icon} colour={bin.colour} size={56} />
               </div>
-              <p className={`min-w-0 text-base font-semibold leading-tight ${bin.put_out ? "text-text-muted" : "text-text"}`}>
+              <p className={`min-w-0 text-xs font-semibold uppercase tracking-wide ${bin.put_out ? "text-text-faint" : "text-text-muted"}`}>
                 {bin.name}
               </p>
             </motion.button>
