@@ -1,6 +1,7 @@
 from fastapi import APIRouter
 
 from app.api.v1.health import router as health_router
+from app.modules.bins.router import router as bins_router
 from app.modules.calendar.birthday_router import router as birthdays_router
 from app.modules.calendar.calendar_router import router as calendar_router
 from app.modules.members.router import router as members_router
@@ -24,3 +25,4 @@ v1_router.include_router(weather_router)
 v1_router.include_router(prayer_router)
 v1_router.include_router(birthdays_router)
 v1_router.include_router(calendar_router)
+v1_router.include_router(bins_router)
