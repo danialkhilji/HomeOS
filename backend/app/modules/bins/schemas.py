@@ -3,7 +3,7 @@ from typing import Literal
 
 from pydantic import BaseModel, Field
 
-BinIcon = Literal["general", "garden", "food", "cardboard", "plastic", "glass"]
+BinIcon = Literal["general", "garden", "recycling", "paper", "food"]
 BinSchedule = Literal["weekly", "week_a", "week_b"]
 
 

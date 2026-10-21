@@ -108,7 +108,7 @@ export interface PrayerTimes {
   hijri_date: string | null;
 }
 
-export type BinIconType = "general" | "garden" | "food" | "cardboard" | "plastic" | "glass";
+export type BinIconType = "general" | "garden" | "recycling" | "paper" | "food";
 
 export type BinScheduleType = "weekly" | "week_a" | "week_b";
 

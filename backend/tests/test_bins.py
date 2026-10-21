@@ -69,12 +69,12 @@ async def test_list_bins_empty(client):
 
 @pytest.mark.asyncio
 async def test_create_bin(client):
-    response = await client.post("/api/v1/bins", json=bin_payload(icon="glass", schedule="week_a"))
+    response = await client.post("/api/v1/bins", json=bin_payload(icon="recycling", schedule="week_a"))
     assert response.status_code == 201
     data = response.json()
     assert data["name"] == "General Waste"
     assert data["colour"] == "#374151"
-    assert data["icon"] == "glass"
+    assert data["icon"] == "recycling"
     assert data["schedule"] == "week_a"
     assert data["id"] > 0
     assert data["created_at"]
@@ -106,7 +106,7 @@ async def test_update_bin(client):
     response = await client.put(f"/api/v1/bins/{bin_id}", json={
         "name": "Recycling",
         "colour": "#2563eb",
-        "icon": "plastic",
+        "icon": "paper",
         "schedule": "week_b",
     })
     assert response.status_code == 200
@@ -114,7 +114,7 @@ async def test_update_bin(client):
     assert data["id"] == bin_id
     assert data["name"] == "Recycling"
     assert data["colour"] == "#2563eb"
-    assert data["icon"] == "plastic"
+    assert data["icon"] == "paper"
     assert data["schedule"] == "week_b"
 
 
@@ -147,8 +147,9 @@ async def test_delete_nonexistent_bin(client):
 
 
 @pytest.mark.asyncio
-async def test_create_bin_invalid_icon(client):
-    response = await client.post("/api/v1/bins", json=bin_payload(icon="metal"))
+@pytest.mark.parametrize("icon", ["metal", "glass", "plastic", "cardboard"])
+async def test_create_bin_invalid_icon(client, icon):
+    response = await client.post("/api/v1/bins", json=bin_payload(icon=icon))
     assert response.status_code == 422
 
 

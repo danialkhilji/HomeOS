@@ -1,3 +1,6 @@
+import type { BinWeek } from "../../constants";
+import type { BinScheduleType, BinSettings } from "../../types";
+
 // Dates are local calendar days as "YYYY-MM-DD". new Date("YYYY-MM-DD") and toISOString() both use UTC and shift the day during BST.
 
 const DAY_MS = 24 * 60 * 60 * 1000;
@@ -43,6 +46,22 @@ export function weekLabel(date: Date, weekADate: Date): "A" | "B" {
   const mondayOfWeekA = toDateKey(addDays(weekADate, -mondayIndex(weekADate)));
   const weeks = daysBetween(mondayOfWeekA, mondayOfDate) / 7;
   return Math.abs(weeks) % 2 === 0 ? "A" : "B";
+}
+
+// Week label of the next collection day. With no settings yet, the first collection day picked becomes Week A
+export function upcomingWeekLabel(settings: BinSettings | null | undefined, today: Date = new Date()): "A" | "B" {
+  if (!settings) return "A";
+  return weekLabel(nextCollectionDate(settings.collection_weekday, today), parseLocalDate(settings.week_a_date));
+}
+
+export function toBinWeek(schedule: BinScheduleType, upcoming: "A" | "B"): BinWeek {
+  if (schedule === "weekly") return "weekly";
+  return (schedule === "week_a") === (upcoming === "A") ? "this_week" : "next_week";
+}
+
+export function toBinSchedule(week: BinWeek, upcoming: "A" | "B"): BinScheduleType {
+  if (week === "weekly") return "weekly";
+  return (week === "this_week") === (upcoming === "A") ? "week_a" : "week_b";
 }
 
 export function formatWeekday(value: string): string {

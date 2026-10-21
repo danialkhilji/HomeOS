@@ -71,10 +71,10 @@ export default function BinCollectionCard() {
             </div>
           </div>
 
-          {alternating && (
+          {alternating && next.days_until < 7 && (
             <div className="ml-auto flex flex-row-reverse items-center gap-2 sm:flex-col sm:items-end sm:gap-1 text-right">
               <span className="px-3 py-1 rounded-full bg-accent-pale text-primary-dark text-sm font-semibold">
-                Week {next.week_label}
+                This week
               </span>
               {weekBin && (
                 <span className="text-xs text-text-muted">({weekBin.name} week)</span>
@@ -120,9 +120,6 @@ export default function BinCollectionCard() {
                     ? "Next week"
                     : formatShortDate(following.date)}
                 </span>
-                {alternating && (
-                  <span className="text-text-muted"> (Week {following.week_label})</span>
-                )}
               </p>
               <p className="text-sm text-text-muted sm:truncate">
                 {following.bins.map((bin) => bin.name).join(" · ")}
@@ -147,7 +144,6 @@ export default function BinCollectionCard() {
         open={scheduleOpen}
         onClose={() => setScheduleOpen(false)}
         collections={collections}
-        alternating={alternating}
       />
     </div>
   );

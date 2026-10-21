@@ -21,33 +21,34 @@ const SYMBOLS: Record<BinIconType, React.ReactNode> = {
       <path d="M18 35L25.5 27.5" />
     </>
   ),
-  food: (
-    <>
-      <path d="M19.5 23.5Q24 21.5 28.5 23.5Q26.2 26 26.2 29.3Q26.2 32.3 28.5 34.6Q24 36.6 19.5 34.6Q21.8 32.3 21.8 29.3Q21.8 26 19.5 23.5Z" />
-      <path d="M24 22.5V20.2Q25.8 19.2 27.2 19.9" />
-    </>
-  ),
-  cardboard: (
-    <>
-      <path d="M24 21.5L30.5 25V32L24 35.5L17.5 32V25Z" />
-      <path d="M17.5 25L24 28.5L30.5 25M24 28.5V35.5" />
-    </>
-  ),
-  plastic: (
+  recycling: (
     <>
       <path d="M21.6 21H26.4" />
       <path d="M22.3 21.5V24.2C20 25.2 19 26.8 19 29V34A1.5 1.5 0 0 0 20.5 35.5H27.5A1.5 1.5 0 0 0 29 34V29C29 26.8 28 25.2 25.7 24.2V21.5" />
       <path d="M19 30H29" />
     </>
   ),
-  glass: (
+  paper: (
     <>
-      <rect x="19.5" y="20.5" width="9" height="3" rx="1" />
-      <path d="M20.5 23.5C19 24.8 18 26.3 18 28V33.5A2 2 0 0 0 20 35.5H28A2 2 0 0 0 30 33.5V28C30 26.3 29 24.8 27.5 23.5" />
-      <path d="M21.5 28.5V31.5" />
+      <path d="M24 21.5L30.5 25V32L24 35.5L17.5 32V25Z" />
+      <path d="M17.5 25L24 28.5L30.5 25M24 28.5V35.5" />
+    </>
+  ),
+  food: (
+    <>
+      <path d="M19.5 23.5Q24 21.5 28.5 23.5Q26.2 26 26.2 29.3Q26.2 32.3 28.5 34.6Q24 36.6 19.5 34.6Q21.8 32.3 21.8 29.3Q21.8 26 19.5 23.5Z" />
+      <path d="M24 22.5V20.2Q25.8 19.2 27.2 19.9" />
     </>
   ),
 };
+
+// White symbol on dark bins, dark symbol on light ones (e.g. a light grey food caddy)
+function symbolColour(colour: string) {
+  const r = parseInt(colour.slice(1, 3), 16);
+  const g = parseInt(colour.slice(3, 5), 16);
+  const b = parseInt(colour.slice(5, 7), 16);
+  return r * 0.299 + g * 0.587 + b * 0.114 > 186 ? WHEEL : "#fff";
+}
 
 interface BinIconProps {
   icon: BinIconType;
@@ -74,7 +75,7 @@ export default function BinIcon({ icon, colour, size = 48 }: BinIconProps) {
       <circle cx="33.5" cy="42" r="4" fill={WHEEL} />
       <circle cx="33.5" cy="42" r="1.5" fill={HUB} />
 
-      <g stroke="#fff" strokeWidth={2.4} strokeLinecap="round" strokeLinejoin="round">
+      <g stroke={symbolColour(colour)} strokeWidth={2.4} strokeLinecap="round" strokeLinejoin="round">
         {SYMBOLS[icon]}
       </g>
     </svg>

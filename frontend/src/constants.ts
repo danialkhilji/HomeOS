@@ -1,4 +1,4 @@
-import type { BinIconType, BinScheduleType } from "./types";
+import type { BinIconType } from "./types";
 
 export const INPUT_STYLE =
   "w-full min-h-[48px] px-4 rounded-xl border border-border bg-surface text-text text-lg focus:outline-none focus:ring-2 focus:ring-primary";
@@ -16,34 +16,33 @@ export const PRESET_COLOURS = [
   "#ca8a04",
 ];
 
-const BIN_GREY = "#4B5563";
-const BIN_BLACK = "#1F2937";
-const BIN_GREEN = "#3F9142";
+const BIN_DARK_GREY = "#374151";
 const BIN_BROWN = "#8B5A2B";
-const BIN_BLUE = "#2F6FD6";
 const BIN_YELLOW = "#E6B422";
-const BIN_PURPLE = "#7C5CC4";
+const BIN_RED = "#C8372D";
+const BIN_LIGHT_GREY = "#BFC4CA";
 
-export const BIN_COLOURS = [BIN_GREY, BIN_BLACK, BIN_GREEN, BIN_BROWN, BIN_BLUE, BIN_YELLOW, BIN_PURPLE];
+export const BIN_COLOURS = [BIN_DARK_GREY, BIN_BROWN, BIN_YELLOW, BIN_RED, BIN_LIGHT_GREY];
 
 export interface BinTypeOption {
   icon: BinIconType;
-  label: string;
-  defaultName: string;
-  defaultColour: string;
+  name: string;
+  colour: string;
 }
 
 export const BIN_TYPES: BinTypeOption[] = [
-  { icon: "general", label: "General", defaultName: "General waste", defaultColour: BIN_GREY },
-  { icon: "garden", label: "Garden", defaultName: "Garden waste", defaultColour: BIN_GREEN },
-  { icon: "food", label: "Food", defaultName: "Food waste", defaultColour: BIN_BROWN },
-  { icon: "cardboard", label: "Cardboard", defaultName: "Cardboard", defaultColour: BIN_BLUE },
-  { icon: "plastic", label: "Plastic", defaultName: "Plastic", defaultColour: BIN_YELLOW },
-  { icon: "glass", label: "Glass", defaultName: "Glass", defaultColour: BIN_PURPLE },
+  { icon: "general", name: "General waste", colour: BIN_DARK_GREY },
+  { icon: "garden", name: "Garden waste", colour: BIN_BROWN },
+  { icon: "recycling", name: "Glass/cans/plastics", colour: BIN_YELLOW },
+  { icon: "paper", name: "Paper/card", colour: BIN_RED },
+  { icon: "food", name: "Food waste", colour: BIN_LIGHT_GREY },
 ];
 
-export const BIN_SCHEDULE_LABELS: Record<BinScheduleType, string> = {
+// Bins are stored as Week A / Week B; the UI shows them relative to the upcoming collection
+export type BinWeek = "weekly" | "this_week" | "next_week";
+
+export const BIN_WEEK_LABELS: Record<BinWeek, string> = {
   weekly: "Every week",
-  week_a: "Week A",
-  week_b: "Week B",
+  this_week: "This week",
+  next_week: "Next week",
 };

@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { IconButton, TrashIcon, BinIcon } from "../../components";
-import { TAP_SPRING, BIN_SCHEDULE_LABELS } from "../../constants";
+import { TAP_SPRING, BIN_WEEK_LABELS } from "../../constants";
+import { toBinWeek } from "../dashboard/binDates";
 import { useLongPress } from "../../hooks/useLongPress";
 import type { Bin } from "../../types";
 
@@ -8,9 +9,10 @@ interface BinListProps {
   bins: Bin[];
   onEdit: (bin: Bin) => void;
   onDelete: (id: number) => void;
+  upcomingWeek: "A" | "B";
 }
 
-function BinRow({ bin, onEdit, onDelete }: { bin: Bin; onEdit: () => void; onDelete: () => void }) {
+function BinRow({ bin, weekLabel, onEdit, onDelete }: { bin: Bin; weekLabel: string; onEdit: () => void; onDelete: () => void }) {
   const longPress = useLongPress(onEdit);
 
   return (
@@ -26,7 +28,7 @@ function BinRow({ bin, onEdit, onDelete }: { bin: Bin; onEdit: () => void; onDel
         </div>
         <div className="min-w-0">
           <p className="text-lg truncate">{bin.name}</p>
-          <p className="text-sm text-text-muted">{BIN_SCHEDULE_LABELS[bin.schedule]}</p>
+          <p className="text-sm text-text-muted">{weekLabel}</p>
         </div>
       </div>
       <IconButton
@@ -39,13 +41,14 @@ function BinRow({ bin, onEdit, onDelete }: { bin: Bin; onEdit: () => void; onDel
   );
 }
 
-export default function BinList({ bins, onEdit, onDelete }: BinListProps) {
+export default function BinList({ bins, onEdit, onDelete, upcomingWeek }: BinListProps) {
   return (
     <div className="space-y-2">
       {bins.map((bin) => (
         <BinRow
           key={bin.id}
           bin={bin}
+          weekLabel={BIN_WEEK_LABELS[toBinWeek(bin.schedule, upcomingWeek)]}
           onEdit={() => onEdit(bin)}
           onDelete={() => onDelete(bin.id)}
         />
