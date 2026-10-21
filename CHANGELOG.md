@@ -1,5 +1,20 @@
 # Changelog
 
+## v1.5
+
+### New Features
+- Bin collection card on the dashboard, below prayer times — shows the next collection date and its bins, and a preview of the following collection
+- Upcoming collections modal listing the next 6 collections
+- Tap a bin tile once it's outside — it greys out on every device until that collection has passed
+- Bin Collection settings — collection day, add/edit/delete bins with name, colour, icon and schedule (every week, this week or next week, alternating after that)
+- Custom SVG wheelie bin icons for general waste, garden waste, glass/cans/plastics, paper/card and food waste
+
+### Improvements
+- Replaced placeholder clone URL in README and deployment guide
+- Stopped tracking `tsconfig.node.tsbuildinfo` build artifact
+
+---
+
 ## v1.4
 
 ### New Features
