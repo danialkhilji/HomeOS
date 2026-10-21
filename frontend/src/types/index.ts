@@ -118,6 +118,7 @@ export interface Bin {
   colour: string;
   icon: BinIconType;
   schedule: BinScheduleType;
+  put_out_date: string | null;
   created_at: string;
 }
 
@@ -127,6 +128,7 @@ export interface BinSummary {
   colour: string;
   icon: BinIconType;
   schedule: BinScheduleType;
+  put_out: boolean;
 }
 
 export interface BinSettings {

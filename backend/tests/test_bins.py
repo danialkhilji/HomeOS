@@ -412,8 +412,9 @@ async def test_schedule_endpoint_shape(client):
     assert collection["week_label"] == "A"
     assert collection["bins"] == [
         {"id": general["id"], "name": "General Waste", "colour": "#374151",
-         "icon": "general", "schedule": "week_a"},
-        {"id": food["id"], "name": "Food", "colour": "#16a34a", "icon": "food", "schedule": "weekly"},
+         "icon": "general", "schedule": "week_a", "put_out": False},
+        {"id": food["id"], "name": "Food", "colour": "#16a34a", "icon": "food",
+         "schedule": "weekly", "put_out": False},
     ]
 
     second = data["collections"][1]
@@ -482,3 +483,90 @@ async def test_deleted_bin_removed_from_schedule(client):
 async def test_schedule_weeks_out_of_range(client, weeks):
     response = await client.get(f"/api/v1/bins/schedule?weeks={weeks}")
     assert response.status_code == 422
+
+
+# --- Put out ---
+
+
+def test_schedule_put_out_only_for_that_collection():
+    food = make_bin(1, "weekly")
+    food.put_out_date = TUESDAY
+    general = make_bin(2, "weekly")
+
+    result = compute_schedule([food, general], make_settings(TUE, TUESDAY), MONDAY, weeks=2)
+
+    assert [b.put_out for b in result.collections[0].bins] == [True, False]
+    assert [b.put_out for b in result.collections[1].bins] == [False, False]
+
+
+def test_schedule_put_out_clears_after_collection():
+    food = make_bin(1, "weekly")
+    food.put_out_date = TUESDAY
+
+    result = compute_schedule([food], make_settings(TUE, TUESDAY), WEDNESDAY, weeks=1)
+
+    assert result.collections[0].date == TUESDAY + timedelta(days=7)
+    assert result.collections[0].bins[0].put_out is False
+
+
+async def setup_put_out(client, schedule="weekly"):
+    created = (await client.post("/api/v1/bins", json=bin_payload(schedule=schedule))).json()
+    first = next_weekday(3)
+    await client.put("/api/v1/bins/settings", json={
+        "collection_weekday": 3,
+        "week_a_date": first.isoformat(),
+    })
+    return created, first
+
+
+@pytest.mark.asyncio
+async def test_toggle_put_out(client):
+    created, first = await setup_put_out(client)
+
+    response = await client.patch(f"/api/v1/bins/{created['id']}/put-out")
+    assert response.status_code == 200
+    assert response.json()["put_out_date"] == first.isoformat()
+
+    schedule = (await client.get("/api/v1/bins/schedule?weeks=2")).json()
+    assert schedule["collections"][0]["bins"][0]["put_out"] is True
+    assert schedule["collections"][1]["bins"][0]["put_out"] is False
+
+
+@pytest.mark.asyncio
+async def test_toggle_put_out_twice_clears(client):
+    created, _ = await setup_put_out(client)
+
+    await client.patch(f"/api/v1/bins/{created['id']}/put-out")
+    response = await client.patch(f"/api/v1/bins/{created['id']}/put-out")
+    assert response.json()["put_out_date"] is None
+
+    schedule = (await client.get("/api/v1/bins/schedule?weeks=1")).json()
+    assert schedule["collections"][0]["bins"][0]["put_out"] is False
+
+
+@pytest.mark.asyncio
+async def test_toggle_put_out_uses_bins_own_next_collection(client):
+    created, first = await setup_put_out(client, schedule="week_b")
+
+    response = await client.patch(f"/api/v1/bins/{created['id']}/put-out")
+    assert response.json()["put_out_date"] == (first + timedelta(days=7)).isoformat()
+
+
+@pytest.mark.asyncio
+async def test_toggle_put_out_not_found(client):
+    response = await client.patch("/api/v1/bins/9999/put-out")
+    assert response.status_code == 404
+
+
+@pytest.mark.asyncio
+async def test_toggle_put_out_without_settings(client):
+    created = (await client.post("/api/v1/bins", json=bin_payload())).json()
+
+    response = await client.patch(f"/api/v1/bins/{created['id']}/put-out")
+    assert response.status_code == 422
+
+
+@pytest.mark.asyncio
+async def test_new_bin_not_put_out(client):
+    response = await client.post("/api/v1/bins", json=bin_payload())
+    assert response.json()["put_out_date"] is None

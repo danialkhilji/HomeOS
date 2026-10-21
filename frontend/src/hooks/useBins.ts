@@ -4,6 +4,7 @@ import {
   createBin,
   updateBin,
   deleteBin,
+  toggleBinPutOut,
   fetchBinSettings,
   updateBinSettings,
   fetchBinSchedule,
@@ -61,6 +62,17 @@ export function useDeleteBin() {
 
   return useMutation({
     mutationFn: (id: number) => deleteBin(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: BINS_KEY });
+    },
+  });
+}
+
+export function useToggleBinPutOut() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (id: number) => toggleBinPutOut(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: BINS_KEY });
     },

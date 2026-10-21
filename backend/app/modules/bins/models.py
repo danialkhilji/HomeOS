@@ -14,6 +14,8 @@ class Bin(Base):
     colour: Mapped[str] = mapped_column(String(7), nullable=False)
     icon: Mapped[str] = mapped_column(String(20), nullable=False)
     schedule: Mapped[str] = mapped_column(String(10), nullable=False)
+    # Collection date the bin was put out for; stops counting once that collection has passed
+    put_out_date: Mapped[date | None] = mapped_column(Date, nullable=True)
     created_at: Mapped[datetime] = mapped_column(DateTime, server_default=func.now())
 
 

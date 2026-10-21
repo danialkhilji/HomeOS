@@ -25,6 +25,7 @@ class BinResponse(BaseModel):
     colour: str
     icon: str
     schedule: str
+    put_out_date: date | None
     created_at: datetime
 
     model_config = {"from_attributes": True}
@@ -36,6 +37,7 @@ class BinSummary(BaseModel):
     colour: str
     icon: str
     schedule: str
+    put_out: bool = False
 
     model_config = {"from_attributes": True}
 

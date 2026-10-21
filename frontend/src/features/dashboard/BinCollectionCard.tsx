@@ -9,7 +9,7 @@ import {
   WheelieBinIcon,
 } from "../../components";
 import { TAP_SPRING } from "../../constants";
-import { useBinSchedule } from "../../hooks/useBins";
+import { useBinSchedule, useToggleBinPutOut } from "../../hooks/useBins";
 import BinScheduleModal from "./BinScheduleModal";
 import { daysBetween, formatLongDate, formatShortDate, formatWeekday } from "./binDates";
 
@@ -39,6 +39,7 @@ function shortName(name: string) {
 
 export default function BinCollectionCard() {
   const { data } = useBinSchedule(6);
+  const togglePutOut = useToggleBinPutOut();
   const [scheduleOpen, setScheduleOpen] = useState(false);
 
   const next = data?.collections[0];
@@ -47,7 +48,6 @@ export default function BinCollectionCard() {
   const { alternating, collections } = data;
   const following = collections[1];
   const weekBin = next.bins.find((bin) => bin.schedule !== "weekly");
-  const showTick = next.days_until <= 1;
   const status = statusLabel(next.days_until, next.date);
 
   return (
@@ -85,22 +85,36 @@ export default function BinCollectionCard() {
 
         <div className={`grid grid-cols-1 gap-3 ${TILE_COLS[next.bins.length] ?? "sm:grid-cols-3"}`}>
           {next.bins.map((bin) => (
-            <div
+            // Tap once the bin is outside; it greys out for everyone until that collection has passed
+            <motion.button
               key={bin.id}
-              className="flex items-center gap-3 rounded-xl border p-3"
-              style={{ backgroundColor: `${bin.colour}14`, borderColor: `${bin.colour}33` }}
+              type="button"
+              whileTap={{ scale: 0.97 }}
+              transition={TAP_SPRING}
+              onClick={() => togglePutOut.mutate(bin.id)}
+              aria-pressed={bin.put_out}
+              className={`flex items-center gap-3 rounded-xl border p-3 text-left transition-colors ${
+                bin.put_out ? "bg-text-faint/15 border-text-faint/30" : ""
+              }`}
+              style={bin.put_out ? undefined : { backgroundColor: `${bin.colour}14`, borderColor: `${bin.colour}33` }}
             >
-              <BinIcon icon={bin.icon} colour={bin.colour} size={56} />
+              <div className={`shrink-0 transition ${bin.put_out ? "grayscale opacity-50" : ""}`}>
+                <BinIcon icon={bin.icon} colour={bin.colour} size={56} />
+              </div>
               <div className="min-w-0">
-                <p className="text-base font-semibold text-text leading-tight">{bin.name}</p>
+                <p className={`text-base font-semibold leading-tight ${bin.put_out ? "text-text-muted" : "text-text"}`}>
+                  {bin.name}
+                </p>
                 <p className="mt-1 flex items-center gap-1.5 text-sm text-text-muted">
-                  {showTick && (
-                    <CheckCircleFilledIcon size={16} className="text-primary shrink-0" />
+                  {bin.put_out ? (
+                    <CheckCircleFilledIcon size={16} className="text-success shrink-0" />
+                  ) : (
+                    <span className="w-4 h-4 rounded-full border-2 border-text-faint shrink-0" />
                   )}
-                  {status}
+                  {bin.put_out ? "Outside" : status}
                 </p>
               </div>
-            </div>
+            </motion.button>
           ))}
         </div>
 

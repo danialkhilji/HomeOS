@@ -29,6 +29,11 @@ export async function deleteBin(id: number): Promise<void> {
   await apiClient.delete(`/bins/${id}`);
 }
 
+export async function toggleBinPutOut(id: number): Promise<Bin> {
+  const response = await apiClient.patch<Bin>(`/bins/${id}/put-out`);
+  return response.data;
+}
+
 export async function fetchBinSettings(): Promise<BinSettings | null> {
   const response = await apiClient.get<BinSettings | null>("/bins/settings");
   return response.data;

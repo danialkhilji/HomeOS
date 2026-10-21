@@ -5,6 +5,7 @@
 ### New Features
 - Bin collection card on the dashboard, below prayer times — shows the bins for the next collection, "Put out tonight" the evening before, and a preview of the following collection
 - Upcoming collections modal listing the next 6 collections
+- Tap a bin tile once it's outside — it greys out with an "Outside" tick on every device until that collection has passed
 - Bin Collection settings — collection day, add/edit/delete bins with name, colour, icon and schedule (every week, this week or next week, alternating after that)
 - Custom SVG wheelie bin icons for general waste, garden waste, glass/cans/plastics, paper/card and food waste
 

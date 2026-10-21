@@ -44,6 +44,11 @@ async def bin_schedule(
     return await service.get_schedule(db, weeks)
 
 
+@router.patch("/{bin_id}/put-out", response_model=BinResponse)
+async def toggle_put_out(bin_id: int, db: AsyncSession = Depends(get_db)):
+    return await service.toggle_put_out(db, bin_id)
+
+
 @router.put("/{bin_id}", response_model=BinResponse)
 async def update_bin(bin_id: int, data: BinUpdate, db: AsyncSession = Depends(get_db)):
     return await service.update_bin(db, bin_id, data)
